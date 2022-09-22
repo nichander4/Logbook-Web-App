@@ -1,0 +1,48 @@
+.card-form{
+    height: 924px;
+    width: 688px;
+    position: relative;
+    padding-right: 120px;
+    padding-left: 32px;
+    padding-top: 18px;
+    padding-bottom: 40px;
+}
+.custom-input-color{
+    .css-1eyvi4t-control {
+        border: 1px solid #d8d6de !important;
+    }
+    .css-1wa3eu0-placeholder {
+        color: #B9B9C3 !important;
+    }
+    .css-1uccc91-singleValue {
+        color:#6e6b7b;
+    }
+}
+.custom-input-select{
+    .css-168wdl6-indicatorSeparator {
+        width:0px !important
+    }
+    
+}
+.button-form{
+    margin-left: 62%;
+}
+.button-back{
+    background-color: rgba(115, 103, 240, 0.12) !important;
+    border-color: rgba(115, 103, 240, 0.12) !important;
+    color:#7367F0 !important;
+}
+.error-input {
+    background-image: none !important;
+}
+.input-file-custom{
+    .custom-file-label:after {
+        background-color:#7367F0 !important;
+        color: white !important;
+    }
+}
+.label-form{
+    color: #6E6B7B
+}
+  
+

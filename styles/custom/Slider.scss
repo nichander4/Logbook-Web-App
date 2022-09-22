@@ -1,0 +1,22 @@
+.slick-slide {
+  padding: 0 1rem;
+}
+
+.slick-list {
+  margin-left: -1rem;
+  width: calc(100% + 2rem);
+}
+
+// .slick-prev:before {
+//   margin-right: -1.5rem;
+// }
+
+// .slick-next:before {
+//   margin-left: -1.5rem;
+// }
+
+.slick-prev:before,
+.slick-next:before {
+  opacity: 1;
+  color: #C4C4C4;
+}

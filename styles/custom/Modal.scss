@@ -1,0 +1,143 @@
+//Details Pop Up - 1
+.modalBodyTextDetailsPopUp1{
+  font-size: 10px;
+}
+
+.modalBodyParagraphDetailsPopUp1{
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.separatorDetailsPopUp1{
+  margin-top: 12px;
+}
+
+//Details Pop Up - 2
+
+.modalBodyTitleDetailsPopUp2{
+  background-color: rgba(40, 199, 111, 0.25);
+  border-radius: 5px;
+  color: black;
+  padding: 2px 12px 2px 12px;
+  display: inline-block;
+};
+
+.grayedOutTextDetailsPopUp2{
+  color: #B9B9C3;
+}
+
+.modalBodyTitleTextDetailsPopUp2{
+  color: #28C76F;
+  font-weight: 550;
+};
+
+.separatorDetailsPopUp2{
+  margin-top: 12px;
+}
+
+.segmentDetailsPopUp2{
+  font-weight: 600;
+}
+
+.editButtonTextDetailsPopUp2{
+  margin-left: 8px;
+  align-content: center;
+}
+
+//Success Pop Up
+
+.modalHeaderTextSuccessPopUp h5{
+  color: #FFFFFF;
+}
+
+.modalBodyTextSuccessPopUp{
+  padding-top: 8px;
+  padding-bottom: 20px;
+}
+
+//Approve Pop Up
+
+.modalHeaderTextApprovePopUp h5{
+  color: #FFFFFF;
+}
+
+.modalBodyTextApprovePopUp{
+  padding-top: 8px;
+  padding-bottom: 20px;
+}
+
+//Warning Pop Up
+
+.modalHeaderTextWarningPopUp h5{
+  color: #FFFFFF;
+}
+
+.modalBodyTextWarningPopUp{
+  padding-top: 8px;
+  padding-bottom: 20px;
+}
+
+//Approval Pop Up
+
+.modalHeaderTextApprovalPopUp h5{
+  color: #FFFFFF;
+}
+
+.modalBodyTextApprovalPopUp{
+  padding-top: 8px;
+  padding-bottom: 10px;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.separatorApprovalPopUp{
+  margin-top: 12px;
+}
+
+//Note Pop Up
+
+.modalHeaderTextNotePopUp h5{
+  color: #FFFFFF;
+}
+
+.modalBodyLabelTextNotePopUp{
+  font-weight: bold;
+}
+
+//Reject Pop Up
+
+.modalHeaderTextRejectPopUp h5{
+  color: #FFFFFF;
+}
+
+.modalBodyLabelTextRejectPopUp{
+  font-weight: bold;
+}
+
+//Attachment Pop Up
+
+.modalHeaderTextAttachmentPopUp h5{
+  color: #FFFFFF;
+}
+
+//TermsAndConditionsPopUp
+
+.scrollableModalSize{
+  height: 500px;
+}
+
+.modalHeaderTnCPopUp h5{
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+}
+
+.modalFooterTnCPopUp{
+  border-bottom: 0 none;
+}
+
+.modalButtonTnCPopUp{
+  font-weight: bold;
+  padding-left: 100px;
+  padding-right: 100px;
+}
