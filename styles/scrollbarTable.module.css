@@ -1,0 +1,25 @@
+#Table {
+    overflow-x :auto;
+}
+
+#Table::-webkit-scrollbar {
+    height: 6px;
+}
+
+#Table::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #C4C4C4;
+    border-radius: 10px;
+;
+}
+
+#Table::-webkit-scrollbar-thumb {
+  background-color: #46A583;
+  border-radius: 10px;
+}
+
+#Table::-webkit-scrollbar-thumb:hover {
+    background: rgb(65, 139, 130);
+  }
+
+  

@@ -8,7 +8,7 @@ const RealTimeShow = () => {
         setInterval(() => setDateState(moment().format('MMMM Do YYYY, h:mm:ss a')), 1000)
     }, [])
 
-  return (<Fragment><h1>{dateState}</h1></Fragment>);
+  return (<Fragment>{dateState}</Fragment>);
 };
 
 export default RealTimeShow;

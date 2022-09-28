@@ -2,7 +2,7 @@ import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 import MenteeHomeCard from 'components/Mentee/MenteeHomeCard';
 
 
-const Home = () => {
+const MenteeHome = () => {
   return (
     <VerticalLayout>
       <MenteeHomeCard />
@@ -10,4 +10,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default MenteeHome;

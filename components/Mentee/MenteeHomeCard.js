@@ -1,7 +1,7 @@
 import { Button, Card, CardBody, Col, Row } from 'reactstrap';
 import { UserCheck, LogOut } from 'react-feather';
 import { useState } from 'react';
-import RealTimeShow from './RealTimeShow';
+import RealTimeShow from '../Layout/RealTimeShow';
 
 const WelcomeCard = () => {
   const [attendanceStatus, setAttendanceStatus] = useState(false);
@@ -25,6 +25,10 @@ const WelcomeCard = () => {
     }, 1000);
   };
 
+  const date = new Date();
+  const hour = date.getHours();
+
+
   return (
     <div className="m-3">
       <Row>
@@ -35,7 +39,7 @@ const WelcomeCard = () => {
                 <h5 className="mb-1 text-white">
                   {attendanceStatus
                     ? 'Thank You for Your Work Today'
-                    : 'Good Morning,'}
+                    : (hour>=12 ? hour>=16 ? 'Good Evening,': 'Good Afternoon,': 'Good Morning,')}
                 </h5>
 
                 <h1 className="text-white">JOHN DOE</h1>
@@ -49,10 +53,9 @@ const WelcomeCard = () => {
         <Col>
           <Card className="">
             <CardBody className="">
-              <div className="text-center">
-                {/* <h1 className="text-primary">July 11th 2022, 11:38:22 am</h1> */}
+              <h1 className="text-center text-primary">
                 <RealTimeShow />
-              </div>
+              </h1>
 
               <div className="text-center mt-2">
                 <h5 className="text-dark">
