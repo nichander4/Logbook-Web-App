@@ -1,16 +1,17 @@
 // ** React Imports
-import { Fragment } from "react";
+import { Fragment } from 'react';
 
 // ** Next Imports
-import Link from "next/link";
+import Link from 'next/link';
 
 // ** Dropdowns Imports
-import UserDropdown from "./UserDropdown";
-import NotificationDropdown from "./NotificationDropdown";
+import UserDropdown from './UserDropdown';
+import NotificationDropdown from './NotificationDropdown';
 
 // ** Third Party Components
-import { NavItem, NavLink } from "reactstrap";
-import { Menu, Settings } from "react-feather";
+import { NavItem, NavLink } from 'reactstrap';
+import { Menu, Settings } from 'react-feather';
+import RealTimeShow from 'components/Layout/RealTimeShow';
 
 const NavbarComponent = (props) => {
   // ** Props
@@ -39,10 +40,13 @@ const NavbarComponent = (props) => {
             </NavLink>
           </NavItem>
         </ul>
+        <ul className="nav navbar-nav align-items-center">{
+          <RealTimeShow />
+        }</ul>
       </div>
       <ul className="nav navbar-nav align-items-center ml-auto">
-        <NotificationDropdown />
-        <SettingsItem href="/" />
+        {/* <NotificationDropdown />
+        <SettingsItem href="/" /> */}
         <UserDropdown />
       </ul>
     </Fragment>

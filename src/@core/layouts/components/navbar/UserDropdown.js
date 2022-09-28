@@ -43,7 +43,7 @@ const UserDropdown = () => {
         />
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem tag={Link} href="/pages/profile">
+        {/* <DropdownItem tag={Link} href="/pages/profile">
           <a className="dropdown-item">
             <User size={14} className="mr-75" />
             <span className="align-middle">Profile</span>
@@ -85,7 +85,7 @@ const UserDropdown = () => {
             <HelpCircle size={14} className="mr-75" />
             <span className="align-middle">FAQ</span>
           </a>
-        </DropdownItem>
+        </DropdownItem> */}
         <DropdownItem tag={Link} href="/login">
           <a className="dropdown-item">
             <Power size={14} className="mr-75" />
