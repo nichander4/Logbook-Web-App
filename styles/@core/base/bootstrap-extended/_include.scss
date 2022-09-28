@@ -15,7 +15,7 @@
 @import 'functions'; // Bootstrap extended function
 
 // Variables
-// @import 'styles/assets/variables/_variables'; // Bootstrap custom variable override (for user purpose)
+@import 'styles/assets/variables/_variables'; // Bootstrap custom variable override (for user purpose)
 @import 'variables'; // Bootstrap extended variable override
 @import 'bootstrap/scss/variables'; // Bootstrap core variable
 
