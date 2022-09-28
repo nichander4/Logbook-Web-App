@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, Col, Row } from 'reactstrap';
 import { UserCheck, LogOut } from 'react-feather';
 import { useState } from 'react';
+import RealTimeShow from './RealTimeShow';
 
 const WelcomeCard = () => {
   const [attendanceStatus, setAttendanceStatus] = useState(false);
@@ -49,7 +50,8 @@ const WelcomeCard = () => {
           <Card className="">
             <CardBody className="">
               <div className="text-center">
-                <h1 className="text-primary">July 11th 2022, 11:38:22 am</h1>
+                {/* <h1 className="text-primary">July 11th 2022, 11:38:22 am</h1> */}
+                <RealTimeShow />
               </div>
 
               <div className="text-center mt-2">
