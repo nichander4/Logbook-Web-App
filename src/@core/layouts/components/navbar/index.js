@@ -40,9 +40,9 @@ const NavbarComponent = (props) => {
             </NavLink>
           </NavItem>
         </ul>
-        <ul className="nav navbar-nav align-items-center">{
+        <ul className="nav navbar-nav align-items-center">
           <RealTimeShow />
-        }</ul>
+        </ul>
       </div>
       <ul className="nav navbar-nav align-items-center ml-auto">
         {/* <NotificationDropdown />
