@@ -34,7 +34,7 @@ const VerticalNavMenuGroup = (props) => {
 
     // ** Set Open Group
     setGroupOpen([...openArr]);
-    console.log({ groupOpen, groupActive })
+    // console.log({ groupOpen, groupActive })
   };
 
   // ** Toggle Active Group
@@ -66,7 +66,7 @@ const VerticalNavMenuGroup = (props) => {
 
   // ** Returns condition to add open class
   const openClassCondition = (id) => {
-    console.log(id)
+    // console.log(id)
     if ((menuCollapsed && menuHover) || menuCollapsed === false) {
       if (groupActive.includes(id) || groupOpen.includes(item.id)) {
         return true;

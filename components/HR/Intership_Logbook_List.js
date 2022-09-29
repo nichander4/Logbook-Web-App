@@ -1,6 +1,6 @@
 import BreadCrumbs from 'components/custom/BreadcrumbCustom';
 import React, { useState } from 'react';
-import { ExternalLink, Plus, Search, Filter } from 'react-feather';
+import { Search,} from 'react-feather';
 import {
   TabContent,
   TabPane,
@@ -14,9 +14,6 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown
 } from 'reactstrap';
 import Link from 'next/link';
 import ReactPaginate from 'react-paginate';
@@ -39,7 +36,7 @@ const MenteeItem = ({ item }) => {
   );
 };
 
-function MentorHome() {
+function IntershipLogbook() {
   const [active, setActive] = useState('1');
   const toggle = (tab) => {
     if (active !== tab) {
@@ -92,29 +89,9 @@ function MentorHome() {
 
   return (
     <>
-      <div className="h-auto">
-        <style>
-          {`
-            ::-webkit-scrollbar {
-              height: 5px;
-              width : 5px;
-            }
-
-            ::-webkit-scrollbar-track {
-              box-shadow: inset 0 0 10px 10px transparent;
-              background-color: #ddf7eea3;
-              border-radius: 10px;
-            }
-
-            ::-webkit-scrollbar-thumb {
-              border-radius: 10px;
-              box-shadow: inset 0 0 14px 14px #46a583;
-            }
-
-        `}
-        </style>
+    
         <BreadCrumbs
-          breadCrumbParent="Mentor"
+          breadCrumbParent="HR"
           breadCrumbActive="Internship Log book"
         />
         <Row className="mt-1">
@@ -214,9 +191,9 @@ function MentorHome() {
             </Row>
           </TabPane>
         </TabContent>
-      </div>
+     
     </>
   );
 }
 
-export default MentorHome;
+export default IntershipLogbook;
