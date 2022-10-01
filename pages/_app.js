@@ -59,7 +59,7 @@ const App = ({ Component, pageProps }) => {
         {`
         ::-webkit-scrollbar {
           height: 5px;
-          width : 5px;
+          width : 8px;
         }
 
         ::-webkit-scrollbar-track {
