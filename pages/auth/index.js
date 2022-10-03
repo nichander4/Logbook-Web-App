@@ -46,7 +46,7 @@ const LoginPage = (props) => {
               <Link href="/">
                 <a className="d-flex justify-content-center">
                   <Image
-                    src="/images/logo/kalbe-logo.png"
+                    src="/images/logo/logoxyz.png"
                     width={113}
                     height={51}
                   />
