@@ -18,9 +18,9 @@ const VerticalMenuHeader = (props) => {
           <Link href="/">
             <a className="navbar-brand active">
               <span className="brand-logo">
-                <img src="/images/logo/logo.svg" alt="logo" />
+                <img src="/images/logo/logoxyz.png" alt="logo" />
               </span>
-              <h2 className="brand-text mb-0">Vuexy</h2>
+              <h2 className="brand-text mb-0">PT. XYZ</h2>
             </a>
           </Link>
         </li>

@@ -46,6 +46,7 @@
     "leaflet": "1.6.0",
     "moment": "^2.29.4",
     "next": "^11.1.4",
+    "next-auth": "^4.12.2",
     "nouislider": "14.6.2",
     "nouislider-react": "3.3.8",
     "postcss-rtl": "^0.0.3",
