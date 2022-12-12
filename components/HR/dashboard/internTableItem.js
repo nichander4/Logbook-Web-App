@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Edit2, Info, MoreVertical, Trash2 } from 'react-feather';
 import {
@@ -15,6 +16,7 @@ import {
 
 
 const InternItem = ({ item }) => {
+    const router = useRouter();
     const [deleteModal, setDeteleModal] = useState(false);
     const toggleDeletePopup = () => setDeteleModal(!deleteModal);
   
@@ -56,7 +58,7 @@ const InternItem = ({ item }) => {
               <DropdownItem
                 className="action-vuexy-item w-100"
                 onClick={() =>
-                  router.push(`/master/request_budget/detail/${data.id}`)
+                  router.push(`/HR/dashboard/intern/detail/${1}`)
                 }
               >
                 <Info className="mr-2" size={15} />{' '}
@@ -70,7 +72,7 @@ const InternItem = ({ item }) => {
               <DropdownItem
                 className="action-vuexy-item w-100"
                 onClick={() =>
-                  router.push(`/master/request_budget/edit/${data.id}`)
+                  router.push(`/HR/dashboard/intern/edit/${1}`)
                 }
               >
                 <Edit2 className="mr-2" size={15} />{' '}

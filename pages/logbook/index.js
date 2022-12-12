@@ -4,14 +4,11 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import VerticalLayout from 'src/layouts/VerticalLayout';
 import January from 'components/Logbook/january';
 import MentorTable from 'components/HR/dashboard/mentorTable';
+import { useEffect } from 'react';
+import moment from 'moment';
 
 const entryLogbook = () => {
-  
-  const date = new Date();
-  const month = date.getMonth().toString();
-  const year = date.getFullYear();
-
-  const [active, setActive] = useState(month);
+  const [active, setActive] = useState(moment().format('M'));
 
   const toggle = (tab) => {
     if (active !== tab) {
@@ -21,10 +18,11 @@ const entryLogbook = () => {
 
   return (
     <VerticalLayout>
-      <BreadCrumbs 
-      breadCrumbParent="HR" 
-      breadCrumbActive="Log book" />
-      <h2 className="mt-2 mb-1">Entry Log Book Internship - {year} {"(Nicholas Anderson)"}</h2>
+      <BreadCrumbs breadCrumbParent="HR" breadCrumbActive="Log book" />
+      <h2 className="mt-2 mb-1">
+        Entry Log Book Internship - {moment().format('YYYY')}{' '}
+        {'(Nicholas Anderson)'}
+      </h2>
 
       <React.Fragment>
         <Nav tabs>
@@ -166,51 +164,27 @@ const entryLogbook = () => {
             <January />
           </TabPane>
 
-          <TabPane tabId="2">
-            <MentorTable />
-          </TabPane>
+          <TabPane tabId="2"></TabPane>
 
-          <TabPane tabId="3">
-          
-          </TabPane>
+          <TabPane tabId="3"></TabPane>
 
-          <TabPane tabId="4">
-            <MentorTable />
-          </TabPane>
+          <TabPane tabId="4"></TabPane>
 
-          <TabPane tabId="5">
-            
-          </TabPane>
+          <TabPane tabId="5"></TabPane>
 
-          <TabPane tabId="6">
-            <MentorTable />
-          </TabPane>
+          <TabPane tabId="6"></TabPane>
 
-          <TabPane tabId="7">
-           
-          </TabPane>
+          <TabPane tabId="7"></TabPane>
 
-          <TabPane tabId="8">
-            <MentorTable />
-          </TabPane>
+          <TabPane tabId="8"></TabPane>
 
-          <TabPane tabId="9">
-           
-          </TabPane>
+          <TabPane tabId="9"></TabPane>
 
-          <TabPane tabId="10">
-            <MentorTable />
-          </TabPane>
-          
-          <TabPane tabId="11">
-            <MentorTable />
-          </TabPane>
+          <TabPane tabId="10"></TabPane>
 
-          <TabPane tabId="12">
-            <MentorTable />
-          </TabPane>
+          <TabPane tabId="11"></TabPane>
 
-
+          <TabPane tabId="12"></TabPane>
         </TabContent>
       </React.Fragment>
     </VerticalLayout>
