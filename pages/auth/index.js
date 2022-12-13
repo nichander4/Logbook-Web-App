@@ -66,11 +66,11 @@ const LoginPage = (props) => {
                 action="/api/auth/callback/credentials"
                 className="auth-login-form mt-2"
               >
-                <input
+                {/* <input
                   name="csrfToken"
                   type="hidden"
-                //   defaultValue={csrfToken}
-                />
+                  defaultValue={csrfToken}
+                /> */}
                 <FormGroup>
                   <Label className="form-label" for="login-email">
                     Username
