@@ -1,33 +1,22 @@
-import { Button, Card, CardBody, Col, Row } from 'reactstrap';
-import { UserCheck, LogOut } from 'react-feather';
+import { Button, Card, CardBody, Col, Row, Spinner } from 'reactstrap';
+import { Book } from 'react-feather';
 import { useState } from 'react';
 import RealTimeShow from '../Layout/RealTimeShow';
+import { useRouter } from 'next/router';
 
 const WelcomeCard = () => {
-  const [attendanceStatus, setAttendanceStatus] = useState(false);
+  const router = useRouter();
+  const [Loading, setLoading] = useState(false);
 
-  const [CheckinLoading, setCheckinLoading] = useState(false);
-  const [CheckOutLoading, setCheckOutLoading] = useState(false);
-
-  const Checkin = () => {
-    setCheckinLoading(true);
+  const isiLogbook = () => {
+    setLoading(true);
     setTimeout(function () {
-      setAttendanceStatus(true);
-      setCheckinLoading(false);
-    }, 1000);
-  };
-
-  const Checkout = () => {
-    setCheckOutLoading(true);
-    setTimeout(function () {
-      setAttendanceStatus(false);
-      setCheckOutLoading(false);
+      router.push('/logbook');
     }, 1000);
   };
 
   const date = new Date();
   const hour = date.getHours();
-
 
   return (
     <div className="m-3">
@@ -37,9 +26,11 @@ const WelcomeCard = () => {
             <CardBody className="profileIcon">
               <div className="text-center">
                 <h5 className="mb-1 text-white">
-                  {attendanceStatus
-                    ? 'Thank You for Your Work Today'
-                    : (hour>=12 ? hour>=16 ? 'Good Evening,': 'Good Afternoon,': 'Good Morning,')}
+                  {hour >= 12
+                    ? hour >= 16
+                      ? 'Good Evening,'
+                      : 'Good Afternoon,'
+                    : 'Good Morning,'}
                 </h5>
 
                 <h1 className="text-white">JOHN DOE</h1>
@@ -58,33 +49,29 @@ const WelcomeCard = () => {
               </h1>
 
               <div className="text-center mt-2">
-                <h5 className="text-dark">
-                  {attendanceStatus
-                    ? 'Click here to check out'
-                    : 'Click here to make attendance'}
-                </h5>
+                <h5 className="text-dark">Click here to entry Logbook</h5>
               </div>
 
               <div className="d-flex justify-content-center mt-1">
                 <Button.Ripple
                   color="primary"
                   className="d-flex align-items-center py-1"
-                  onClick={attendanceStatus ? Checkout : Checkin}
-                  disabled={attendanceStatus ? CheckOutLoading : CheckinLoading}
+                  onClick={isiLogbook}
+                  disabled={Loading}
                 >
-                  {attendanceStatus ? (
-                    <LogOut size={14} color="white" className="mr-1" />
-                  ) : (
-                    <UserCheck size={14} color="white" className="mr-1" />
-                  )}{' '}
                   <div className="text-white">
-                    {attendanceStatus
-                      ? CheckOutLoading
-                        ? 'Check out...'
-                        : 'Check out'
-                      : CheckinLoading
-                      ? 'Check in...'
-                      : 'Check in'}
+                    {Loading ? (
+                      <div className="d-flex flex-row justify-content-center align-items-center">
+                        <Spinner size={14} color="white" />
+
+                        <p className="ml-1 mr-0 my-0">Redirect...</p>
+                      </div>
+                    ) : (
+                      <div className="">
+                        <Book size={20} color="white" className="mr-1" />{' '}
+                        Logbook
+                      </div>
+                    )}
                   </div>
                 </Button.Ripple>
               </div>

@@ -22,6 +22,8 @@ const JanuaryTable = () => {
     {
       date: 'Fri, 01 Jul 2022',
       name: 'Nicholas Anderson',
+      activity: "mengerjakan bla bla",
+      isWfo: "WFH",
       check_in: '07:30 am',
       check_out: '04:00 pm',
       mentor_approval: 'Awaiting',
@@ -30,22 +32,18 @@ const JanuaryTable = () => {
     {
       date: 'Fri, 01 Jul 2022',
       name: 'Nicholas Anderson',
+      activity: "mengerjakan bla bla",
+      isWfo: "WFO",
       check_in: '07:30 am',
       check_out: '04:00 pm',
-      mentor_approval: 'Rejected',
-      hr_approval: 'Approved'
+      mentor_approval: 'Awaiting',
+      hr_approval: 'Rejected'
     },
     {
       date: 'Fri, 01 Jul 2022',
       name: 'Nicholas Anderson',
-      check_in: '07:30 am',
-      check_out: '04:00 pm',
-      mentor_approval: 'Rejected',
-      hr_approval: 'Approved'
-    },
-    {
-      date: 'Fri, 01 Jul 2022',
-      name: 'Nicholas Anderson',
+      activity: "mengerjakan bla bla",
+      isWfo: "WFH",
       check_in: '07:30 am',
       check_out: '04:00 pm',
       mentor_approval: 'Awaiting',
@@ -54,11 +52,15 @@ const JanuaryTable = () => {
     {
       date: 'Fri, 01 Jul 2022',
       name: 'Nicholas Anderson',
+      activity: "mengerjakan bla bla",
+      isWfo: "WFO",
       check_in: '07:30 am',
       check_out: '04:00 pm',
-      mentor_approval: 'Approved',
-      hr_approval: 'Approved'
-    }
+      mentor_approval: 'Awaiting',
+      hr_approval: 'Rejected'
+    },
+  
+  
   ];
 
   const [SubmitLoading, setSubmitLoading] = useState(false);
@@ -143,6 +145,7 @@ const JanuaryTable = () => {
             <tr>
               <th className="text-left align-middle">Date</th>
               <th className="text-left align-middle">Activity</th>
+              <th className="text-left align-middle">WFH/WFO</th>
               <th className="text-left align-middle">Check in</th>
               <th className="text-left align-middle">check out</th>
               <th className="text-left align-middle">MENTOR Approval</th>

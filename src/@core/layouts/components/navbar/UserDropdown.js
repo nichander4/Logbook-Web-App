@@ -19,6 +19,7 @@ import {
   Settings,
   CreditCard,
   HelpCircle,
+  Edit,
   Power,
 } from "react-feather";
 
@@ -30,19 +31,20 @@ const UserDropdown = () => {
         tag="a"
         className="nav-link dropdown-user-link"
         onClick={(e) => e.preventDefault()}
+        size="lg"
       >
         <div className="user-nav d-sm-flex d-none">
           <span className="user-name font-weight-bold">John Doe</span>
-          <span className="user-status">Admin</span>
+          <span className="user-status">HR</span>
         </div>
         <Avatar
           img="/images/portrait/small/avatar-s-11.jpg"
           imgHeight="40"
           imgWidth="40"
-          status="online"
+          
         />
       </DropdownToggle>
-      <DropdownMenu right>
+      <DropdownMenu right style={{width:"150%"}}>
         {/* <DropdownItem tag={Link} href="/pages/profile">
           <a className="dropdown-item">
             <User size={14} className="mr-75" />
@@ -88,10 +90,17 @@ const UserDropdown = () => {
         </DropdownItem> */}
         <DropdownItem tag={Link} href="/login">
           <a className="dropdown-item">
+            <Edit size={14} className="mr-75" />
+            <span className="align-middle">Change Password</span>
+          </a>
+        </DropdownItem>
+        <DropdownItem tag={Link} href="/login">
+          <a className="dropdown-item">
             <Power size={14} className="mr-75" />
             <span className="align-middle">Logout</span>
           </a>
         </DropdownItem>
+        
       </DropdownMenu>
     </UncontrolledDropdown>
   );
