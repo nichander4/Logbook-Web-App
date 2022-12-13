@@ -26,7 +26,6 @@ const logbook_Item = ({ item }) => {
   const [rejectModal, setRejectModal] = useState(false);
   const toggleRejectPopup = () => setRejectModal(!rejectModal);
 
-
   const doSubmit = (e) => {
     // e.preventDefault();
     // dispatch(deleteReqBudget(data.id)).then((data) => {
@@ -51,28 +50,50 @@ const logbook_Item = ({ item }) => {
   return (
     <tr>
       <td style={{ textAlign: 'start' }}>{item.date}</td>
-      <td style={{ textAlign: 'start' }}>{item.name}</td>
+      <td style={{ textAlign: 'start' }}>{item.activity}</td>
+      <td style={{ textAlign: 'start' }}>
+        <Badge color="light-primary" style={{ borderRadius: '18px' }}>
+          {item.isWfo}
+        </Badge>
+      </td>
       <td style={{ textAlign: 'start' }}>{item.check_in}</td>
       <td style={{ textAlign: 'start' }}>{item.check_out}</td>
       <td style={{ textAlign: 'start' }}>
-        <Badge color="light-primary" style={{ borderRadius: '18px' }}>
+        <Badge
+          color={`${
+            item.mentor_approval == 'Rejected'
+              ? 'light-danger'
+              : item.mentor_approval == 'Awaiting'
+              ? 'light-warning'
+              : 'light-primary'
+          }`}
+          style={{ borderRadius: '18px' }}
+        >
           {item.mentor_approval}
         </Badge>
       </td>
       <td style={{ textAlign: 'start' }}>
-        <Badge color="light-primary" style={{ borderRadius: '18px' }}>
+        <Badge
+          color={`${
+            item.hr_approval == 'Rejected'
+              ? 'light-danger'
+              : item.hr_approval == 'Awaiting'
+              ? 'light-warning'
+              : 'light-primary'
+          }`}
+          style={{ borderRadius: '18px' }}
+        >
           {item.hr_approval}
         </Badge>
       </td>
       <td className="text-center px-2 align-middle">
-
         <div className="d-flex justify-content-center ">
           <Button.Ripple
             color="primary"
             className="d-flex align-items-center"
             onClick={toggleEntryPopup}
           >
-          Entry
+            Entry
           </Button.Ripple>
         </div>
 
@@ -82,7 +103,7 @@ const logbook_Item = ({ item }) => {
             className="d-flex align-items-center mr-1"
             // onClick={toggleEntryPopup}
           >
-          Approve
+            Approve
           </Button.Ripple>
 
           <Button.Ripple
@@ -90,7 +111,7 @@ const logbook_Item = ({ item }) => {
             className="d-flex align-items-center"
             onClick={toggleRejectPopup}
           >
-          Reject
+            Reject
           </Button.Ripple>
         </div>
         <Modal
@@ -107,7 +128,7 @@ const logbook_Item = ({ item }) => {
           <ModalBody>
             <Row>
               <Col>
-              <FormGroup>
+                <FormGroup>
                   <Label for="nameVertical">Check in</Label>
                   <Input
                     type="text"
@@ -120,7 +141,7 @@ const logbook_Item = ({ item }) => {
               </Col>
 
               <Col>
-              <FormGroup>
+                <FormGroup>
                   <Label for="nameVertical">Check out</Label>
                   <Input
                     type="text"
@@ -132,25 +153,25 @@ const logbook_Item = ({ item }) => {
                 </FormGroup>
               </Col>
             </Row>
-              <FormGroup>
-                    <Label for="nameVertical">Activity</Label>
-                    <Input
-                      id={styles.textarea}
-                      name="retrunReason"
-                      type="textarea"
-                      placeholder="Placeholder"
-                      rows="6"
-                      style={{ resize: 'none' }}
-                      // value={formik.values.retrunReason}
-                      // className={`${
-                      //   formik.touched.retrunReason &&
-                      //   formik.errors.retrunReason &&
-                      //   'is-invalid'
-                      // }`}
-                      // {...formik.getFieldProps('retrunReason')}
-                    />
-                  </FormGroup>
-              </ModalBody>
+            <FormGroup>
+              <Label for="nameVertical">Activity</Label>
+              <Input
+                id={styles.textarea}
+                name="retrunReason"
+                type="textarea"
+                placeholder="Placeholder"
+                rows="6"
+                style={{ resize: 'none' }}
+                // value={formik.values.retrunReason}
+                // className={`${
+                //   formik.touched.retrunReason &&
+                //   formik.errors.retrunReason &&
+                //   'is-invalid'
+                // }`}
+                // {...formik.getFieldProps('retrunReason')}
+              />
+            </FormGroup>
+          </ModalBody>
           <ModalFooter>
             <Button
               className="d-flex ml-auto"
@@ -164,7 +185,6 @@ const logbook_Item = ({ item }) => {
               color="info"
               type="submit"
               onClick={doSubmit}
-              
             >
               Save
             </Button>
@@ -183,25 +203,25 @@ const logbook_Item = ({ item }) => {
             <div className="text-white">Reject</div>
           </ModalHeader>
           <ModalBody>
-              <FormGroup>
-                    <Label for="nameVertical">Reason</Label>
-                    <Input
-                      id={styles.textarea}
-                      name="retrunReason"
-                      type="textarea"
-                      placeholder="Placeholder"
-                      rows="6"
-                      style={{ resize: 'none' }}
-                      // value={formik.values.retrunReason}
-                      // className={`${
-                      //   formik.touched.retrunReason &&
-                      //   formik.errors.retrunReason &&
-                      //   'is-invalid'
-                      // }`}
-                      // {...formik.getFieldProps('retrunReason')}
-                    />
-                  </FormGroup>
-              </ModalBody>
+            <FormGroup>
+              <Label for="nameVertical">Reason</Label>
+              <Input
+                id={styles.textarea}
+                name="retrunReason"
+                type="textarea"
+                placeholder="Placeholder"
+                rows="6"
+                style={{ resize: 'none' }}
+                // value={formik.values.retrunReason}
+                // className={`${
+                //   formik.touched.retrunReason &&
+                //   formik.errors.retrunReason &&
+                //   'is-invalid'
+                // }`}
+                // {...formik.getFieldProps('retrunReason')}
+              />
+            </FormGroup>
+          </ModalBody>
           <ModalFooter>
             <Button
               className="d-flex mr-auto"
@@ -215,7 +235,6 @@ const logbook_Item = ({ item }) => {
               className="d-flex ml-auto btn btn-outline-danger"
               color="white"
               onClick={doSubmit}
-              
             >
               Cancel
             </Button>
