@@ -6,6 +6,7 @@ import BreadCrumbs from "src/@core/components/breadcrumbs";
 import Form from "components/custom/Form";
 import dynamic from "next/dynamic";
 import VerticalLayout from "src/layouts/VerticalLayout";
+import { getSession, useSession } from "next-auth/react";
 
 const WizardHorizontal = dynamic(
   () => import("src/views/forms/wizard/WizardHorizontal"),
@@ -13,6 +14,8 @@ const WizardHorizontal = dynamic(
 );
 
 const Wizard = () => {
+  const session = useSession();
+  console.log(session, "aa");
   return (
     <VerticalLayout>
       <BreadCrumbs

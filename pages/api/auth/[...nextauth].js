@@ -2,19 +2,32 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { login } from "helpers/Login";
 
-const option = {
+const options = {
   providers: [
     CredentialsProvider({
-      async authorize(credentials) {
+      credentials: {
+        userName: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize(credentials) {
         const loginData = {
           username: credentials.username,
           password: credentials.password,
         };
 
+        // return loginData;
+
+        return login(loginData).then((data) => {
+          if (!data.message) {
+            return data;
+          }else{
+            return null;
+          }
+        });
+
+        return loginData;
+
         try {
-          return login(loginData).then((data) => {
-            console.log(data);
-          });
         } catch (error) {
           throw new Error("There was an error on user authentication");
         }
@@ -42,7 +55,8 @@ const option = {
   },
   pages: {
     signIn: "/auth",
-    signOut: "/",
+    signOut: "/auth",
+    error: "/auth",
   },
 };
 

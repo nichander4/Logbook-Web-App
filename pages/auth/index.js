@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import InputPasswordToggle from 'src/@core/components/input-password-toggle';
+import Link from "next/link";
+import Image from "next/image";
+import InputPasswordToggle from "src/@core/components/input-password-toggle";
 import {
   Row,
   Col,
@@ -12,26 +12,33 @@ import {
   Input,
   CustomInput,
   Button,
-  Card
-} from 'reactstrap';
+  Card,
+} from "reactstrap";
+import { useState } from "react";
+import { getCsrfToken, getSession, signIn } from "next-auth/react";
+import { login } from "helpers/Login";
 // import { getCsrfToken, getSession } from "next-auth/react";
 
-const LoginPage = (props) => {
+const LoginPage = ({ csrfToken, authError }) => {
   //   const { csrfToken, authError } = props;
+  const [userInfo, setUserInfo] = useState({ username: "", password: "" });
+  const HandleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await signIn("credentials", {
+      username: userInfo.username,
+      password: userInfo.password,
+    });
+
+    console.log(res);
+  };
 
   return (
     <div className="auth-wrapper auth-v2">
       <Row className="auth-inner m-0 d-flex justify-content-center bg-light">
-        <Col
-          className="d-flex justify-content-center align-items-center auth-bg px-2 p-lg-5 bg-light"
-          lg="6"
-          sm="6"
-        >
+     
           <Card
-            className="h-100 w-75 d-flex flex-column  px-xl-2 mx-auto border border-primary rounded bg-white"
-            sm="6"
-            md="6"
-            lg="6"
+            className="d-flex flex-column mt-lg-2 mt-md-2 px-2 mx-auto border border-primary rounded bg-white"
           >
             <div className="my-auto">
               <Link href="/">
@@ -51,46 +58,51 @@ const LoginPage = (props) => {
                 internship di PT. XYZ
               </CardText>
               <Form
-                method="POST"
-                action="/api/auth/callback/credentials"
+                // method="POST"
+                // action="/api/auth/callback/credentials"
                 className="auth-login-form mt-2"
+                onSubmit={HandleSubmit}
               >
-                {/* <input
-                  name="csrfToken"
-                  type="hidden"
-                  
+                <input name="csrfToken" type="hidden" value={csrfToken} />
+
                 <FormGroup>
                   <Label className="form-label" for="login-email">
-                    Username
+                    Email
                   </Label>
                   <Input
                     type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Input username"
+                    id="email"
+                    name="email"
+                    placeholder="Input Email"
                     autoFocus
+                    onChange={(e) => {
+                      setUserInfo({ ...userInfo, username: e.target.value });
+                    }}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <div className="d-flex justify-content-between mt-2">
-                    <Label className="form-label" for="password">
-                      Password
-                    </Label>
-                    {/* <Link href="/auth/forgot_password">
+                  {/* <div className="d-flex justify-content-between mt-2"> */}
+                  <Label className="form-label" for="password">
+                    Password
+                  </Label>
+                  {/* <Link href="/auth/forgot_password">
                       <a>
                         <small>Forgot Password?</small>
                       </a>
                     </Link> */}
-                  </div>
                   <InputPasswordToggle
                     className="input-group-merge"
                     id="password"
                     name="password"
+                    onChange={(e) => {
+                      setUserInfo({ ...userInfo, password: e.target.value });
+                    }}
                   />
+                  {/* </div> */}
                 </FormGroup>
                 <p className="text-danger text-center my-2">
-                  {/* {authError &&
-                    "User is not registered or password is incorrect."} */}
+                  {authError &&
+                    "User is not registered or password is incorrect."}
                 </p>
                 <Button.Ripple
                   type="submit"
@@ -107,32 +119,32 @@ const LoginPage = (props) => {
               <p className="m-0">&#169;2022 - PT. XYZ.</p>
             </div>
           </Card>
-        </Col>
+       
       </Row>
     </div>
   );
 };
 
-// export async function getServerSideProps(ctx) {
-//   const { query } = ctx;
+export async function getServerSideProps(ctx) {
+  const { query } = ctx;
 
-//   const sessionData = await getSession(ctx);
+  const sessionData = await getSession(ctx);
 
-//   if (sessionData) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (sessionData) {
+    return {
+      redirect: {
+        destination: "/form",
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: {
-//       csrfToken: await getCsrfToken(ctx),
-//       authError: ctx.query.error ? true : false,
-//     },
-//   };
-// }
+  return {
+    props: {
+      csrfToken: await getCsrfToken(ctx),
+      authError: ctx.query.error ? true : false,
+    },
+  };
+}
 
 export default LoginPage;

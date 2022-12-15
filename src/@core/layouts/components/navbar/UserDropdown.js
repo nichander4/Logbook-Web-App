@@ -22,8 +22,16 @@ import {
   Edit,
   Power,
 } from "react-feather";
+import { signOut, useSession } from "next-auth/react";
 
 const UserDropdown = () => {
+  const session = useSession();
+  const logoutFunc = () => {
+    if (typeof window !== "undefined") {
+      localStorage.clear();
+    }
+    signOut();
+  };
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
       <DropdownToggle
@@ -34,8 +42,8 @@ const UserDropdown = () => {
         size="lg"
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name font-weight-bold">John Doe</span>
-          <span className="user-status">HR</span>
+          <span className="user-name font-weight-bold">{"session.data.user.userName"}</span>
+          <span className="user-status">{"session.data.user.role.roleName"}</span>
         </div>
         <Avatar
           img="/images/portrait/small/avatar-s-11.jpg"
@@ -88,18 +96,16 @@ const UserDropdown = () => {
             <span className="align-middle">FAQ</span>
           </a>
         </DropdownItem> */}
-        <DropdownItem tag={Link} href="/login">
+        <DropdownItem tag={Link} href="/change_password">
           <a className="dropdown-item">
             <Edit size={14} className="mr-75" />
             <span className="align-middle">Change Password</span>
           </a>
         </DropdownItem>
-        <DropdownItem tag={Link} href="/login">
-          <a className="dropdown-item">
+        <DropdownItem className="dropdown-item w-100" onClick={logoutFunc}>
             <Power size={14} className="mr-75" />
             <span className="align-middle">Logout</span>
-          </a>
-        </DropdownItem>
+        </DropdownItem> 
         
       </DropdownMenu>
     </UncontrolledDropdown>

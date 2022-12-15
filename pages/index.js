@@ -15,9 +15,16 @@ import ReviewBPMCard from "components/Card/ReviewBPMCard";
 import Table1 from "components/Tables/Table1";
 import Table2 from "components/Tables/Table2";
 import Table3 from "components/Tables/Table3";
+import { getSession, signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const Home = () => {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
+  const session = useSession();
+  
+  useEffect(() => {
+    signIn();
+  }, [session]);
 
   return (
     <VerticalLayout>
@@ -40,5 +47,25 @@ const Home = () => {
     </VerticalLayout>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const { query } = ctx;
+
+  const sessionData = await getSession(ctx);
+
+  if (sessionData) {
+    return {
+      redirect: {
+        destination: "/form",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+    },
+  };
+}
 
 export default Home;
