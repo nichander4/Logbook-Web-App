@@ -25,11 +25,11 @@ export const navigationData = [
     header: 'Menu'
   },
   {
-    id: 'dashboards',
-    title: 'Dashboards',
+    id: 'home',
+    title: 'Home',
     icon: <Home size={20} />,
     badge: 'primary',
-    href: '/'
+    href: '/home'
     // children: [
     //   {
     //     id: 'reviewEmployee',

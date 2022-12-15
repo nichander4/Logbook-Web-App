@@ -1,14 +1,6 @@
 // ** Ripple Button
 import "src/@core/components/ripple-button";
 
-// ** Fake Database
-import "src/@fake-db";
-
-// ** PrismJS
-import "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
-import "prismjs/components/prism-jsx.min";
-
 // ** React Perfect Scrollbar
 import "react-perfect-scrollbar/dist/css/styles.css";
 
@@ -20,6 +12,7 @@ import "styles/@core/base/pages/app-ecommerce.scss";
 
 // ** Datepicker
 import "styles/@core/react/libs/flatpickr/flatpickr.scss";
+import "react-datepicker/dist/react-datepicker.css";
 
 // ** React Toastify
 import "styles/@core/react/libs/toastify/toastify.scss";
@@ -43,13 +36,30 @@ import "styles/@core/core.scss";
 import "styles/assets/style.scss";
 import "animate.css/animate.css";
 import "styles/@core/react/libs/flatpickr/flatpickr.scss";
+import "styles/@core/base/pages/app-invoice.scss";
+import "styles/@core/base/pages/app-invoice-print.scss";
+import "@uppy/core/dist/style.css";
+import "@uppy/dashboard/dist/style.css";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-//import
+// ** Redux
+import React from "react";
+import { wrapper, store } from "redux/store";
+import { Provider as ProviderRedux } from "react-redux";
+
+// ** NextAuth
 import { SessionProvider } from "next-auth/react";
 
-const App = ({ Component, pageProps }) => {
+// ** React-Quill
+import "react-quill/dist/quill.snow.css";
+
+// import { Auth } from "helpers/authGlobalCheck";
+
+import "styles/@core/base/pages/page-misc.scss";
+
+const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   // Prevent error on macOS and iOS devices
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     if (!window.ResizeObserver) {
       window.ResizeObserver = ResizeObserver;
     }
@@ -58,10 +68,11 @@ const App = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
     <SessionProvider session={pageProps.session}>
-      {getLayout(
-        <div className="h-auto">
-          <style>
-            {`
+      <ProviderRedux store={store}>
+        {getLayout(
+          <div className="h-auto">
+            <style>
+              {`
             ::-webkit-scrollbar {
               height: 5px;
               width : 8px;
@@ -79,12 +90,13 @@ const App = ({ Component, pageProps }) => {
             }
     
         `}
-          </style>
-          <Component {...pageProps} />
-        </div>
-      )}
+            </style>
+            <Component {...pageProps} />
+          </div>
+        )}
+      </ProviderRedux>
     </SessionProvider>
   );
 };
 
-export default App;
+export default wrapper.withRedux(App);

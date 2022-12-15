@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search} from 'react-feather';
+import React, { useEffect, useState } from 'react';
+import { Search } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {
   Table,
@@ -14,11 +14,65 @@ import {
 } from 'reactstrap';
 
 import styles1 from 'styles/scrollbarTable.module.css';
-import InternTableItem from './internTableItem'
+import InternTableItem from './internTableItem';
+import { useDispatch, connect } from 'react-redux';
+import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
+import { reauthenticate } from 'redux/actions/auth';
+import { getAllIntern } from 'redux/actions/intern_action';
+import { wrapper } from 'redux/store';
+import {
+  resetPage,
+  resetPageSize,
+  setPage,
+  setPageSize,
+  setSearch
+} from 'redux/action/pagination.js';
+import { useSelector } from 'react-redux';
+import {useSession } from "next-auth/react";
 
+const internTable = ({ dataIntern, token }) => {
+  const { data: session, status } = useSession();
+  console.log(dataIntern, 'test data')
+  console.log(session?.user.token, 'test token')
+  const router = useRouter();
+  const dispatch = useDispatch();
 
+  const [dataState, setDataState] = useState(dataIntern);
 
-const internTable = () => {
+  const { pagination, page, pageSize, search, pageCount } = useSelector(
+    (state) => state.pagination
+  );
+
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  useEffect(() => {
+    dispatch(reauthenticate(token));
+    dispatch(getAllIntern(page, pageSize, search)).then((response) => {
+      console.log(response,"test response");
+      // setDataState(response.data);
+    });
+    // getAllIntern(page, pageSize, search).then((response) => {
+    //   console.log(response, 'asdasd');
+    //   setDataState(response.data);
+    // });
+    console.log(dataState, 'asd');
+  }, [page, pageSize, search]);
+
+  const handlePageSize = (value) => {
+    dispatch(setPageSize(value));
+  };
+
+  const handlePagination = (page) => {
+    dispatch(setPage(page.selected + 1));
+  };
+
+  const handleSearchQuery = (search) => {
+    dispatch(setSearch(search));
+  };
   const DUMMY_MenteeItem = [
     {
       name: 'Nicholas Anderson',
@@ -75,7 +129,12 @@ const internTable = () => {
           <Label className="mr-1" for="search-input-1">
             Show
           </Label>
-          <CustomInput type="select" className="custominput-table2 border-0">
+          <CustomInput
+            type="select"
+            className="custominput-table2 border-0"
+            value={pageSize}
+            onChange={(e) => handlePageSize(e.target.value)}
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -96,6 +155,12 @@ const internTable = () => {
               name="search"
               id="search-invoice"
               placeholder="Search"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') handleSearchQuery(e.target.value);
+              }}
+              onChange={(e) => {
+                dispatch(setSearch(e.target.value));
+              }}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText>
@@ -123,16 +188,50 @@ const internTable = () => {
             </tr>
           </thead>
           <tbody>
-            {DUMMY_MenteeItem.map(
+            {dataState &&
+              dataState.data &&
+              dataState.data.map((data) => (
+                <InternTableItem
+                  key={data.id}
+                  data={data}
+                  // pageSize={pageSize}
+                  // pageNumber={pageNumber}
+                  // searchQuery={searchQuery}
+                  dispatch={dispatch}
+                  router={router}
+                  setIsDeleteModal={setIsDeleteModal}
+                  setIsAlertModal={setIsAlertModal}
+                  setAlertStatus={setAlertStatus}
+                  setAlertMessage={setAlertMessage}
+                />
+              ))}
+            {/* {DUMMY_MenteeItem.map(
               (item, id) => (id++, (<InternTableItem key={id} item={item} />))
-            )}
+            )} */}
           </tbody>
         </Table>
       </div>
-      <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
-        <Col sm="12" md="11">
+      <Row className="mx-0 ml-2 mb-2" style={{ marginTop: '67px' }}>
+        <Col
+          // className="d-flex align-items-center justify-content-start mt-1"
+          md="7"
+          sm="12"
+        >
+          {/* <p
+            className="mb-0 text-center text-md-left"
+            style={{ color: '#b9b9c3' }}
+          >
+            Showing {(dataState.currentPage - 1) * dataState.pageSize + 1} to{' '}
+            {dataState.hasNext
+              ? dataState.currentPage * dataState.pageSize
+              : dataState.totalData}{' '}
+            of {dataState.totalData} entries
+          </p> */}
+        </Col>
+        <Col sm="12" md="5">
           <ReactPaginate
-            pageCount="5"
+            onPageChange={(page) => handlePagination(page)}
+            // pageCount={dataState.totalPage}
             nextLabel={''}
             breakLabel={'...'}
             activeClassName={'active'}
@@ -148,10 +247,40 @@ const internTable = () => {
             containerClassName={
               'pagination react-paginate m-0 justify-content-center justify-content-lg-end'
             }
+            forcePage={page - 1}
           />
         </Col>
       </Row>
     </>
   );
 };
-export default internTable;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (ctx) => {
+    const { req, query } = ctx;
+    const sessionData = await getSession(ctx);
+
+    if (!sessionData) {
+      return {
+        redirect: {
+          destination: '/auth',
+          permanent: false
+        }
+      };
+    }
+
+    store.dispatch(reauthenticate(sessionData.user.token));
+    await store.dispatch(getAllIntern(1, 10, ''));
+
+    const dataIntern = store.getState().intern;
+
+    return {
+      props: {
+        dataIntern,
+        token: sessionData.user.token
+      }
+    };
+  }
+);
+
+export default connect((state) => state)(internTable);

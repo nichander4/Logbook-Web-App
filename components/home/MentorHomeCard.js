@@ -3,8 +3,10 @@ import { Book } from 'react-feather';
 import { useState } from 'react';
 import RealTimeShow from '../Layout/RealTimeShow';
 import { useRouter } from 'next/router';
+import {useSession } from "next-auth/react";
 
 const WelcomeCard = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [Loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ const WelcomeCard = () => {
                     : 'Good Morning,'}
                 </h5>
 
-                <h1 className="text-white">JOHN DOE</h1>
+                <h1 className="text-white">{session?.user.userName}</h1>
               </div>
             </CardBody>
           </Card>
@@ -49,7 +51,7 @@ const WelcomeCard = () => {
               </h1>
 
               <div className="text-center mt-2">
-                <h5 className="text-dark">Click here to entry Logbook</h5>
+                <h5 className="text-dark">Click here to check Intern's Logbook</h5>
               </div>
 
               <div className="d-flex justify-content-center mt-1">

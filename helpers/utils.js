@@ -1,14 +1,14 @@
-import ConfirmAlert from "components/Alert/ConfirmAlert";
-import ErrorNotification from "components/Alert/ErrorNotification";
-import InfoNotification from "components/Alert/InfoNotification";
-import SuccessNotification from "components/Alert/SuccessNotification";
+// import ConfirmAlert from "components/Alert/ConfirmAlert";
+// import ErrorNotification from "components/Alert/ErrorNotification";
+// import InfoNotification from "components/Alert/InfoNotification";
+// import SuccessNotification from "components/Alert/SuccessNotification";
 import { serialize, parse } from "cookie";
 import cookie from "js-cookie";
 import { reauthenticate } from "redux/actions/auth";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const MySwal = withReactContent(Swal);
+// const MySwal = withReactContent(Swal);
 
 const TOKEN_NAME = "token";
 const MAX_AGE = 30 * 24 * 60 * 60;
@@ -106,8 +106,8 @@ export const getHeaders = (token) => {
     "Content-Type": "application/json",
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Origin": "*",
-    app_id: "64aea8cf",
-    app_key: "f4262e0ed2d1e30fd0341cdf1412a409",
+    // app_id: "64aea8cf",
+    // app_key: "f4262e0ed2d1e30fd0341cdf1412a409",
   };
 
   return header;
@@ -198,109 +198,109 @@ export function debounce(func, delay) {
   };
 }
 
-export const showSuccessNotification = (title, msg, onConfirm = () => {}) => {
-  return MySwal.fire({
-    position: "center",
-    html: (
-      <SuccessNotification
-        onClose={() => {
-          MySwal.close();
-          onConfirm();
-        }}
-        onConfirm={() => {
-          MySwal.close();
-          onConfirm();
-        }}
-        title={title}
-        description={msg}
-      />
-    ),
-    showDenyButton: false,
-    showCancelButton: false,
-    showConfirmButton: false,
-    padding: "0",
-    allowOutsideClick: false,
-  });
-};
+// export const showSuccessNotification = (title, msg, onConfirm = () => {}) => {
+//   return MySwal.fire({
+//     position: "center",
+//     html: (
+//       <SuccessNotification
+//         onClose={() => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//         onConfirm={() => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//         title={title}
+//         description={msg}
+//       />
+//     ),
+//     showDenyButton: false,
+//     showCancelButton: false,
+//     showConfirmButton: false,
+//     padding: "0",
+//     allowOutsideClick: false,
+//   });
+// };
 
-export const errorNotification = (title, msg, onConfirm = () => {}) => {
-  return MySwal.fire({
-    position: "center",
-    html: (
-      <ErrorNotification
-        title={title}
-        description={msg}
-        onClose={() => {
-          MySwal.close();
-          onConfirm();
-        }}
-        onConfirm={() => {
-          MySwal.close();
-          onConfirm();
-        }}
-      />
-    ),
-    showDenyButton: false,
-    showCancelButton: false,
-    showConfirmButton: false,
-    padding: "0",
-    allowOutsideClick: false,
-  });
-};
+// export const errorNotification = (title, msg, onConfirm = () => {}) => {
+//   return MySwal.fire({
+//     position: "center",
+//     html: (
+//       <ErrorNotification
+//         title={title}
+//         description={msg}
+//         onClose={() => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//         onConfirm={() => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//       />
+//     ),
+//     showDenyButton: false,
+//     showCancelButton: false,
+//     showConfirmButton: false,
+//     padding: "0",
+//     allowOutsideClick: false,
+//   });
+// };
 
-export const infoNotification = (name, errorMsg, onConfirm = () => {}) => {
-  return MySwal.fire({
-    position: "center",
-    html: (
-      <InfoNotification
-        title={name}
-        description={errorMsg}
-        onClose={() => {
-          MySwal.close();
-          onConfirm();
-        }}
-        onConfirm={() => {
-          MySwal.close();
-          onConfirm();
-        }}
-      />
-    ),
-    showDenyButton: false,
-    showCancelButton: false,
-    showConfirmButton: false,
-    padding: "0",
-    allowOutsideClick: false,
-  });
-};
+// export const infoNotification = (name, errorMsg, onConfirm = () => {}) => {
+//   return MySwal.fire({
+//     position: "center",
+//     html: (
+//       <InfoNotification
+//         title={name}
+//         description={errorMsg}
+//         onClose={() => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//         onConfirm={() => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//       />
+//     ),
+//     showDenyButton: false,
+//     showCancelButton: false,
+//     showConfirmButton: false,
+//     padding: "0",
+//     allowOutsideClick: false,
+//   });
+// };
 
-export const confirmAlertProceed = async (
-  title,
-  description,
-  color = "warning",
-  onConfirm = () => {}
-) => {
-  MySwal.close();
-  return MySwal.fire({
-    position: "center",
-    html: (
-      <ConfirmAlert
-        onClose={() => {
-          MySwal.close();
-        }}
-        onConfirm={async () => {
-          MySwal.close();
-          onConfirm();
-        }}
-        title={title}
-        description={description}
-        color={color}
-        newButton={true}
-      />
-    ),
-    showDenyButton: false,
-    showCancelButton: false,
-    showConfirmButton: false,
-    padding: "0",
-    allowOutsideClick: false,
-  });
-};
+// export const confirmAlertProceed = async (
+//   title,
+//   description,
+//   color = "warning",
+//   onConfirm = () => {}
+// ) => {
+//   MySwal.close();
+//   return MySwal.fire({
+//     position: "center",
+//     html: (
+//       <ConfirmAlert
+//         onClose={() => {
+//           MySwal.close();
+//         }}
+//         onConfirm={async () => {
+//           MySwal.close();
+//           onConfirm();
+//         }}
+//         title={title}
+//         description={description}
+//         color={color}
+//         newButton={true}
+//       />
+//     ),
+//     showDenyButton: false,
+//     showCancelButton: false,
+//     showConfirmButton: false,
+//     padding: "0",
+//     allowOutsideClick: false,
+//   });
+// };

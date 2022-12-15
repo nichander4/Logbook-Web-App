@@ -1,11 +1,11 @@
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
-import MenteeHomeCard from 'components/home/MenteeHomeCard';
+import MentorHomeCard from 'components/home/MentorHomeCard';
 
 
 const MenteeHome = () => {
   return (
     <VerticalLayout>
-      <MenteeHomeCard />
+      <MentorHomeCard />
     </VerticalLayout>
   );
 };
