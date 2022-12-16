@@ -133,7 +133,7 @@ export async function getServerSideProps(ctx) {
   if (sessionData) {
     return {
       redirect: {
-        destination: "/form",
+        destination: "/home",
         permanent: false,
       },
     };

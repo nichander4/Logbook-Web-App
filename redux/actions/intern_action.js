@@ -12,11 +12,9 @@ import { store } from 'redux/store';
 import { useSession } from 'next-auth/react';
 
 export const getAllIntern =
-  (pageNumber, pageSize, searchQuery) => async (dispatch) => {
+  async (pageNumber, pageSize, searchQuery) => {
     try {
-      const { data: session, status } = useSession();
       const header = getHeaders(store.getState().auth.token);
-      // const header = getHeaders(session?.user.token);
       console.log(header, 'test header');
 
       const response = await axios({
@@ -33,10 +31,10 @@ export const getAllIntern =
       });
 
       console.log(response, 'MASUK SINI');
-      dispatch({ type: GET_ALL_INTERN, payload: response.data });
+      // dispatch({ type: GET_ALL_INTERN, payload: response.data });
       return response;
     } catch (error) {
-      console.log(error);
+      console.log(error, "ERR");
       return error.response;
     }
   };
