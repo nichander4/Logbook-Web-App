@@ -1,88 +1,77 @@
-import { React, useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
-import HomeIntern from "components/home/Intern/home";
-import HomeMentor from "components/home/mentor/home";
-import HomeHR from "components/home/HR/home";
-import { wrapper } from "redux/store";
-import { getAllIntern } from "redux/actions/intern_action";
-import { data } from "jquery";
-import { reauthenticate } from "redux/actions/auth";
+import { React, useEffect, useState } from 'react';
+import { getSession, useSession } from 'next-auth/react';
+import { useDispatch, useSelector, connect } from 'react-redux';
+import HomeIntern from 'components/home/Intern/home';
+import HomeMentor from 'components/home/mentor/home';
+import HomeHR from 'components/home/HR/home';
+import { wrapper } from 'redux/store';
+import { getAllIntern } from 'redux/actions/intern_action';
+import { reauthenticate } from 'redux/actions/auth';
+import { useRouter } from 'next/router';
+import InternTableItem from 'components/HR/dashboard/internTableItem';
+import {
+  Table,
+  Label,
+  Row,
+  Col,
+  CustomInput,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText
+} from 'reactstrap';
+import { Search } from 'react-feather';
+import styles1 from 'styles/scrollbarTable.module.css';
+import ReactPaginate from 'react-paginate';
+import {
+  resetPage,
+  resetPageSize,
+  setPage,
+  setPageSize,
+  setSearch
+} from 'redux/action/pagination.js';
 
-const Home = ({ dataIntern, token }) => {
-  // const session = useSession();
+const Home = ({user}) => {
+
   // console.log(session);
   // console.log(dataIntern);
-  console.log(token);
-  const dispatch = useDispatch();
+  // console.log(user.token, "asd");
 
-  useEffect(() => {
-    // getAllIntern(1, 10, "").then((data) => {
-    //   console.log(data);
-    // });
-    dispatch(reauthenticate(token));
-    getAllIntern(1, 10, "");
-    console.log("test");
-  }, [])
+
+
   return (
-    // <>
-    //   {session?.user.role.roleName == "Mentor" ? (
-    //     <HomeMentor />
-    //   ) : session?.user.role.roleName == "Intern" ? (
-    //     <HomeIntern />
-    //   ) : (
-    //     <HomeHR />
-    //   )}
-    // </>
-    <></>
+    <>
+      {user.role.roleName == 'Mentor' ? (
+        <HomeMentor />
+      ) : user.role.roleName == 'Intern' ? (
+        <HomeIntern />
+      ) : (
+        <HomeHR token = {user.token}/>
+      )}
+    </>
   );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (ctx) => {
-//     const { query } = ctx;
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (ctx) => {
+    const { req, query } = ctx;
+    const sessionData = await getSession(ctx);
 
-//     const sessionData = await getSession(ctx);
+    if (!sessionData) {
+      return {
+        redirect: {
+          destination: '/auth',
+          permanent: false
+        }
+      };
+    }
 
-//     if (!sessionData) {
-//       return {
-//         redirect: {
-//           destination: "/auth",
-//           permanent: false,
-//         },
-//       };
-//     }
 
-//     // store.dispatch(reauthenticate(sessionData.user.token));
-//     getAllIntern(1, 10, "");
-
-//     return {
-//       props: { token: sessionData.user.token },
-//     };
-//   }
-// );
-
-export async function getServerSideProps(ctx) {
-  const { query } = ctx;
-
-  const sessionData = await getSession(ctx);
-
-  if (!sessionData) {
     return {
-      redirect: {
-        destination: "/auth",
-        permanent: false,
-      },
+      props: {
+        user: sessionData.user
+      }
     };
   }
-
-  getAllIntern(1, 10, "");
-
-  return {
-    props: {
-      token: sessionData.user.token
-    },
-  };
-}
-
-export default Home;
+);
+export default connect((state) => state)(Home);

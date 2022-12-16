@@ -127,7 +127,7 @@ const InternItem = ({
           </DropdownMenu>
         </UncontrolledDropdown>
       </td>
-      <td style={{ textAlign: 'start' }}>{data.userName}</td>
+      <td style={{ textAlign: 'start' }}>{data.projectName}</td>
       <td style={{ textAlign: 'start' }}>{data.university}</td>
       <td style={{ textAlign: 'start' }}>{data.department}</td>
       <td style={{ textAlign: 'start' }}>{data.position}</td>

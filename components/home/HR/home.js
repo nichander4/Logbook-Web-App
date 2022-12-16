@@ -5,7 +5,7 @@ import VerticalLayout from 'src/layouts/VerticalLayout';
 import InternTable from 'components/HR/dashboard/internTable';
 import MentorTable from 'components/HR/dashboard/mentorTable';
 
-const HR_Dashboard = () => {
+const HR_Dashboard = ({token}) => {
   const [active, setActive] = useState('1');
 
   const toggle = (tab) => {
@@ -46,11 +46,11 @@ const HR_Dashboard = () => {
         </Nav>
         <TabContent className="ml-1 py-50" activeTab={active}>
           <TabPane tabId="1">
-            <InternTable />
+            <InternTable token={token}/>
           </TabPane>
 
           <TabPane tabId="2">
-            <MentorTable />
+            <MentorTable token={token}/>
           </TabPane>
         </TabContent>
       </React.Fragment>

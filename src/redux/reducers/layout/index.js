@@ -1,17 +1,17 @@
 // ** ThemeConfig Import
 import themeConfig from 'src/configs/themeConfig'
 
-// ** Returns Initial Menu Collapsed State
-const initialMenuCollapsed = () => {
-  const item = window.localStorage.getItem('menuCollapsed')
-  //** Parse stored json or if none return initialValue
-  return item ? JSON.parse(item) : themeConfig.layout.menu.isCollapsed
-}
+// // ** Returns Initial Menu Collapsed State
+// const initialMenuCollapsed = () => {
+//   const item = window.localStorage.getItem('menuCollapsed')
+//   //** Parse stored json or if none return initialValue
+//   return item ? JSON.parse(item) : themeConfig.layout.menu.isCollapsed
+// }
 
 // ** Initial State
 const initialState = {
   isRTL: themeConfig.layout.isRTL,
-  menuCollapsed: initialMenuCollapsed(),
+  // menuCollapsed: initialMenuCollapsed(),
   menuHidden: themeConfig.layout.menu.isHidden,
   contentWidth: themeConfig.layout.contentWidth
 }

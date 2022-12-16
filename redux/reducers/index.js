@@ -50,8 +50,9 @@ import materialReview from "./sourcingSelection/materialReview/index";
 import changePic from "./change_PIC_Reducers";
 import closeProject from "./close_project";
 import transferData from "./transfer_data/index";
-import transferDoc from "./transferDoc_reducer"
-import intern from './intern_reducers'
+import transferDoc from "./transferDoc_reducer";
+import intern from './intern_reducers';
+import mentor from './mentor_reducers';
 
 export default combineReducers({
   auth,
@@ -108,4 +109,5 @@ export default combineReducers({
   closeProject,
   transferDoc,
   intern,
+  mentor,
 });

@@ -10,39 +10,27 @@ import {
   InputGroup,
   Input,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
 } from 'reactstrap';
 
 import styles1 from 'styles/scrollbarTable.module.css';
 import InternTableItem from './internTableItem';
-import { useDispatch, connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
 import { reauthenticate } from 'redux/actions/auth';
 import { getAllIntern } from 'redux/actions/intern_action';
-import { wrapper } from 'redux/store';
-import {
-  resetPage,
-  resetPageSize,
-  setPage,
-  setPageSize,
-  setSearch
-} from 'redux/action/pagination.js';
-import { useSelector } from 'react-redux';
-import {useSession } from "next-auth/react";
 
-const internTable = ({ dataIntern, token }) => {
-  const { data: session, status } = useSession();
-  console.log(dataIntern, 'test data')
-  console.log(session?.user.token, 'test token')
+
+
+
+const internTable = ({ token }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [dataState, setDataState] = useState(dataIntern);
-
-  const { pagination, page, pageSize, search, pageCount } = useSelector(
-    (state) => state.pagination
-  );
+  const [tempData, setTempData] = useState('');
+  const [tempPageSize, setTempPageSize] = useState(5);
+  const [tempPageNumber, setTempPageNumber] = useState(1);
+  const [tempSearchQuery, setTempSearchQuery] = useState('');
 
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isAlertModal, setIsAlertModal] = useState(false);
@@ -51,70 +39,28 @@ const internTable = ({ dataIntern, token }) => {
 
   useEffect(() => {
     dispatch(reauthenticate(token));
-    dispatch(getAllIntern(page, pageSize, search)).then((response) => {
-      console.log(response,"test response");
-      // setDataState(response.data);
-    });
-    // getAllIntern(page, pageSize, search).then((response) => {
-    //   console.log(response, 'asdasd');
-    //   setDataState(response.data);
-    // });
-    console.log(dataState, 'asd');
-  }, [page, pageSize, search]);
 
-  const handlePageSize = (value) => {
-    dispatch(setPageSize(value));
+    dispatch(getAllIntern(tempPageNumber, tempPageSize, tempSearchQuery)).then(
+      (response) => {
+        setTempData({
+          data: response.data.data,
+          currentPage: response.data.currentPage,
+          pageSize: response.data.pageSize,
+          totalPage: response.data.totalPage
+        });
+      }
+    );
+  }, [tempPageSize, tempPageNumber, tempSearchQuery]);
+
+  const handlePageSize = (e) => {
+    setTempPageSize(e.target.value);
+    setTempPageNumber(1);
   };
 
-  const handlePagination = (page) => {
-    dispatch(setPage(page.selected + 1));
+  const handleSearchQuery = (e) => {
+    setTempSearchQuery(e);
+    setTempPageNumber(1);
   };
-
-  const handleSearchQuery = (search) => {
-    dispatch(setSearch(search));
-  };
-  const DUMMY_MenteeItem = [
-    {
-      name: 'Nicholas Anderson',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Reyhan Nathanael',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Nicholas Anderson',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Reyhan Nathanael',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Nicholas Anderson',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    }
-  ];
 
   return (
     <>
@@ -132,8 +78,8 @@ const internTable = ({ dataIntern, token }) => {
           <CustomInput
             type="select"
             className="custominput-table2 border-0"
-            value={pageSize}
-            onChange={(e) => handlePageSize(e.target.value)}
+            defaultValue={tempPageSize}
+            onChange={handlePageSize}
           >
             <option value="5">5</option>
             <option value="10">10</option>
@@ -155,12 +101,11 @@ const internTable = ({ dataIntern, token }) => {
               name="search"
               id="search-invoice"
               placeholder="Search"
+              value={tempSearchQuery}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') handleSearchQuery(e.target.value);
               }}
-              onChange={(e) => {
-                dispatch(setSearch(e.target.value));
-              }}
+              onChange={(e) => setTempSearchQuery(e.target.value)}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText>
@@ -188,9 +133,8 @@ const internTable = ({ dataIntern, token }) => {
             </tr>
           </thead>
           <tbody>
-            {dataState &&
-              dataState.data &&
-              dataState.data.map((data) => (
+            {tempData && tempData.data.length > 0 ? (
+              tempData.data.map((data) => (
                 <InternTableItem
                   key={data.id}
                   data={data}
@@ -204,34 +148,21 @@ const internTable = ({ dataIntern, token }) => {
                   setAlertStatus={setAlertStatus}
                   setAlertMessage={setAlertMessage}
                 />
-              ))}
-            {/* {DUMMY_MenteeItem.map(
-              (item, id) => (id++, (<InternTableItem key={id} item={item} />))
-            )} */}
+              ))
+            ) : (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  No data
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>
-      <Row className="mx-0 ml-2 mb-2" style={{ marginTop: '67px' }}>
-        <Col
-          // className="d-flex align-items-center justify-content-start mt-1"
-          md="7"
-          sm="12"
-        >
-          {/* <p
-            className="mb-0 text-center text-md-left"
-            style={{ color: '#b9b9c3' }}
-          >
-            Showing {(dataState.currentPage - 1) * dataState.pageSize + 1} to{' '}
-            {dataState.hasNext
-              ? dataState.currentPage * dataState.pageSize
-              : dataState.totalData}{' '}
-            of {dataState.totalData} entries
-          </p> */}
-        </Col>
-        <Col sm="12" md="5">
+      <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
+        <Col sm="12" md="11">
           <ReactPaginate
-            onPageChange={(page) => handlePagination(page)}
-            // pageCount={dataState.totalPage}
+            pageCount={tempData.totalPage || 1}
             nextLabel={''}
             breakLabel={'...'}
             activeClassName={'active'}
@@ -239,6 +170,10 @@ const internTable = ({ dataIntern, token }) => {
             previousLabel={''}
             nextLinkClassName={'page-link'}
             nextClassName={'page-item next-item'}
+            forcePage={tempPageNumber - 1}
+            onPageChange={(page) => {
+              setTempPageNumber(page.selected + 1);
+            }}
             previousClassName={'page-item prev-item'}
             previousLinkClassName={'page-link'}
             pageLinkClassName={'page-link'}
@@ -247,7 +182,6 @@ const internTable = ({ dataIntern, token }) => {
             containerClassName={
               'pagination react-paginate m-0 justify-content-center justify-content-lg-end'
             }
-            forcePage={page - 1}
           />
         </Col>
       </Row>
@@ -255,32 +189,4 @@ const internTable = ({ dataIntern, token }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (ctx) => {
-    const { req, query } = ctx;
-    const sessionData = await getSession(ctx);
-
-    if (!sessionData) {
-      return {
-        redirect: {
-          destination: '/auth',
-          permanent: false
-        }
-      };
-    }
-
-    store.dispatch(reauthenticate(sessionData.user.token));
-    await store.dispatch(getAllIntern(1, 10, ''));
-
-    const dataIntern = store.getState().intern;
-
-    return {
-      props: {
-        dataIntern,
-        token: sessionData.user.token
-      }
-    };
-  }
-);
-
-export default connect((state) => state)(internTable);
+export default internTable;

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Edit2, Info, MoreVertical, Search, Trash2 } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {
@@ -22,10 +22,14 @@ import {
   InputGroupAddon,
   InputGroupText
 } from 'reactstrap';
+import { getAllMentor } from 'redux/actions/mentor_action';
 
 import styles1 from 'styles/scrollbarTable.module.css';
+import { useDispatch } from 'react-redux';
 
-const MentorItem = ({ item }) => {
+import { reauthenticate } from 'redux/actions/auth';
+
+const MentorItem = ({ data }) => {
   const router = useRouter();
   const [deleteModal, setDeteleModal] = useState(false);
   const toggleDeletePopup = () => setDeteleModal(!deleteModal);
@@ -67,9 +71,7 @@ const MentorItem = ({ item }) => {
           <DropdownMenu className="border-0 border-radius-6">
             <DropdownItem
               className="action-vuexy-item w-100"
-              onClick={() =>
-                router.push(`/HR/dashboard/mentor/detail/${1}`)
-              }
+              onClick={() => router.push(`/HR/dashboard/mentor/detail/${1}`)}
             >
               <Info className="mr-2" size={15} />{' '}
               <span className="align-middle">View</span>
@@ -81,9 +83,7 @@ const MentorItem = ({ item }) => {
             ]) && ( */}
             <DropdownItem
               className="action-vuexy-item w-100"
-              onClick={() =>
-                router.push(`/HR/dashboard/mentor/edit/${1}`)
-              }
+              onClick={() => router.push(`/HR/dashboard/mentor/edit/${1}`)}
             >
               <Edit2 className="mr-2" size={15} />{' '}
               <span className="align-middle">Edit</span>
@@ -132,47 +132,52 @@ const MentorItem = ({ item }) => {
           </DropdownMenu>
         </UncontrolledDropdown>
       </td>
-      <td style={{ textAlign: 'start' }}>{item.name}</td>
-      <td style={{ textAlign: 'start' }}>{item.department}</td>
-      <td style={{ textAlign: 'start' }}>{item.position}</td>
-      <td style={{ textAlign: 'start' }}>{item.intern}</td>
+      <td style={{ textAlign: 'start' }}>{data.No}</td>
+      <td style={{ textAlign: 'start' }}>{data.department}</td>
+      <td style={{ textAlign: 'start' }}>{data.position}</td>
+      <td style={{ textAlign: 'start' }}>{data.intern}</td>
     </tr>
   );
 };
 
-const mentorTable = () => {
-  const DUMMY_MentorItem = [
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    }
-  ];
+const mentorTable = ({ token }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const [tempData, setTempData] = useState('');
+  const [tempPageSize, setTempPageSize] = useState(5);
+  const [tempPageNumber, setTempPageNumber] = useState(1);
+  const [tempSearchQuery, setTempSearchQuery] = useState('');
+
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  useEffect(() => {
+    dispatch(reauthenticate(token));
+
+    dispatch(getAllMentor(tempPageNumber, tempPageSize, tempSearchQuery)).then(
+      (response) => {
+        setTempData({
+          data: response.data.data,
+          currentPage: response.data.currentPage,
+          pageSize: response.data.pageSize,
+          totalPage: response.data.totalPage
+        });
+      }
+    );
+  }, [tempPageSize, tempPageNumber, tempSearchQuery]);
+
+  const handlePageSize = (e) => {
+    setTempPageSize(e.target.value);
+    setTempPageNumber(1);
+  };
+
+  const handleSearchQuery = (e) => {
+    setTempSearchQuery(e);
+    setTempPageNumber(1);
+  };
 
   return (
     <>
@@ -187,7 +192,12 @@ const mentorTable = () => {
           <Label className="mr-1" for="search-input-1">
             Show
           </Label>
-          <CustomInput type="select" className="custominput-table2 border-0">
+          <CustomInput
+            type="select"
+            className="custominput-table2 border-0"
+            defaultValue={tempPageSize}
+            onChange={handlePageSize}
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -208,6 +218,11 @@ const mentorTable = () => {
               name="search"
               id="search-invoice"
               placeholder="Search"
+              value={tempSearchQuery}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') handleSearchQuery(e.target.value);
+              }}
+              onChange={(e) => setTempSearchQuery(e.target.value)}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText>
@@ -233,8 +248,28 @@ const mentorTable = () => {
             </tr>
           </thead>
           <tbody>
-            {DUMMY_MentorItem.map(
-              (item, id) => (id++, (<MentorItem key={id} item={item} />))
+          {tempData && tempData.data.length > 0 ? (
+              tempData.data.map((data) => (
+                <MentorItem
+                  key={data.id}
+                  data={data}
+                  // pageSize={pageSize}
+                  // pageNumber={pageNumber}
+                  // searchQuery={searchQuery}
+                  dispatch={dispatch}
+                  router={router}
+                  setIsDeleteModal={setIsDeleteModal}
+                  setIsAlertModal={setIsAlertModal}
+                  setAlertStatus={setAlertStatus}
+                  setAlertMessage={setAlertMessage}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  No data
+                </td>
+              </tr>
             )}
           </tbody>
         </Table>
@@ -242,7 +277,7 @@ const mentorTable = () => {
       <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
         <Col sm="12" md="11">
           <ReactPaginate
-            pageCount="5"
+            pageCount={tempData.totalPage || 1}
             nextLabel={''}
             breakLabel={'...'}
             activeClassName={'active'}
@@ -250,6 +285,10 @@ const mentorTable = () => {
             previousLabel={''}
             nextLinkClassName={'page-link'}
             nextClassName={'page-item next-item'}
+            forcePage={tempPageNumber - 1}
+            onPageChange={(page) => {
+              setTempPageNumber(page.selected + 1);
+            }}
             previousClassName={'page-item prev-item'}
             previousLinkClassName={'page-link'}
             pageLinkClassName={'page-link'}
