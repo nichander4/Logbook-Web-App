@@ -46,10 +46,12 @@ export const navigationData = [
     // ]
   },
   {
-    id: 'logbook',
+    id: 'Logbook',
     title: 'Logbook',
     icon: <Book size={20} />,
-    href: '/logbook'
+    badge: 'primary',
+    href: '/Logbook'
+    
   },
   // {
   //   id: 'mail',

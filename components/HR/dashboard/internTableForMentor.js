@@ -1,18 +1,8 @@
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { Edit2, Info, MoreVertical, Search, Trash2 } from 'react-feather';
+import { Search } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {
   Table,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
   Label,
   Row,
   Col,
@@ -20,139 +10,20 @@ import {
   InputGroup,
   Input,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
 } from 'reactstrap';
-import { getAllMentor, deleteMentor } from 'redux/actions/mentor_action';
 
 import styles1 from 'styles/scrollbarTable.module.css';
+import InternTableItem from './internTableItemForMentor';
 import { useDispatch } from 'react-redux';
-
+import { useRouter } from 'next/router';
 import { reauthenticate } from 'redux/actions/auth';
-import ComboAlert from 'components/Alert/ComboAlert';
+import { getInternForMentor } from 'redux/actions/lov';
 
-const MentorItem = ({
-  dispatch,
-  data,
-  router,
-  isDeleteModal,
-  setIsDeleteModal,
-  isAlertModal,
-  setIsAlertModal,
-  alertStatus,
-  setAlertStatus,
-  alertMessage,
-  setAlertMessage
-}) => {
-  const [deleteModal, setDeteleModal] = useState(false);
-  const toggleDeletePopup = () => setDeteleModal(!deleteModal);
 
-  const deleteData = (e) => {
-    e.preventDefault();
 
-    dispatch(deleteMentor(data.id)).then((data) => {
-      setAlertStatus(data.status);
-      setIsDeleteModal(true);
-      if (data.status === 401) {
-        setAlertMessage('Sorry, you are unauthorized to delete this data!');
-      } else if (data.status === 204) {
-        setAlertMessage('Data deleted successfully!');
-      } else {
-        setAlertMessage('Error occured, please try again later');
-      }
-      setIsAlertModal(true);
-    });
-  };
 
-  return (
-    <tr>
-      <td className="text-center px-2 align-middle">
-        <UncontrolledDropdown>
-          <DropdownToggle
-            className="icon-btn hide-arrow"
-            color="transparent"
-            size="sm"
-            caret
-          >
-            <MoreVertical size={15} />
-          </DropdownToggle>
-
-          <DropdownMenu className="border-0 border-radius-6">
-            <DropdownItem
-              className="action-vuexy-item w-100"
-              onClick={() =>
-                router.push(`/HR/dashboard/mentor/detail/${data.id}`)
-              }
-            >
-              <Info className="mr-2" size={15} />{' '}
-              <span className="align-middle">View</span>
-            </DropdownItem>
-
-            {/* {getPermissionComponent([
-              'Material Planner Spv',
-              'RnD/TS Data Support Spv'
-            ]) && ( */}
-            <DropdownItem
-              className="action-vuexy-item w-100"
-              onClick={() =>
-                router.push(`/HR/dashboard/mentor/edit/${data.id}`)
-              }
-            >
-              <Edit2 className="mr-2" size={15} />{' '}
-              <span className="align-middle">Edit</span>
-            </DropdownItem>
-            {/* )} */}
-
-            <DropdownItem
-              onClick={toggleDeletePopup}
-              className="action-vuexy-item w-100"
-            >
-              <Trash2 className="mr-2" size={15} />{' '}
-              <span className="align-middle font-weight-bold">Delete</span>
-              <Modal
-                centered
-                fullscreen="md"
-                scrollable
-                size="md"
-                isOpen={deleteModal}
-                toggle={toggleDeletePopup}
-              >
-                <ModalHeader toggle={toggleDeletePopup} className="bg-danger">
-                  <div className="text-white">Delete</div>
-                </ModalHeader>
-                <ModalBody>
-                  Are you sure you want to delete this data?
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    className="d-flex ml-auto"
-                    color="danger"
-                    type="submit"
-                    onClick={deleteData}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    className="d-flex ml-1 text-danger border border-danger"
-                    color="white"
-                    onClick={toggleDeletePopup}
-                  >
-                    Cancel
-                  </Button>
-                </ModalFooter>
-              </Modal>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      </td>
-      <td style={{ textAlign: 'start' }}>{data.userName}</td>
-      <td style={{ textAlign: 'start' }}>{data.department}</td>
-      <td style={{ textAlign: 'start' }}>{data.position}</td>
-      <td style={{ textAlign: 'center' }}>{data.totalIntern}</td>
-    </tr>
-  );
-};
-
-const mentorTable = ({ token }) => {
+const internTable = ({ dataMentor, token }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -172,7 +43,7 @@ const mentorTable = ({ token }) => {
     setLoadingData(true);
     dispatch(reauthenticate(token));
 
-    dispatch(getAllMentor(tempPageNumber, tempPageSize, tempSearchQuery)).then(
+    dispatch(getInternForMentor(tempPageNumber, tempPageSize, tempSearchQuery, dataMentor.id)).then(
       (response) => {
         setTempData({
           data: response.data.data,
@@ -183,7 +54,8 @@ const mentorTable = ({ token }) => {
         setLoadingData(false);
       }
     );
-  }, [tempPageSize, tempPageNumber, tempSearchQuery, isDeleteModal]);
+    
+  }, [tempPageSize, tempPageNumber, tempSearchQuery]);
 
   const handlePageSize = (e) => {
     setTempPageSize(e.target.value);
@@ -197,7 +69,7 @@ const mentorTable = ({ token }) => {
 
   return (
     <>
-      <h3 className="mb-2">Mentor List</h3>
+      <h3 className="mb-2 mt-2">Intern List</h3>
       <Row className="mb-2">
         <Col
           className="d-flex align-items-center justify-content-start mt-1"
@@ -256,11 +128,12 @@ const mentorTable = ({ token }) => {
         >
           <thead>
             <tr>
-              <th className="text-center align-middle">ACTION</th>
               <th className="text-left align-middle">NAME</th>
+              <th className="text-left align-middle">UNIVERSITY</th>
               <th className="text-left align-middle">DEPARTMENT</th>
               <th className="text-left align-middle">POSITION</th>
-              <th className="text-center align-middle">INTERN</th>
+              <th className="text-left align-middle">ENTRY DATE</th>
+              <th className="text-left align-middle">END DATE</th>
             </tr>
           </thead>
           <tbody>
@@ -272,19 +145,18 @@ const mentorTable = ({ token }) => {
               </tr>
             ) : tempData && tempData.data.length > 0 ? (
               tempData.data.map((data) => (
-                <MentorItem
+                <InternTableItem
                   key={data.id}
                   data={data}
-                  isDeleteModal={isDeleteModal}
-                  setIsDeleteModal={setIsDeleteModal}
-                  isAlertModal={isAlertModal}
-                  setIsAlertModal={setIsAlertModal}
-                  alertStatus={alertStatus}
-                  setAlertStatus={setAlertStatus}
-                  alertMessage={alertMessage}
-                  setAlertMessage={setAlertMessage}
+                  // pageSize={pageSize}
+                  // pageNumber={pageNumber}
+                  // searchQuery={searchQuery}
                   dispatch={dispatch}
                   router={router}
+                  setIsDeleteModal={setIsDeleteModal}
+                  setIsAlertModal={setIsAlertModal}
+                  setAlertStatus={setAlertStatus}
+                  setAlertMessage={setAlertMessage}
                 />
               ))
             ) : (
@@ -323,16 +195,8 @@ const mentorTable = ({ token }) => {
           />
         </Col>
       </Row>
-      <ComboAlert
-        router={router}
-        routerPath="/home"
-        isAlertModal={isAlertModal}
-        setIsAlertModal={setIsAlertModal}
-        alertStatus={alertStatus}
-        alertMessage={alertMessage}
-        isDeleteModal={isDeleteModal}
-      />
     </>
   );
 };
-export default mentorTable;
+
+export default internTable;

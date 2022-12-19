@@ -1,18 +1,19 @@
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
-import MentorForm from 'components/HR/dashboard/viewMentorForm';
+import AddUserForm from 'components/HR/dashboard/addUser';
 import { wrapper } from 'redux/store';
 import { reauthenticate } from 'redux/actions/auth';
-import { getMentorById } from 'redux/actions/mentor_action';
+import { getInternById } from 'redux/actions/intern_action';
 import { connect } from 'react-redux';
 import { getSession } from 'next-auth/react';
 
-const detailMentorForm = ({dataMentor, token}) => {
+const addUserForm = (user) => {
   return (
     <VerticalLayout>
-      <MentorForm dataMentor={dataMentor} token={token}/>
+      <AddUserForm user={user} />
     </VerticalLayout>
   );
 };
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
     const { req, query } = ctx;
@@ -28,17 +29,17 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }
 
     store.dispatch(reauthenticate(sessionData.user.token));
-    await store.dispatch(getMentorById(query.id));
+    // await store.dispatch(getInternById(query.id));
 
-    const dataMentor = store.getState().mentor;
+    const dataIntern = store.getState().intern;
 
     return {
       props: {
-        dataMentor,
-        token: sessionData.user.token
+        // dataIntern,
+        user: sessionData.user
       }
     };
   }
 );
 
-export default connect((state) => state)(detailMentorForm);
+export default connect((state) => state)(addUserForm);

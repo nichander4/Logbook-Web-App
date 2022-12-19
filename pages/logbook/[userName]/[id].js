@@ -1,23 +1,11 @@
-import { React } from 'react';
+import VerticalLayout from 'src/@core/layouts/VerticalLayout';
+import LogbookTable from 'components/Logbook/logbookList';
 import { getSession } from 'next-auth/react';
 import { connect } from 'react-redux';
-import HomeIntern from 'components/home/Intern/home';
-import HomeMentor from 'components/home/mentor/home';
-import HomeHR from 'components/home/HR/home';
 import { wrapper } from 'redux/store';
 
-const Home = ({ user }) => {
-  return (
-    <>
-      {user.role.roleName == 'Mentor' ? (
-        <HomeMentor />
-      ) : user.role.roleName == 'Intern' ? (
-        <HomeIntern />
-      ) : (
-        <HomeHR token={user.token} />
-      )}
-    </>
-  );
+const Logbook = ({ user }) => {
+  return <LogbookTable user={user} />;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -41,4 +29,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     };
   }
 );
-export default connect((state) => state)(Home);
+export default connect((state) => state)(Logbook);

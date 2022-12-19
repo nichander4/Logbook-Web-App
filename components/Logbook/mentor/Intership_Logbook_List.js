@@ -18,12 +18,13 @@ import {
 import Link from 'next/link';
 import ReactPaginate from 'react-paginate';
 import styles from 'styles/scrollbarTable.module.css';
+import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 
 const MenteeItem = ({ item }) => {
   return (
     <tr>
       <td style={{ textAlign: 'start' }}>
-        <Link href={`/logbook`} passHref>
+        <Link href={`/test`} passHref>
           {item.name}
         </Link>
       </td>
@@ -36,7 +37,7 @@ const MenteeItem = ({ item }) => {
   );
 };
 
-function IntershipLogbook() {
+function Intership_Logbook_List() {
   const [active, setActive] = useState('1');
   const toggle = (tab) => {
     if (active !== tab) {
@@ -88,10 +89,10 @@ function IntershipLogbook() {
   ];
 
   return (
-    <>
-    
+    <VerticalLayout>
+
         <BreadCrumbs
-          breadCrumbParent="HR"
+          breadCrumbParent="Mentor"
           breadCrumbActive="Internship Log book"
         />
         <Row className="mt-1">
@@ -191,9 +192,9 @@ function IntershipLogbook() {
             </Row>
           </TabPane>
         </TabContent>
-     
-    </>
+ 
+    </VerticalLayout>
   );
 }
 
-export default IntershipLogbook;
+export default Intership_Logbook_List;

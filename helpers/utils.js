@@ -106,6 +106,7 @@ export const getHeaders = (token) => {
     "Content-Type": "application/json",
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Origin": "*",
+    'ngrok-skip-browser-warning': true,
     // app_id: "64aea8cf",
     // app_key: "f4262e0ed2d1e30fd0341cdf1412a409",
   };

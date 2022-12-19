@@ -1,53 +1,56 @@
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Edit2, Info, MoreVertical, Trash2 } from 'react-feather';
 import {
+  Button,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  UncontrolledDropdown,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
-  Button
+  ModalHeader,
+  UncontrolledDropdown
 } from 'reactstrap';
+import { deleteIntern } from 'redux/actions/intern_action';
+import ComboAlert from 'components/Alert/ComboAlert';
 
 const InternItem = ({
   dispatch,
   data,
   router,
-  pageSize,
-  pageNumber,
-  searchQuery,
+  isDeleteModal,
   setIsDeleteModal,
+  isAlertModal,
   setIsAlertModal,
+  alertStatus,
   setAlertStatus,
-  setAlertMessage
+  alertMessage,
+  setAlertMessage,
 }) => {
-  // const router = useRouter();
   const [deleteModal, setDeteleModal] = useState(false);
   const toggleDeletePopup = () => setDeteleModal(!deleteModal);
 
+
+
   const deleteData = (e) => {
-    // e.preventDefault();
-    // dispatch(deleteReqBudget(data.id)).then((data) => {
-    //   if (data.status === 401) {
-    //     alert('Sorry, you are unauthorized to delete this data!');
-    //   } else if (data.status === 204) {
-    //     alert('Data deleted successfully!');
-    //     router.push({
-    //       pathname: router.pathname,
-    //       query: {
-    //         pageSize: pageSize,
-    //         pageNumber: pageNumber,
-    //         search: searchQuery
-    //       }
-    //     });
-    //   } else {
-    //     alert('Error occured, please try again later');
-    //   }
-    // });
+    e.preventDefault();
+
+    dispatch(deleteIntern(data.id)).then((data) => {
+      setAlertStatus(data.status);
+      setIsDeleteModal(true);
+      if (data.status === 401) {
+        setAlertMessage('Sorry, you are unauthorized to delete this data!');
+      } else if (data.status === 204) {
+        setAlertMessage('Data deleted successfully!');
+       
+      } else {
+        setAlertMessage('Error occured, please try again later');
+      }
+      setIsAlertModal(true);
+
+    });
   };
 
   return (
@@ -66,7 +69,9 @@ const InternItem = ({
           <DropdownMenu className="border-0 border-radius-6">
             <DropdownItem
               className="action-vuexy-item w-100"
-              onClick={() => router.push(`/HR/dashboard/intern/detail/${1}`)}
+              onClick={() =>
+                router.push(`/HR/dashboard/intern/detail/${data.id}`)
+              }
             >
               <Info className="mr-2" size={15} />{' '}
               <span className="align-middle">View</span>
@@ -78,7 +83,9 @@ const InternItem = ({
               ]) && ( */}
             <DropdownItem
               className="action-vuexy-item w-100"
-              onClick={() => router.push(`/HR/dashboard/intern/edit/${1}`)}
+              onClick={() =>
+                router.push(`/HR/dashboard/intern/edit/${data.id}`)
+              }
             >
               <Edit2 className="mr-2" size={15} />{' '}
               <span className="align-middle">Edit</span>
@@ -126,13 +133,18 @@ const InternItem = ({
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
+        
+        
+       
       </td>
-      <td style={{ textAlign: 'start' }}>{data.projectName}</td>
+      <td style={{ textAlign: 'start' }}>{data.userName}</td>
       <td style={{ textAlign: 'start' }}>{data.university}</td>
       <td style={{ textAlign: 'start' }}>{data.department}</td>
       <td style={{ textAlign: 'start' }}>{data.position}</td>
-      <td style={{ textAlign: 'start' }}>{data.mentorId}</td>
-      <td style={{ textAlign: 'start' }}>{data.endDate}</td>
+      <td style={{ textAlign: 'start' }}>{data.mentor.userName}</td>
+      <td style={{ textAlign: 'start' }}>
+        {moment(data.endDate).format('DD-MM-YYYY')}
+      </td>
     </tr>
   );
 };

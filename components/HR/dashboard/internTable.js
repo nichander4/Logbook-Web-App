@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Search } from 'react-feather';
+import { Plus, Search } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {
   Table,
@@ -11,6 +11,7 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText,
+  Button
 } from 'reactstrap';
 
 import styles1 from 'styles/scrollbarTable.module.css';
@@ -19,25 +20,26 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { reauthenticate } from 'redux/actions/auth';
 import { getAllIntern } from 'redux/actions/intern_action';
-
-
-
+import ComboAlert from 'components/Alert/ComboAlert';
 
 const internTable = ({ token }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [tempData, setTempData] = useState('');
-  const [tempPageSize, setTempPageSize] = useState(5);
-  const [tempPageNumber, setTempPageNumber] = useState(1);
-  const [tempSearchQuery, setTempSearchQuery] = useState('');
+  const [loadingData, setLoadingData] = useState(false);
 
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isAlertModal, setIsAlertModal] = useState(false);
   const [alertStatus, setAlertStatus] = useState(null);
   const [alertMessage, setAlertMessage] = useState('');
 
+  const [tempData, setTempData] = useState('');
+  const [tempPageSize, setTempPageSize] = useState(5);
+  const [tempPageNumber, setTempPageNumber] = useState(1);
+  const [tempSearchQuery, setTempSearchQuery] = useState('');
+
   useEffect(() => {
+    setLoadingData(true);
     dispatch(reauthenticate(token));
 
     dispatch(getAllIntern(tempPageNumber, tempPageSize, tempSearchQuery)).then(
@@ -48,9 +50,10 @@ const internTable = ({ token }) => {
           pageSize: response.data.pageSize,
           totalPage: response.data.totalPage
         });
+        setLoadingData(false);
       }
     );
-  }, [tempPageSize, tempPageNumber, tempSearchQuery]);
+  }, [tempPageSize, tempPageNumber, tempSearchQuery, isDeleteModal]);
 
   const handlePageSize = (e) => {
     setTempPageSize(e.target.value);
@@ -133,20 +136,27 @@ const internTable = ({ token }) => {
             </tr>
           </thead>
           <tbody>
-            {tempData && tempData.data.length > 0 ? (
+            {loadingData ? (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  Loading...
+                </td>
+              </tr>
+            ) : tempData && tempData.data.length > 0 ? (
               tempData.data.map((data) => (
                 <InternTableItem
                   key={data.id}
                   data={data}
-                  // pageSize={pageSize}
-                  // pageNumber={pageNumber}
-                  // searchQuery={searchQuery}
+                  isDeleteModal = {isDeleteModal}
+                  setIsDeleteModal = {setIsDeleteModal}
+                  isAlertModal = {isAlertModal}
+                  setIsAlertModal = {setIsAlertModal}
+                  alertStatus = {alertStatus}
+                  setAlertStatus = {setAlertStatus}
+                  alertMessage = {alertMessage}
+                  setAlertMessage = {setAlertMessage}
                   dispatch={dispatch}
                   router={router}
-                  setIsDeleteModal={setIsDeleteModal}
-                  setIsAlertModal={setIsAlertModal}
-                  setAlertStatus={setAlertStatus}
-                  setAlertMessage={setAlertMessage}
                 />
               ))
             ) : (
@@ -185,6 +195,15 @@ const internTable = ({ token }) => {
           />
         </Col>
       </Row>
+      <ComboAlert
+        router={router}
+        routerPath="/home"
+        isAlertModal={isAlertModal}
+        setIsAlertModal={setIsAlertModal}
+        alertStatus={alertStatus}
+        alertMessage={alertMessage}
+        isDeleteModal={isDeleteModal}
+      />
     </>
   );
 };

@@ -13,7 +13,7 @@ const WelcomeCard = () => {
   const isiLogbook = () => {
     setLoading(true);
     setTimeout(function () {
-      router.push('/logbook');
+      router.push('/Logbook');
     }, 1000);
   };
 

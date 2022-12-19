@@ -1,5 +1,5 @@
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
-import Intership_Logbook_List from 'components/HR/Intership_Logbook_List';
+import Intership_Logbook_List from 'components/Logbook/HR/Intership_Logbook_List';
 
 
 const internship_logbook = () => {
