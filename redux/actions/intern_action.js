@@ -77,3 +77,31 @@ export const deleteIntern = (id) => async (dispatch) => {
     return error.response;
   }
 };
+
+export const getLogbook = (id) => async () => {
+  try {
+    const response = await axios({
+      url: `${API_URL}/api/Logbook/${id}`,
+      method: 'get',
+      headers: getHeaders(store.getState().auth.token)
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const entryLogbook = (id, data) => async () => {
+  try {
+    const response = await axios({
+      url: `${API_URL}/api/LogbookItem/${id}`,
+      method: 'put',
+      headers: getHeaders(store.getState().auth.token),
+      data,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

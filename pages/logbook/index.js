@@ -12,7 +12,7 @@ const Logbook = ({ user }) => {
 
   useEffect(() => {
     if (user.role.roleName == 'Intern') {
-      router.push(`/Logbook/${user.userName}/${user.id}`);
+      router.push(`/logbook/${user.userName}/${user.id}`);
     }
   }, []);
 
