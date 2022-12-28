@@ -1,3 +1,4 @@
+import ComboAlert from "components/Alert/ComboAlert";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Search } from "react-feather";
@@ -16,35 +17,27 @@ import {
   Button,
 } from "reactstrap";
 import { reauthenticate } from "redux/actions/auth";
-import { getLogbook } from "redux/actions/intern_action";
+import { getLogbook, submitLogbook } from "redux/actions/intern_action";
 
 import styles1 from "styles/scrollbarTable.module.css";
 import TableItem from "./item";
 
 const TableLogbook = ({ id, token }) => {
-  const DUMMY_Item = [
-    {
-      date: "Fri, 01 Jul 2022",
-      name: "Nicholas Anderson",
-      activity: "mengerjakan bla bla",
-      isWfo: "WFH",
-      check_in: "07:30 am",
-      check_out: "04:00 pm",
-      mentor_approval: "Awaiting",
-      hr_approval: "Approved",
-    },
-  ];
-
   const dispatch = useDispatch();
   const [dataState, setDataState] = useState([]);
   const [loading, setLoading] = useState(false);
   const [SubmitLoading, setSubmitLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     setLoading(true);
     dispatch(reauthenticate(token));
     dispatch(getLogbook(id)).then((data) => {
-      console.log(data, "DATAAAA");
+      console.log(data);
       setDataState(data);
       setLoading(false);
     });
@@ -52,19 +45,38 @@ const TableLogbook = ({ id, token }) => {
     return () => {
       setDataState([]);
     };
-  }, []);
+  }, [refresh]);
 
-  const submitLogbook = () => {
+  const submit = () => {
     setSubmitLoading(true);
-    setTimeout(function () {
-      setSubmitLoading(false);
-    }, 1000);
+    dispatch(reauthenticate(token));
+    dispatch(submitLogbook(dataState.id)).then((data) => {
+      console.log(data, "SUBMIT DATA");
+      setAlertStatus(data.status);
+      if (data.status === 400) {
+        setAlertMessage(data.data);
+        setIsAlertModal(true);
+      } else if (data.status === 401) {
+        setAlertMessage("You are unauthorized to add this data");
+        setIsAlertModal(true);
+      } else if (data.status >= 200 && data.status < 300) {
+        setAlertMessage("Data added successfully!");
+        setIsAlertModal(true);
+      } else if (data.status == 409) {
+        setAlertMessage("Data is already exist!");
+        setIsAlertModal(true);
+      } else {
+        setAlertMessage("Error occured, please try again later");
+        setIsAlertModal(true);
+      }
+    });
+    setSubmitLoading(false);
   };
 
   return (
     <>
-      <Row className="mb-1">
-        <Col
+      <Row className="mb-1 align-items-center justify-content-center">
+        {/* <Col
           className="d-flex align-items-center justify-content-start"
           xl="1"
           md="2"
@@ -79,7 +91,7 @@ const TableLogbook = ({ id, token }) => {
             <option value="25">25</option>
             <option value="50">50</option>
           </CustomInput>
-        </Col>
+        </Col> */}
 
         <Col className="" xl="7" md="6" sm="5">
           <div className="d-flex justify-content-center">
@@ -91,7 +103,7 @@ const TableLogbook = ({ id, token }) => {
             <Button.Ripple
               color="primary"
               className="d-flex align-items-center"
-              onClick={submitLogbook}
+              onClick={submit}
               disabled={SubmitLoading}
             >
               {SubmitLoading ? "Submitting..." : "Submit Log book"}
@@ -100,7 +112,7 @@ const TableLogbook = ({ id, token }) => {
           </div>
         </Col>
 
-        <Col
+        {/* <Col
           className="d-flex align-items-center justify-content-center justify-content-lg-end pr-lg-1 mb-sm-1"
           xl="4"
           md="4"
@@ -120,6 +132,44 @@ const TableLogbook = ({ id, token }) => {
               </InputGroupText>
             </InputGroupAddon>
           </InputGroup>
+        </Col> */}
+      </Row>
+      <Row className="mb-2">
+        <Col>
+          <Label className="form-label font-weight-bold">Status</Label>
+          <Input
+            type="text"
+            id="status"
+            placeholder="Placeholder"
+            value={dataState.statusText}
+            disabled
+          />
+        </Col>
+
+        <Col>
+          <Label className="form-label error-input font-weight-bold">
+            Approved By Mentor
+          </Label>
+          <Input
+            type="text"
+            id="approveMentor"
+            name="approveMentor"
+            placeholder="Placeholder"
+            value={dataState.approve_by_mentor}
+            disabled
+          />
+        </Col>
+
+        <Col>
+          <Label className="form-label font-weight-bold">Approved By HR</Label>
+          <Input
+            type="text"
+            id="approveHR"
+            name="approveHR"
+            placeholder="Placeholder"
+            value={dataState.approve_by_hr}
+            disabled
+          />
         </Col>
       </Row>
 
@@ -135,8 +185,6 @@ const TableLogbook = ({ id, token }) => {
               <th className="text-left align-middle">WFH/WFO</th>
               <th className="text-left align-middle">Check in</th>
               <th className="text-left align-middle">check out</th>
-              <th className="text-left align-middle">MENTOR Approval</th>
-              <th className="text-left align-middle">HR Approval</th>
               <th className="text-center align-middle">ACTION</th>
             </tr>
           </thead>
@@ -157,7 +205,18 @@ const TableLogbook = ({ id, token }) => {
               </tr>
             ) : dataState.items ? (
               dataState.items.map(
-                (item, id) => (id++, (<TableItem key={id} item={item} token={token}/>))
+                (item, id) => (
+                  id++,
+                  (
+                    <TableItem
+                      key={id}
+                      item={item}
+                      token={token}
+                      setRefresh={setRefresh}
+                      status={dataState.statusText}
+                    />
+                  )
+                )
               )
             ) : (
               <tr>
@@ -175,7 +234,7 @@ const TableLogbook = ({ id, token }) => {
         </Col>
 
         <Col sm="6" md="6">
-          <ReactPaginate
+          {/* <ReactPaginate
             pageCount="5"
             nextLabel={""}
             breakLabel={"..."}
@@ -192,9 +251,17 @@ const TableLogbook = ({ id, token }) => {
             containerClassName={
               "pagination react-paginate m-0 justify-content-center justify-content-lg-end"
             }
-          />
+          /> */}
         </Col>
       </Row>
+      <ComboAlert
+        isDeleteModal={true}
+        isAlertModal={isAlertModal}
+        setIsAlertModal={setIsAlertModal}
+        alertStatus={alertStatus}
+        alertMessage={alertMessage}
+        setRefresh={setRefresh}
+      />
     </>
   );
 };

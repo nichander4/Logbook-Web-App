@@ -1,6 +1,8 @@
+import ComboAlert from "components/Alert/ComboAlert";
 import moment from "moment";
 import React, { useState } from "react";
 import { Edit2, Info, MoreVertical, Trash2 } from "react-feather";
+import { useDispatch } from "react-redux";
 import {
   DropdownItem,
   DropdownMenu,
@@ -18,14 +20,46 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { reauthenticate } from "redux/actions/auth";
+import { entryLogbook } from "redux/actions/intern_action";
 import styles from "styles/scrollbarTable.module.css";
 import LogbookModal from "../Modal/logbookModal";
-const logbook_Item = ({ item, token }) => {
+const logbook_Item = ({ item, token, setRefresh, status }) => {
   const [entryModal, setEntryModal] = useState(false);
   const toggleEntryPopup = () => setEntryModal(!entryModal);
 
   const [rejectModal, setRejectModal] = useState(false);
   const toggleRejectPopup = () => setRejectModal(!rejectModal);
+
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const dispatch = useDispatch();
+  const submitHandler = (id, data) => {
+    dispatch(reauthenticate(token));
+    dispatch(entryLogbook(id, data)).then((data) => {
+      console.log(data, "SUBMIT DATA");
+      setAlertStatus(data.status);
+      if (data.status === 400) {
+        setAlertMessage(data.data);
+        setIsAlertModal(true);
+      } else if (data.status === 401) {
+        setAlertMessage("You are unauthorized to add this data");
+        setIsAlertModal(true);
+      } else if (data.status >= 200 && data.status < 300) {
+        toggleEntryPopup();
+        setAlertMessage("Data added successfully!");
+        setIsAlertModal(true);
+      } else if (data.status == 409) {
+        setAlertMessage("Data is already exist!");
+        setIsAlertModal(true);
+      } else {
+        setAlertMessage("Error occured, please try again later");
+        setIsAlertModal(true);
+      }
+    });
+  };
 
   return (
     <tr>
@@ -38,38 +72,25 @@ const logbook_Item = ({ item, token }) => {
           {item.isWorkFromOffice ? "WFO" : "WFH"}
         </Badge>
       </td>
-      <td style={{ textAlign: "start" }}>{item.jamMasuk}</td>
-      <td style={{ textAlign: "start" }}>{item.jamKeluar}</td>
       <td style={{ textAlign: "start" }}>
-        <Badge
-          color={`${
-            item.mentor_approval == "Rejected"
-              ? "light-danger"
-              : item.mentor_approval == "Awaiting"
-              ? "light-warning"
-              : "light-primary"
-          }`}
-          style={{ borderRadius: "18px" }}
-        >
-          {item.mentor_approval}
-        </Badge>
+        {item.jamMasuk ? moment(item.jamMasuk).format("HH:mm") : ""}
       </td>
       <td style={{ textAlign: "start" }}>
-        <Badge
-          color={`${
-            item.hr_approval == "Rejected"
-              ? "light-danger"
-              : item.hr_approval == "Awaiting"
-              ? "light-warning"
-              : "light-primary"
-          }`}
-          style={{ borderRadius: "18px" }}
-        >
-          {item.hr_approval}
-        </Badge>
+        {item.jamKeluar ? moment(item.jamKeluar).format("HH:mm") : ""}
       </td>
       <td className="text-center px-2 align-middle">
-        <div className="d-flex justify-content-center ">
+        {moment().format() > moment(item.date).format() && status == "Draft" ? (
+          <div className="d-flex justify-content-center ">
+            <Button.Ripple
+              color="primary"
+              className="d-flex align-items-center"
+              onClick={toggleEntryPopup}
+            >
+              Entry
+            </Button.Ripple>
+          </div>
+        ) : null}
+        {/* <div className="d-flex justify-content-center ">
           <Button.Ripple
             color="primary"
             className="d-flex align-items-center"
@@ -77,7 +98,7 @@ const logbook_Item = ({ item, token }) => {
           >
             Entry
           </Button.Ripple>
-        </div>
+        </div> */}
 
         {/* <div className="d-flex justify-content-center">
           <Button.Ripple
@@ -102,6 +123,7 @@ const logbook_Item = ({ item, token }) => {
           toggleEntryPopup={toggleEntryPopup}
           item={item}
           token={token}
+          submitHandler={submitHandler}
         />
         <Modal
           centered
@@ -152,6 +174,14 @@ const logbook_Item = ({ item, token }) => {
             </Button>
           </ModalFooter>
         </Modal>
+        <ComboAlert
+          isDeleteModal={true}
+          isAlertModal={isAlertModal}
+          setIsAlertModal={setIsAlertModal}
+          alertStatus={alertStatus}
+          alertMessage={alertMessage}
+          setRefresh={setRefresh}
+        />
       </td>
     </tr>
   );

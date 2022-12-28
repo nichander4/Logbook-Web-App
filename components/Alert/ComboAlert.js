@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 const ComboAlert = ({
   router,
@@ -7,7 +7,8 @@ const ComboAlert = ({
   setIsAlertModal,
   alertStatus,
   alertMessage,
-  isDeleteModal
+  isDeleteModal,
+  setRefresh,
 }) => {
   return (
     <Modal
@@ -20,30 +21,34 @@ const ComboAlert = ({
       <ModalHeader
         className={`modalHeaderTextNotePopUp ${
           alertStatus >= 200 && alertStatus < 300
-            ? 'bg-primary'
+            ? "bg-primary"
             : alertStatus >= 400 && alertStatus <= 500
-            ? 'bg-danger'
-            : ''
+            ? "bg-danger"
+            : ""
         }`}
         toggle={() => {
           if (alertStatus >= 400 && alertStatus <= 500) setIsAlertModal(false);
         }}
       >
         {alertStatus >= 200 && alertStatus < 300
-          ? 'Success'
-          : alertStatus >= 400 && alertStatus <= 500 && 'Failed'}
+          ? "Success"
+          : alertStatus >= 400 && alertStatus <= 500 && "Failed"}
       </ModalHeader>
       <ModalBody>{alertMessage}</ModalBody>
       <ModalFooter>
         <Button.Ripple
           color={
             alertStatus >= 200 && alertStatus < 300
-              ? 'primary'
-              : alertStatus >= 400 && alertStatus <= 500 && 'danger'
+              ? "primary"
+              : alertStatus >= 400 && alertStatus <= 500 && "danger"
           }
           onClick={() => {
-            if (isDeleteModal == true) setIsAlertModal(false);
-            else {
+            if (isDeleteModal == true) {
+              setIsAlertModal(false);
+              if(alertStatus >= 200 && alertStatus < 300 && setRefresh){
+                setRefresh((state) => !state);
+              }
+            } else {
               if (alertStatus >= 200 && alertStatus < 300)
                 router.push(routerPath);
               else if (alertStatus >= 400 && alertStatus <= 500)

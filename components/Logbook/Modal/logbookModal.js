@@ -20,13 +20,14 @@ import { useDispatch } from "react-redux";
 import { entryLogbook } from "redux/actions/intern_action";
 import { reauthenticate } from "redux/actions/auth";
 
-const logbookModal = ({ entryModal, toggleEntryPopup, item, token }) => {
+const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler }) => {
     const dispatch = useDispatch();
   const formik = useFormik({
     // initial values
     initialValues: {
       id: item.id,
       logbookId: item.logbookId,
+      date: item.date,
       activity: item.activity || "",
       jamMasuk: item.jamMasuk || new Date(),
       jamKeluar: item.jamKeluar || new Date(),
@@ -42,9 +43,7 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token }) => {
     onSubmit: (e) => {
       e.jamMasuk = moment(e.jamMasuk).format("YYYY-MM-DDTHH:mm:ss");
       e.jamKeluar = moment(e.jamKeluar).format("YYYY-MM-DDTHH:mm:ss");
-      console.log(e);
-      dispatch(reauthenticate(token));
-      dispatch(entryLogbook(e.id, e));
+      submitHandler(e.id, e);
     },
   });
 
