@@ -22,7 +22,7 @@ import { getLogbook, submitLogbook } from "redux/actions/intern_action";
 import styles1 from "styles/scrollbarTable.module.css";
 import TableItem from "./item";
 
-const TableLogbook = ({ id, token }) => {
+const TableLogbook = ({ id, token, user }) => {
   const dispatch = useDispatch();
   const [dataState, setDataState] = useState([]);
   const [loading, setLoading] = useState(false);

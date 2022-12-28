@@ -7,7 +7,7 @@ import MentorTable from "components/HR/dashboard/mentorTable";
 import { useEffect } from "react";
 import moment from "moment";
 
-const entryLogbook = ({ user }) => {
+const entryLogbook = ({ user, token, dataIntern }) => {
   const [active, setActive] = useState("");
 
   const toggle = (tab) => {
@@ -19,14 +19,14 @@ const entryLogbook = ({ user }) => {
   return (
     <VerticalLayout>
       <BreadCrumbs
-        breadCrumbParent={user.role.roleName}
+        breadCrumbParent={dataIntern.role.roleName}
         breadCrumbActive="Log book"
       />
-      <h2 className="mt-2 mb-1">Entry Log Book Internship - {user.userName}</h2>
+      <h2 className="mt-2 mb-1">Entry Log Book Internship - {dataIntern.userName}</h2>
 
       <React.Fragment>
         <Nav tabs>
-          {user.logbooks.map((x) => {
+          {dataIntern.logbooks.map((x) => {
             return (
               <NavItem>
                 <NavLink
@@ -44,10 +44,10 @@ const entryLogbook = ({ user }) => {
           })}
         </Nav>
         <TabContent className="ml-1 py-50" activeTab={active}>
-          {user.logbooks.map((x) => {
+          {dataIntern.logbooks.map((x) => {
             return (
               <TabPane tabId={x.id}>
-                <TableLogbook id={x.id} token={user.token} key={x.id}/>
+                <TableLogbook id={x.id} token={token} key={x.id} user={user}/>
               </TabPane>
             );
           })}

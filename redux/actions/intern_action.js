@@ -42,6 +42,7 @@ export const getInternById = (id) => async (dispatch) => {
       headers: getHeaders(store.getState().auth.token),
     });
     dispatch({ type: GET_INTERN_BY_ID, payload: response.data });
+    return response;
   } catch (error) {
     console.log(error);
   }
