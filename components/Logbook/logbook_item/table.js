@@ -288,7 +288,8 @@ const TableLogbook = ({ id, token, user }) => {
       </div>
       <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
         <Col sm="6" md="6">
-          <h3>Total Salary : Rp. {dataState.gajiTotal}</h3>
+          {dataState.gajiTotal ? (<h3>Total Salary : Rp. {dataState.gajiTotal}</h3>) : null}
+          
         </Col>
 
         <Col sm="6" md="6">
