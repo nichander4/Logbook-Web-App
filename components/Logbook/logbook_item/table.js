@@ -17,10 +17,19 @@ import {
   Button,
 } from "reactstrap";
 import { reauthenticate } from "redux/actions/auth";
-import { getLogbook, submitLogbook } from "redux/actions/intern_action";
+import {
+  approveLogbook,
+  getLogbook,
+  reviseLogbook,
+  submitLogbook,
+} from "redux/actions/intern_action";
 
 import styles1 from "styles/scrollbarTable.module.css";
 import TableItem from "./item";
+import ApproveModal from "../Modal/ApproveModal";
+import ApproveHRModal from "../Modal/ApproveHRModal";
+import ReviseModal from "../Modal/ReviseModal";
+import ReasonModal from "../Modal/ReasonModal";
 
 const TableLogbook = ({ id, token, user }) => {
   const dispatch = useDispatch();
@@ -32,6 +41,8 @@ const TableLogbook = ({ id, token, user }) => {
   const [isAlertModal, setIsAlertModal] = useState(false);
   const [alertStatus, setAlertStatus] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
+
+  const [reasonModal, setReasonModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -47,20 +58,65 @@ const TableLogbook = ({ id, token, user }) => {
     };
   }, [refresh]);
 
-  const submit = () => {
-    setSubmitLoading(true);
+  const approveHandler = (data) => {
     dispatch(reauthenticate(token));
-    dispatch(submitLogbook(dataState.id)).then((data) => {
-      console.log(data, "SUBMIT DATA");
+    dispatch(approveLogbook(dataState.id, data)).then((data) => {
       setAlertStatus(data.status);
       if (data.status === 400) {
         setAlertMessage(data.data);
         setIsAlertModal(true);
       } else if (data.status === 401) {
-        setAlertMessage("You are unauthorized to add this data");
+        setAlertMessage("You are unauthorized to submit this data");
         setIsAlertModal(true);
       } else if (data.status >= 200 && data.status < 300) {
-        setAlertMessage("Data added successfully!");
+        setAlertMessage("Approved!");
+        setIsAlertModal(true);
+      } else if (data.status == 409) {
+        setAlertMessage("Data is already exist!");
+        setIsAlertModal(true);
+      } else {
+        setAlertMessage("Error occured, please try again later");
+        setIsAlertModal(true);
+      }
+    });
+  };
+
+  const reviseHandler = (data) => {
+    dispatch(reauthenticate(token));
+    dispatch(reviseLogbook(dataState.id, data)).then((data) => {
+      setAlertStatus(data.status);
+      if (data.status === 400) {
+        setAlertMessage(data.data);
+        setIsAlertModal(true);
+      } else if (data.status === 401) {
+        setAlertMessage("You are unauthorized to revise this data");
+        setIsAlertModal(true);
+      } else if (data.status >= 200 && data.status < 300) {
+        setAlertMessage("Revised!");
+        setIsAlertModal(true);
+      } else if (data.status == 409) {
+        setAlertMessage("Data is already exist!");
+        setIsAlertModal(true);
+      } else {
+        setAlertMessage("Error occured, please try again later");
+        setIsAlertModal(true);
+      }
+    });
+  };
+
+  const submit = () => {
+    setSubmitLoading(true);
+    dispatch(reauthenticate(token));
+    dispatch(submitLogbook(dataState.id)).then((data) => {
+      setAlertStatus(data.status);
+      if (data.status === 400) {
+        setAlertMessage(data.data);
+        setIsAlertModal(true);
+      } else if (data.status === 401) {
+        setAlertMessage("You are unauthorized to submit this data");
+        setIsAlertModal(true);
+      } else if (data.status >= 200 && data.status < 300) {
+        setAlertMessage("Data submitted successfully!");
         setIsAlertModal(true);
       } else if (data.status == 409) {
         setAlertMessage("Data is already exist!");
@@ -76,65 +132,55 @@ const TableLogbook = ({ id, token, user }) => {
   return (
     <>
       <Row className="mb-1 align-items-center justify-content-center">
-        {/* <Col
-          className="d-flex align-items-center justify-content-start"
-          xl="1"
-          md="2"
-          sm="3"
-        >
-          <Label className="mr-1" for="search-input-1">
-            Show
-          </Label>
-          <CustomInput type="select" className="custominput-table2 border-0">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-          </CustomInput>
-        </Col> */}
+        {user.role.roleName == "Intern" &&
+        (dataState.status == 0 || //Draft
+          dataState.status == 4 || //Revised by Mentor
+          dataState.status == 5) ? ( // Revised by HR
+          <Col className="" xl="7" md="6" sm="5">
+            <div className="d-flex justify-content-center">
+              <Label className="text-dark">
+                *All log book entries for this month are required
+              </Label>
+            </div>
+            <div className="d-flex justify-content-center ">
+              <Button.Ripple
+                color="primary"
+                className="d-flex align-items-center"
+                onClick={submit}
+                disabled={SubmitLoading}
+              >
+                {SubmitLoading ? "Submitting..." : "Submit Log book"}
+                {/* Process Log Book Calculations */}
+              </Button.Ripple>
+            </div>
+          </Col>
+        ) : null}
 
-        <Col className="" xl="7" md="6" sm="5">
-          <div className="d-flex justify-content-center">
-            <Label className="text-dark">
-              *All log book entries for this month are required
-            </Label>
-          </div>
-          <div className="d-flex justify-content-center ">
-            <Button.Ripple
-              color="primary"
-              className="d-flex align-items-center"
-              onClick={submit}
-              disabled={SubmitLoading}
-            >
-              {SubmitLoading ? "Submitting..." : "Submit Log book"}
-              {/* Process Log Book Calculations */}
-            </Button.Ripple>
-          </div>
-        </Col>
-
-        {/* <Col
-          className="d-flex align-items-center justify-content-center justify-content-lg-end pr-lg-1 mb-sm-1"
-          xl="4"
-          md="4"
-          sm="4"
-        >
-          <InputGroup className="input-group-merge">
-            <Input
-              className="search-table2 d-flex w-50"
-              type="text"
-              name="search"
-              id="search-invoice"
-              placeholder="Search"
+        {user.role.roleName == "Mentor" && dataState.status == 1 ? ( // Submitted
+          <Row className="d-flex justify-content-center">
+            <ApproveModal approveHandler={approveHandler} />
+            <ReviseModal setReasonModal={setReasonModal} />
+            <ReasonModal
+              reasonModal={reasonModal}
+              setReasonModal={setReasonModal}
+              reviseHandler={reviseHandler}
             />
-            <InputGroupAddon addonType="append">
-              <InputGroupText>
-                <Search size={14} />
-              </InputGroupText>
-            </InputGroupAddon>
-          </InputGroup>
-        </Col> */}
+          </Row>
+        ) : null}
+
+        {user.role.roleName == "HR" && dataState.status == 2 ? ( // Approved By Mentor
+          <Row className="d-flex justify-content-center">
+            <ApproveHRModal approveHandler={approveHandler} />
+            <ReviseModal setReasonModal={setReasonModal} />
+            <ReasonModal
+              reasonModal={reasonModal}
+              setReasonModal={setReasonModal}
+              reviseHandler={reviseHandler}
+            />
+          </Row>
+        ) : null}
       </Row>
-      <Row className="mb-2">
+      <Row className="mb-2" md="4" sm="2" xs="1">
         <Col>
           <Label className="form-label font-weight-bold">Status</Label>
           <Input
@@ -168,6 +214,18 @@ const TableLogbook = ({ id, token, user }) => {
             name="approveHR"
             placeholder="Placeholder"
             value={dataState.approve_by_hr}
+            disabled
+          />
+        </Col>
+
+        <Col>
+          <Label className="form-label font-weight-bold">Cancel Reason</Label>
+          <Input
+            type="text"
+            id="approveHR"
+            name="approveHR"
+            placeholder="Placeholder"
+            value={dataState.cancelReason}
             disabled
           />
         </Col>
@@ -230,7 +288,7 @@ const TableLogbook = ({ id, token, user }) => {
       </div>
       <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
         <Col sm="6" md="6">
-          <h3>Total Salary : Rp. {"180,000"}</h3>
+          <h3>Total Salary : Rp. {dataState.gajiTotal}</h3>
         </Col>
 
         <Col sm="6" md="6">

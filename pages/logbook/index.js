@@ -19,9 +19,9 @@ const Logbook = ({ user }) => {
   return (
     <>
       {user.role.roleName == 'Mentor' ? (
-        <LogbookForMentor token={user.token} />
+        <LogbookForMentor token={user.token} user={user}/>
       ) : user.role.roleName == 'HR' ? (
-        <LogbookForHR token={user.token} />
+        <LogbookForHR token={user.token} user={user}/>
       ) : (
         ''
       )}

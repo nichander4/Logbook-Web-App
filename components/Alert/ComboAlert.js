@@ -12,6 +12,7 @@ const ComboAlert = ({
 }) => {
   return (
     <Modal
+      static
       centered
       isOpen={isAlertModal}
       toggle={() => {
