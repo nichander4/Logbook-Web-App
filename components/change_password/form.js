@@ -1,5 +1,5 @@
-import BreadCrumbs from 'components/custom/BreadcrumbCustom';
-import React, { useEffect, useState, useRef } from 'react';
+import BreadCrumbs from "components/custom/BreadcrumbCustom";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Col,
   Row,
@@ -11,91 +11,79 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  ButtonGroup
-} from 'reactstrap';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import CustomForm from 'components/Form/CustomForm';
-import { ArrowLeft, Calendar } from 'react-feather';
-// import {
-//   getReqBudgetById,
-//   updateReqBudget
-// } from 'redux/actions/requestBudgetAction';
-// import { getSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useDispatch, connect } from 'react-redux';
-// import { wrapper } from 'redux/store';
-// import { reauthenticate } from 'redux/actions/auth';
+  ButtonGroup,
+} from "reactstrap";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import CustomForm from "components/Form/CustomForm";
+import { ArrowLeft, Calendar } from "react-feather";
+import { getSession } from 'next-auth/react';
+import { useRouter } from "next/router";
+import { useDispatch, connect } from "react-redux";
+import { wrapper } from 'redux/store';
+import { reauthenticate } from 'redux/actions/auth';
+import ComboAlert from "components/Alert/ComboAlert";
+import InputPasswordToggle from "src/@core/components/input-password-toggle";
+import { updateIntern } from "redux/actions/intern_action";
 
-// import { API_FILES_STAGING_URL } from 'constant';
-
-import ComboAlert from 'components/Alert/ComboAlert';
-import InputPasswordToggle from 'src/@core/components/input-password-toggle';
-
-const ChangePassword = (props) => {
-  const { dataReqBudget, token, userName } = props;
+const ChangePassword = ({ user, token }) => {
   const router = useRouter();
-  //   const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
+  console.log(user);
   const [isAlertModal, setIsAlertModal] = useState(false);
   const [alertStatus, setAlertStatus] = useState(null);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
 
   //   useEffect(() => {
   //     dispatch(reauthenticate(token));
   //   }, [dispatch]);
 
   const doSubmit = (data) => {
-    // const editedData = {
-    //   ...dataReqBudget,
-    //   number: data.number,
-    //   request: data.request,
-    //   category: data.category,
-    //   site: data.site,
-    //   picUsername: data.picUsername,
-    //   createdDate: data.createdDate,
-    //   status: data.status,
-    //   isBudgetUploaded: data.isBudgetUploaded === 'Yes' ? true : false,
-    //   isKelompokMaterialUploaded:
-    //     data.isKelompokMaterialUploaded === 'Yes' ? true : false,
-    //   ...fileUpload
-    // };
-    // dispatch(updateReqBudget(editedData, dataReqBudget.id)).then((data) => {
-    //   setAlertStatus(data.status);
-    //   if (data.status === 400) {
-    //     setAlertMessage(data.data);
-    //     setIsAlertModal(true);
-    //   } else if (data.status === 401) {
-    //     setAlertMessage('You are unauthorized to add this data');
-    //     setIsAlertModal(true);
-    //   } else if (data.status >= 200 && data.status < 300) {
-    //     setAlertMessage('Data updated successfully!');
-    //     setIsAlertModal(true);
-    //   } else if (data.status == 409) {
-    //     setAlertMessage('Data is already exist!');
-    //     setIsAlertModal(true);
-    //   } else {
-    //     setAlertMessage('Error occured, please try again later');
-    //     setIsAlertModal(true);
-    //   }
-    // });
+    const editedData = {
+      ...user,
+      password: data.password,
+    };
+
+    delete editedData.token;
+
+    dispatch(reauthenticate(token));
+    dispatch(updateIntern(editedData, user.id)).then((data) => {
+      setAlertStatus(data.status);
+      if (data.status === 400) {
+        setAlertMessage(data.data);
+        setIsAlertModal(true);
+      } else if (data.status === 401) {
+        setAlertMessage("You are unauthorized to add this data");
+        setIsAlertModal(true);
+      } else if (data.status >= 200 && data.status < 300) {
+        setAlertMessage("Data updated successfully!");
+        setIsAlertModal(true);
+      } else if (data.status == 409) {
+        setAlertMessage("Data is already exist!");
+        setIsAlertModal(true);
+      } else {
+        setAlertMessage("Error occured, please try again later");
+        setIsAlertModal(true);
+      }
+    });
+
   };
 
   const formik = useFormik({
     // initial values
     initialValues: {
-      //   number: dataReqBudget.number,
-      //   request: dataReqBudget.request,
-      //   category: dataReqBudget.category,
+      password: "",
+      passwordConfirmation: "",
     },
     // validation schema
     validationSchema: Yup.object({
-      //   number: Yup.string().required('Cannot be Empty'),
-      //   request: Yup.string().required('Cannot be Empty'),
-      //   category: Yup.string().required('Cannot be Empty'),
+      password: Yup.string().required("Password is required"),
+      passwordConfirmation: Yup.string()
+        .oneOf([Yup.ref("password")], "Passwords must match")
+        .required("Password Confirmation is required"),
     }),
     // handle submission
-    onSubmit: doSubmit
+    onSubmit: doSubmit,
   });
 
   return (
@@ -117,10 +105,12 @@ const ChangePassword = (props) => {
         <h2 className="m-0 ml-2 pl-2 border-left-dark">Change Password</h2>
       </div>
       <CustomForm
-        header={'Form Input'}
-        subheader={'Information Details'}
-        formTitle={'Change Password'}
-        formSubtitle={'Be sure to check “Form Change Password" before you continue'}
+        header={"Form Input"}
+        subheader={"Information Details"}
+        formTitle={"Change Password"}
+        formSubtitle={
+          'Be sure to check “Form Change Password" before you continue'
+        }
         onSubmitForm={formik.handleSubmit}
       >
         <Row>
@@ -130,20 +120,41 @@ const ChangePassword = (props) => {
                 <FormGroup>
                   <Label for="nameVertical">New Password</Label>
                   <InputPasswordToggle
-                    className="input-group-merge"
+                    className={`input-group-merge ${
+                      formik.touched.password &&
+                      formik.errors.password &&
+                      "is-invalid"
+                    }`}
                     id="new_password"
                     name="new_password"
+                    {...formik.getFieldProps("password")}
                   />
+                  {formik.touched.password && formik.errors.password && (
+                    <div className="invalid-feedback">
+                      {formik.errors.password}
+                    </div>
+                  )}
                 </FormGroup>
               </Col>
               <Col sm="12">
                 <FormGroup>
                   <Label for="nameVertical">Re-Enter Your New Password</Label>
                   <InputPasswordToggle
-                    className="input-group-merge"
+                    className={`input-group-merge ${
+                      formik.touched.passwordConfirmation &&
+                      formik.errors.passwordConfirmation &&
+                      "is-invalid"
+                    }`}
                     id="re-enter_new_password"
                     name="re-enter_new_password"
+                    {...formik.getFieldProps("passwordConfirmation")}
                   />
+                  {formik.touched.passwordConfirmation &&
+                    formik.errors.passwordConfirmation && (
+                      <div className="invalid-feedback">
+                        {formik.errors.passwordConfirmation}
+                      </div>
+                    )}
                 </FormGroup>
               </Col>
             </Row>
@@ -157,7 +168,7 @@ const ChangePassword = (props) => {
       </CustomForm>
       <ComboAlert
         router={router}
-        routerPath="/master/request_budget"
+        routerPath="/home"
         isAlertModal={isAlertModal}
         setIsAlertModal={setIsAlertModal}
         alertStatus={alertStatus}
@@ -167,38 +178,4 @@ const ChangePassword = (props) => {
   );
 };
 
-// EditRequestBudget.auth = {
-//   role: ['Material Planner Spv', 'RnD/TS Data Support Spv']
-// };
-
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (ctx) => {
-//     const { req, query } = ctx;
-//     const sessionData = await getSession(ctx);
-
-//     if (!sessionData) {
-//       return {
-//         redirect: {
-//           destination: '/auth',
-//           permanent: false
-//         }
-//       };
-//     }
-
-//     store.dispatch(reauthenticate(sessionData.user.token));
-//     await store.dispatch(getReqBudgetById(query.id));
-
-//     const dataReqBudget = store.getState().requestBudget;
-
-//     return {
-//       props: {
-//         dataReqBudget,
-//         token: sessionData.user.token,
-//         userName: sessionData.user.userName
-//       }
-//     };
-//   }
-// );
-
-// export default connect((state) => state)(EditRequestBudget);
 export default ChangePassword;

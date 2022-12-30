@@ -58,7 +58,6 @@ export const updateIntern = (data, id) => async (dispatch) => {
       data,
     });
     dispatch({ type: PUT_INTERN, payload: response.data });
-
     return response;
   } catch (error) {
     return error.response;
