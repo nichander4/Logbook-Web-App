@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { connect } from 'react-redux';
 import HomeIntern from 'components/home/Intern/home';
 import HomeMentor from 'components/home/mentor/home';

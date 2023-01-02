@@ -14,6 +14,10 @@ const addUserForm = (user) => {
   );
 };
 
+addUserForm.auth = {
+  role: ["HR"],
+};
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
     const { req, query } = ctx;

@@ -40,7 +40,7 @@ import "styles/@core/base/pages/app-invoice.scss";
 import "styles/@core/base/pages/app-invoice-print.scss";
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 // ** Redux
 import React from "react";
@@ -56,10 +56,11 @@ import "react-quill/dist/quill.snow.css";
 // import { Auth } from "helpers/authGlobalCheck";
 
 import "styles/@core/base/pages/page-misc.scss";
+import { Auth } from "helpers/authGlobalCheck";
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   // Prevent error on macOS and iOS devices
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     if (!window.ResizeObserver) {
       window.ResizeObserver = ResizeObserver;
     }
@@ -68,11 +69,12 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
     <SessionProvider session={pageProps.session}>
-      <ProviderRedux store={store}>
-        {getLayout(
-          <div className="h-auto">
-            <style>
-              {`
+      <Auth permittedRole={Component.auth ? Component.auth.role : null}>
+        <ProviderRedux store={store}>
+          {getLayout(
+            <div className="h-auto">
+              <style>
+                {`
             ::-webkit-scrollbar {
               height: 5px;
               width : 8px;
@@ -90,11 +92,12 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
             }
     
         `}
-            </style>
-            <Component {...pageProps} />
-          </div>
-        )}
-      </ProviderRedux>
+              </style>
+              <Component {...pageProps} />
+            </div>
+          )}
+        </ProviderRedux>
+      </Auth>
     </SessionProvider>
   );
 };

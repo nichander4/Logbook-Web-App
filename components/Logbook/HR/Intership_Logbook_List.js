@@ -76,7 +76,7 @@ const Intership_Logbook_List = ({ token, user }) => {
       });
       setLoading(false);
     });
-  }, []);
+  }, [tempPageSize, tempPageNumber, tempSearchQuery]);
 
   const handlePageSize = (e) => {
     setTempPageSize(e.target.value);
