@@ -34,7 +34,6 @@ export const Auth = ({ children, permittedRole }) => {
   const { data: session, status } = useSession();
   const userRole = []
 
-  console.log(status, "sessionAuth");
   const router = useRouter();
 
   if (permittedRole === null) {

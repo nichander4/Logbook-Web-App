@@ -1,4 +1,5 @@
 import ComboAlert from "components/Alert/ComboAlert";
+import { getPermissionComponent } from "helpers/getPermission";
 import moment from "moment";
 import React, { useState } from "react";
 import { Edit2, Info, MoreVertical, Trash2 } from "react-feather";
@@ -78,8 +79,10 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
       <td style={{ textAlign: "start" }}>
         {item.jamKeluar ? moment(item.jamKeluar).format("HH:mm") : ""}
       </td>
-      <td className="text-center px-2 align-middle">
-        {moment().format() > moment(item.date).format() && status == "Draft" ? (
+      {moment().format() > moment(item.date).format() &&
+      status == "Draft" &&
+      getPermissionComponent("Intern") ? (
+        <td className="text-center px-2 align-middle">
           <div className="d-flex justify-content-center ">
             <Button.Ripple
               color="primary"
@@ -89,100 +92,23 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
               Entry
             </Button.Ripple>
           </div>
-        ) : null}
-        {/* <div className="d-flex justify-content-center ">
-          <Button.Ripple
-            color="primary"
-            className="d-flex align-items-center"
-            onClick={toggleEntryPopup}
-          >
-            Entry
-          </Button.Ripple>
-        </div> */}
-
-        {/* <div className="d-flex justify-content-center">
-          <Button.Ripple
-            color="primary"
-            className="d-flex align-items-center mr-1"
-            // onClick={toggleEntryPopup}
-          >
-            Approve
-          </Button.Ripple>
-
-          <Button.Ripple
-            color="danger"
-            className="d-flex align-items-center"
-            onClick={toggleRejectPopup}
-          >
-            Reject
-          </Button.Ripple>
-        </div> */}
-
-        <LogbookModal
-          entryModal={entryModal}
-          toggleEntryPopup={toggleEntryPopup}
-          item={item}
-          token={token}
-          submitHandler={submitHandler}
-        />
-        <Modal
-          centered
-          fullscreen="md"
-          scrollable
-          size="md"
-          isOpen={rejectModal}
-          toggle={toggleRejectPopup}
-        >
-          <ModalHeader toggle={toggleRejectPopup} className="bg-danger">
-            <div className="text-white">Reject</div>
-          </ModalHeader>
-          <ModalBody>
-            <FormGroup>
-              <Label for="nameVertical">Reason</Label>
-              <Input
-                id={styles.textarea}
-                name="retrunReason"
-                type="textarea"
-                placeholder="Placeholder"
-                rows="6"
-                style={{ resize: "none" }}
-                // value={formik.values.retrunReason}
-                // className={`${
-                //   formik.touched.retrunReason &&
-                //   formik.errors.retrunReason &&
-                //   'is-invalid'
-                // }`}
-                // {...formik.getFieldProps('retrunReason')}
-              />
-            </FormGroup>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              className="d-flex mr-auto"
-              color="danger"
-              type="submit"
-              // onClick={toggleEntryPopup}
-            >
-              Reject
-            </Button>
-            <Button
-              className="d-flex ml-auto btn btn-outline-danger"
-              color="white"
-              // onClick={doSubmit}
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
-        <ComboAlert
-          isDeleteModal={true}
-          isAlertModal={isAlertModal}
-          setIsAlertModal={setIsAlertModal}
-          alertStatus={alertStatus}
-          alertMessage={alertMessage}
-          setRefresh={setRefresh}
-        />
-      </td>
+          <LogbookModal
+            entryModal={entryModal}
+            toggleEntryPopup={toggleEntryPopup}
+            item={item}
+            token={token}
+            submitHandler={submitHandler}
+          />
+          <ComboAlert
+            isDeleteModal={true}
+            isAlertModal={isAlertModal}
+            setIsAlertModal={setIsAlertModal}
+            alertStatus={alertStatus}
+            alertMessage={alertMessage}
+            setRefresh={setRefresh}
+          />
+        </td>
+      ) : null}
     </tr>
   );
 };

@@ -30,6 +30,7 @@ import ApproveModal from "../Modal/ApproveModal";
 import ApproveHRModal from "../Modal/ApproveHRModal";
 import ReviseModal from "../Modal/ReviseModal";
 import ReasonModal from "../Modal/ReasonModal";
+import { getPermissionComponent } from "helpers/getPermission";
 
 const TableLogbook = ({ id, token, user }) => {
   const dispatch = useDispatch();
@@ -243,7 +244,7 @@ const TableLogbook = ({ id, token, user }) => {
               <th className="text-left align-middle">WFH/WFO</th>
               <th className="text-left align-middle">Check in</th>
               <th className="text-left align-middle">check out</th>
-              <th className="text-center align-middle">ACTION</th>
+              {getPermissionComponent("Intern") && (<th className="text-center align-middle">ACTION</th>)}
             </tr>
           </thead>
           <tbody>
