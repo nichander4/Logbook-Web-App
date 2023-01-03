@@ -35,6 +35,7 @@ const LoginPage = ({ csrfToken, authError }) => {
 
   return (
     <div className="auth-wrapper auth-v2">
+      <title>Login</title>
       <Row className="auth-inner m-0 d-flex justify-content-center bg-light">
      
           <Card
