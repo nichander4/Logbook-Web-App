@@ -92,7 +92,7 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
                   time_24hr: true,
                 }}
                 onChange={(date) => {
-                  formik.setFieldValue("jamMasuk", date);
+                  formik.setFieldValue("jamMasuk", date[0]);
                 }}
               />
             </FormGroup>
@@ -118,7 +118,7 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
                   time_24hr: true,
                 }}
                 onChange={(date) => {
-                  formik.setFieldValue("jamKeluar", date);
+                  formik.setFieldValue("jamKeluar", date[0]);
                 }}
               />
             </FormGroup>
