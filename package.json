@@ -6,6 +6,7 @@
     "dev": "env-cmd -f .env.development next dev",
     "build": "next build",
     "start": "next start",
+    "build:development": "env-cmd -f .env.development next build",
     "lint": "next lint"
   },
   "engines": {
