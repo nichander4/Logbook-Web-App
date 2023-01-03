@@ -21,7 +21,7 @@ const ReviseModal = ({ setReasonModal }) => {
           className="mx-1"
           onClick={() => setBasicModal(!basicModal)}
         >
-          Revise
+          Reject
         </Button>
         <Modal
           centered
@@ -32,11 +32,11 @@ const ReviseModal = ({ setReasonModal }) => {
             className="modalHeaderTextApprovePopUp bg-danger"
             toggle={() => setBasicModal(!basicModal)}
           >
-            Approve
+            Reject
           </ModalHeader>
           <ModalBody>
             <div className="modalBodyTextApprovePopUp">
-              <t>Are you sure want to revise this document?</t>
+              <t>Are you sure want to reject this document?</t>
             </div>
           </ModalBody>
           <ModalFooter>
@@ -47,7 +47,7 @@ const ReviseModal = ({ setReasonModal }) => {
                 setReasonModal(true);
               }}
             >
-              Yes, revise
+              Yes, reject
             </Button>
             <Button
               color="danger"

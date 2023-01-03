@@ -67,6 +67,7 @@ const internTable = ({ token }) => {
 
   return (
     <>
+  
       <h3 className="mb-2">Intern List</h3>
       <Row className="mb-2">
         <Col
@@ -119,7 +120,7 @@ const internTable = ({ token }) => {
         </Col>
       </Row>
 
-      <div id={styles1.Table}>
+      <div id={styles1.Table} className="pb-3">
         <Table
           className="table border-1 text-nowrap"
           style={{ border: '1px solid #d8d6de' }}
@@ -169,7 +170,7 @@ const internTable = ({ token }) => {
           </tbody>
         </Table>
       </div>
-      <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
+      <Row className="mb-2 mt-1 justify-content-center justify-content-md-around align-items-center">
         <Col sm="12" md="11">
           <ReactPaginate
             pageCount={tempData.totalPage || 1}
@@ -204,6 +205,7 @@ const internTable = ({ token }) => {
         alertMessage={alertMessage}
         isDeleteModal={isDeleteModal}
       />
+      
     </>
   );
 };

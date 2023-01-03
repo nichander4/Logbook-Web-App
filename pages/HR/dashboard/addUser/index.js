@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/react';
 const addUserForm = (user) => {
   return (
     <VerticalLayout>
+      <title>Add User Form</title>
       <AddUserForm user={user} />
     </VerticalLayout>
   );

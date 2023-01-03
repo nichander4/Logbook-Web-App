@@ -60,8 +60,8 @@ const logbookModal = ({
 
   const OffValue = () => {
     formik.setFieldValue('activity', 'OFF');
-    formik.setFieldValue('jamMasuk', null);
-    formik.setFieldValue('jamKeluar', null);
+    formik.setFieldValue('jamMasuk', new Date());
+    formik.setFieldValue('jamKeluar', new Date());
     formik.setFieldValue('isWorkFromOffice', false);
   };
   return (
@@ -142,6 +142,10 @@ const logbookModal = ({
             value={{
               value: formik.values.isWorkFromOffice,
               label: formik.values.isWorkFromOffice ? 'WFO' : 'WFH'
+            }}
+            onChange={(value) => {
+            
+              formik.setFieldValue('isWorkFromOffice', value.value);
             }}
           />
         </FormGroup>

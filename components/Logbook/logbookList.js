@@ -46,7 +46,7 @@ const entryLogbook = ({ user, token, dataIntern }) => {
           {dataIntern.logbooks.map((x) => {
             return (
               <TabPane tabId={x.id}>
-                <TableLogbook id={x.id} token={token} key={x.id} user={user}/>
+                <TableLogbook id={x.id} token={token} key={x.id} user={user} dataIntern={dataIntern} />
               </TabPane>
             );
           })}

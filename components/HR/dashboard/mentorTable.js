@@ -249,7 +249,7 @@ const mentorTable = ({ token }) => {
         </Col>
       </Row>
 
-      <div id={styles1.Table}>
+      <div id={styles1.Table} className = 'pb-3'>
         <Table
           className="table border-1 text-nowrap"
           style={{ border: '1px solid #d8d6de' }}
@@ -297,7 +297,7 @@ const mentorTable = ({ token }) => {
           </tbody>
         </Table>
       </div>
-      <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
+      <Row className="mb-2 mt-1 justify-content-center justify-content-md-around align-items-center">
         <Col sm="12" md="11">
           <ReactPaginate
             pageCount={tempData.totalPage || 1}

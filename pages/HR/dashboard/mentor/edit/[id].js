@@ -9,10 +9,16 @@ import { getSession } from 'next-auth/react';
 const editMentorForm = ({dataMentor, token}) => {
   return (
     <VerticalLayout>
+       <title>{dataMentor.userName}'s Edit Form </title>
       <MentorForm dataMentor={dataMentor} token={token}/>
     </VerticalLayout>
   );
 };
+
+editMentorForm.auth = {
+  role: ["HR"],
+};
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
     const { req, query } = ctx;

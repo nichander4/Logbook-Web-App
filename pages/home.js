@@ -10,13 +10,15 @@ import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 const Home = ({ user }) => {
   return (
     <VerticalLayout>
-      {user.role.roleName == 'Mentor' ? (
-        <HomeMentor />
-      ) : user.role.roleName == 'Intern' ? (
-        <HomeIntern />
-      ) : (
-        <HomeHR token={user.token} />
-      )}
+      <title>Home</title>
+        {user.role.roleName == 'Mentor' ? (
+          <HomeMentor />
+        ) : user.role.roleName == 'Intern' ? (
+          <HomeIntern />
+        ) : (
+          <HomeHR token={user.token} />
+        )}
+  
     </VerticalLayout>
   );
 };

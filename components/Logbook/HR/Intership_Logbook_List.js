@@ -28,7 +28,7 @@ const MenteeItem = ({ item }) => {
   return (
     <tr>
       <td style={{ textAlign: "start" }}>
-        <Link href={`/Logbook/${item.userName}/${item.id}`} passHref>
+        <Link href={`/logbook/${item.userName}/${item.id}`} passHref>
           {item.userName}
         </Link>
       </td>

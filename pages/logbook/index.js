@@ -19,6 +19,7 @@ const Logbook = ({ user }) => {
 
   return (
     <VerticalLayout>
+      <title>Logbook</title>
       {user.role.roleName == 'Mentor' ? (
         <LogbookForMentor token={user.token} user={user} />
       ) : user.role.roleName == 'HR' ? (
@@ -46,7 +47,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (sessionData.user.role.roleName == 'Intern') {
       return {
         redirect: {
-          destination: `/Logbook/${sessionData.user.userName}/${sessionData.user.id}`,
+          destination: `/logbook/${sessionData.user.userName}/${sessionData.user.id}`,
           permanent: false
         }
       };

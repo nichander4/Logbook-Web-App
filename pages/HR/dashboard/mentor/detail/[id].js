@@ -9,9 +9,14 @@ import { getSession } from 'next-auth/react';
 const detailMentorForm = ({dataMentor, token}) => {
   return (
     <VerticalLayout>
+       <title>{dataMentor.userName}'s View Form </title>
       <MentorForm dataMentor={dataMentor} token={token}/>
     </VerticalLayout>
   );
+};
+
+detailMentorForm.auth = {
+  role: ["HR"],
 };
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {

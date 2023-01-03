@@ -9,9 +9,14 @@ import { getSession } from 'next-auth/react';
 const detailInternForm = ({ dataIntern, token }) => {
   return (
     <VerticalLayout>
+       <title>{dataIntern.userName}'s View Form </title>
       <InternForm dataIntern={dataIntern} token={token} />
     </VerticalLayout>
   );
+};
+
+detailInternForm.auth = {
+  role: ["HR"],
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

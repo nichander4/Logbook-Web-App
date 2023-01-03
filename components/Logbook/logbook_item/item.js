@@ -64,22 +64,36 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
 
   return (
     <tr>
-      <td style={{ textAlign: 'start' }} className="text-nowrap">
-        {moment(item.date).format('dddd, D MMM YYYY')}
+      <td style={{ textAlign: 'start' }} className="font-weight-bold">
+        <div>{moment(item.date).format('dddd,')}</div>
+        {moment(item.date).format('D MMM YYYY')}
       </td>
       <td style={{ textAlign: 'start' }} className="text-break">
         {item.activity}
       </td>
       <td style={{ textAlign: 'start' }} className="text-nowrap">
-        <Badge color="light-primary" style={{ borderRadius: '18px' }}>
-          {item.isWorkFromOffice ? 'WFO' : 'WFH'}
-        </Badge>
+        {item.activity == 'OFF' ? (
+          'OFF'
+        ) : (
+          <Badge color="light-primary" style={{ borderRadius: '18px' }}>
+            {item.activity == null ? '' : item.isWorkFromOffice ? 'WFO' : 'WFH'}
+          </Badge>
+        )}
       </td>
       <td style={{ textAlign: 'start' }} className="text-nowrap">
-        {item.jamMasuk ? moment(item.jamMasuk).format('HH:mm') : ''}
+        {item.activity == 'OFF'
+          ? 'OFF'
+          : item.jamMasuk
+          ? moment(item.jamMasuk).format('HH:mm')
+          : ''}
       </td>
       <td style={{ textAlign: 'start' }} className="text-nowrap">
-        {item.jamKeluar ? moment(item.jamKeluar).format('HH:mm') : ''}
+      {item.activity == 'OFF'
+          ? 'OFF'
+          : item.jamKeluar
+          ? moment(item.jamKeluar).format('HH:mm')
+          : ''}
+       
       </td>
       {moment().format() > moment(item.date).format() &&
       status == 'Draft' &&
@@ -96,7 +110,7 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
               </Button.Ripple>
             ) : (
               <Button.Ripple
-                color="primary"
+                color="info"
                 className="d-flex align-items-center"
                 onClick={toggleEntryPopup}
               >

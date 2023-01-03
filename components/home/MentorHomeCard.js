@@ -12,7 +12,7 @@ const WelcomeCard = () => {
 
   const isiLogbook = () => {
     setLoading(true);
-      router.push('/Logbook');
+      router.push('/logbook');
   };
 
   const date = new Date();

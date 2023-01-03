@@ -65,7 +65,7 @@ const approveModal = ({ approveHandler }) => {
               Yes, Approve
             </Button>
             <Button
-              color="danger"
+              color="primary"
               outline
               onClick={() => setBasicModal(!basicModal)}
             >

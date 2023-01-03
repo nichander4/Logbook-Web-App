@@ -42,7 +42,7 @@ const approveHRModal = ({ approveHandler }) => {
           className="mx-1"
           onClick={() => setBasicModal(!basicModal)}
         >
-          Approve
+          Approve & Calculate
         </Button>
         <Modal
           centered
@@ -53,7 +53,7 @@ const approveHRModal = ({ approveHandler }) => {
             className="modalHeaderTextApprovePopUp bg-primary"
             toggle={() => setBasicModal(!basicModal)}
           >
-            Approve
+            Approve & Calculate
           </ModalHeader>
           <ModalBody>
             <div className="modalBodyTextApprovePopUp">

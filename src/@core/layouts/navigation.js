@@ -16,6 +16,6 @@ export const navigationData = [
     title: 'Logbook',
     icon: <Book size={20} />,
     badge: 'primary',
-    href: '/Logbook'
+    href: '/logbook'
   }
 ];

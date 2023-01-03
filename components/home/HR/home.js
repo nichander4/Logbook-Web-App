@@ -19,6 +19,7 @@ const HR_Dashboard = ({token}) => {
 
   return (
     <>
+    <div className="min-vh-100">
       <BreadCrumbs breadCrumbParent="HR" breadCrumbActive="Dashboard" />
       <Row className="mt-1">
         <Col md="9" sm="9">
@@ -65,7 +66,8 @@ const HR_Dashboard = ({token}) => {
             </NavLink>
           </NavItem>
         </Nav>
-        <TabContent className="ml-1 py-50" activeTab={active}>
+        <TabContent className="ml-1 py-50 min-vh-100" activeTab={active}>
+
           <TabPane tabId="1">
             {active == '1' && <InternTable token={token}/>}
             
@@ -77,6 +79,7 @@ const HR_Dashboard = ({token}) => {
           </TabPane>
         </TabContent>
       </React.Fragment>
+      </div>
     </>
   );
 };

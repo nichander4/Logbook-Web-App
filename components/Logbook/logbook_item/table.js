@@ -32,7 +32,7 @@ import ReviseModal from "../Modal/ReviseModal";
 import ReasonModal from "../Modal/ReasonModal";
 import { getPermissionComponent } from "helpers/getPermission";
 
-const TableLogbook = ({ id, token, user }) => {
+const TableLogbook = ({ id, token, user, dataIntern }) => {
   const dispatch = useDispatch();
   const [dataState, setDataState] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -292,8 +292,8 @@ const TableLogbook = ({ id, token, user }) => {
           {dataState.gajiTotal ? (
             <>
           <h3>Total Salary : Rp. {dataState.gajiTotal}</h3>
-          <h3>{user.userName}</h3>
-          <h3>{user.rekening}</h3>
+          <h3>{dataIntern.userName}</h3>
+          <h3>No Rek : {dataIntern.rekening}</h3>
             </>
           ) : null}
           

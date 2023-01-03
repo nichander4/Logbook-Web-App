@@ -9,6 +9,7 @@ import { getInternById } from 'redux/actions/intern_action';
 const Logbook = ({ user, token, dataIntern }) => {
   return (
     <VerticalLayout>
+      <title>{dataIntern.userName}'s Logbook </title>
       <LogbookTable user={user} token={token} dataIntern={dataIntern} />
     </VerticalLayout>
   );

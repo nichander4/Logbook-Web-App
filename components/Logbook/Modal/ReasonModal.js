@@ -38,7 +38,7 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
         className="modalHeaderTextWarningPopUp bg-warning"
         toggle={() => setReasonModal(!reasonModal)}
       >
-        Revise
+        Reject
       </ModalHeader>
       <ModalBody>
         <FormGroup>

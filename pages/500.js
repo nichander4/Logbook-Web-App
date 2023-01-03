@@ -4,6 +4,7 @@ import Link from "next/link";
 function MaintenancePage({ statusCode }) {
   return (
     <div className="misc-wrapper">
+      <title>Maintenance</title>
       <div className="misc-inner p-2 p-sm-3">
         <div className="w-100 text-center">
           <h2 className="mb-1">Under Maintenance 🕵🏻‍♀️</h2>

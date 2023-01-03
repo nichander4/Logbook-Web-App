@@ -27,24 +27,7 @@ const Home = () => {
   }, [session]);
 
   return (
-    <VerticalLayout>
-      {/* <Row>
-        <Col lg="3">
-          <WelcomeCard />
-        </Col>
-        <Col>
-          <StatisticCard cols="1" />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" lg="4" xl="3">
-          <CalendarCard />
-        </Col>
-        <Col xs="12" lg="8" xl="9">
-          <ReviewBPMCard />
-        </Col>
-      </Row> */}
-    </VerticalLayout>
+    <></>
   );
 };
 
