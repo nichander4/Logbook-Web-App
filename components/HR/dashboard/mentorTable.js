@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Edit2, Info, MoreVertical, Search, Trash2 } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {
@@ -22,33 +22,45 @@ import {
   InputGroupAddon,
   InputGroupText
 } from 'reactstrap';
+import { getAllMentor, deleteMentor } from 'redux/actions/mentor_action';
 
 import styles1 from 'styles/scrollbarTable.module.css';
+import { useDispatch } from 'react-redux';
 
-const MentorItem = ({ item }) => {
-  const router = useRouter();
+import { reauthenticate } from 'redux/actions/auth';
+import ComboAlert from 'components/Alert/ComboAlert';
+
+const MentorItem = ({
+  dispatch,
+  data,
+  router,
+  isDeleteModal,
+  setIsDeleteModal,
+  isAlertModal,
+  setIsAlertModal,
+  alertStatus,
+  setAlertStatus,
+  alertMessage,
+  setAlertMessage
+}) => {
   const [deleteModal, setDeteleModal] = useState(false);
   const toggleDeletePopup = () => setDeteleModal(!deleteModal);
 
   const deleteData = (e) => {
-    // e.preventDefault();
-    // dispatch(deleteReqBudget(data.id)).then((data) => {
-    //   if (data.status === 401) {
-    //     alert('Sorry, you are unauthorized to delete this data!');
-    //   } else if (data.status === 204) {
-    //     alert('Data deleted successfully!');
-    //     router.push({
-    //       pathname: router.pathname,
-    //       query: {
-    //         pageSize: pageSize,
-    //         pageNumber: pageNumber,
-    //         search: searchQuery
-    //       }
-    //     });
-    //   } else {
-    //     alert('Error occured, please try again later');
-    //   }
-    // });
+    e.preventDefault();
+
+    dispatch(deleteMentor(data.id)).then((data) => {
+      setAlertStatus(data.status);
+      setIsDeleteModal(true);
+      if (data.status === 401) {
+        setAlertMessage('Sorry, you are unauthorized to delete this data!');
+      } else if (data.status === 204) {
+        setAlertMessage('Data deleted successfully!');
+      } else {
+        setAlertMessage('Error occured, please try again later');
+      }
+      setIsAlertModal(true);
+    });
   };
 
   return (
@@ -68,7 +80,7 @@ const MentorItem = ({ item }) => {
             <DropdownItem
               className="action-vuexy-item w-100"
               onClick={() =>
-                router.push(`/HR/dashboard/mentor/detail/${1}`)
+                router.push(`/HR/dashboard/mentor/detail/${data.id}`)
               }
             >
               <Info className="mr-2" size={15} />{' '}
@@ -82,7 +94,7 @@ const MentorItem = ({ item }) => {
             <DropdownItem
               className="action-vuexy-item w-100"
               onClick={() =>
-                router.push(`/HR/dashboard/mentor/edit/${1}`)
+                router.push(`/HR/dashboard/mentor/edit/${data.id}`)
               }
             >
               <Edit2 className="mr-2" size={15} />{' '}
@@ -132,47 +144,56 @@ const MentorItem = ({ item }) => {
           </DropdownMenu>
         </UncontrolledDropdown>
       </td>
-      <td style={{ textAlign: 'start' }}>{item.name}</td>
-      <td style={{ textAlign: 'start' }}>{item.department}</td>
-      <td style={{ textAlign: 'start' }}>{item.position}</td>
-      <td style={{ textAlign: 'start' }}>{item.intern}</td>
+      <td style={{ textAlign: 'start' }}>{data.userName}</td>
+      <td style={{ textAlign: 'start' }}>{data.department}</td>
+      <td style={{ textAlign: 'start' }}>{data.position}</td>
+      <td style={{ textAlign: 'center' }}>{data.totalIntern}</td>
     </tr>
   );
 };
 
-const mentorTable = () => {
-  const DUMMY_MentorItem = [
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    },
-    {
-      name: 'Edwin Simjaya',
-      department: 'CIT',
-      position: 'Web Developer',
-      intern: '6'
-    }
-  ];
+const mentorTable = ({ token }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const [loadingData, setLoadingData] = useState(false);
+
+  const [tempData, setTempData] = useState('');
+  const [tempPageSize, setTempPageSize] = useState(5);
+  const [tempPageNumber, setTempPageNumber] = useState(1);
+  const [tempSearchQuery, setTempSearchQuery] = useState('');
+
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  useEffect(() => {
+    setLoadingData(true);
+    dispatch(reauthenticate(token));
+
+    dispatch(getAllMentor(tempPageNumber, tempPageSize, tempSearchQuery)).then(
+      (response) => {
+        setTempData({
+          data: response.data.data,
+          currentPage: response.data.currentPage,
+          pageSize: response.data.pageSize,
+          totalPage: response.data.totalPage
+        });
+        setLoadingData(false);
+      }
+    );
+  }, [tempPageSize, tempPageNumber, tempSearchQuery, isDeleteModal]);
+
+  const handlePageSize = (e) => {
+    setTempPageSize(e.target.value);
+    setTempPageNumber(1);
+  };
+
+  const handleSearchQuery = (e) => {
+    setTempSearchQuery(e);
+    setTempPageNumber(1);
+  };
 
   return (
     <>
@@ -187,7 +208,12 @@ const mentorTable = () => {
           <Label className="mr-1" for="search-input-1">
             Show
           </Label>
-          <CustomInput type="select" className="custominput-table2 border-0">
+          <CustomInput
+            type="select"
+            className="custominput-table2 border-0"
+            defaultValue={tempPageSize}
+            onChange={handlePageSize}
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -208,6 +234,11 @@ const mentorTable = () => {
               name="search"
               id="search-invoice"
               placeholder="Search"
+              value={tempSearchQuery}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') handleSearchQuery(e.target.value);
+              }}
+              onChange={(e) => setTempSearchQuery(e.target.value)}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText>
@@ -229,12 +260,39 @@ const mentorTable = () => {
               <th className="text-left align-middle">NAME</th>
               <th className="text-left align-middle">DEPARTMENT</th>
               <th className="text-left align-middle">POSITION</th>
-              <th className="text-left align-middle">INTERN</th>
+              <th className="text-center align-middle">INTERN</th>
             </tr>
           </thead>
           <tbody>
-            {DUMMY_MentorItem.map(
-              (item, id) => (id++, (<MentorItem key={id} item={item} />))
+            {loadingData ? (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  Loading...
+                </td>
+              </tr>
+            ) : tempData && tempData.data.length > 0 ? (
+              tempData.data.map((data) => (
+                <MentorItem
+                  key={data.id}
+                  data={data}
+                  isDeleteModal={isDeleteModal}
+                  setIsDeleteModal={setIsDeleteModal}
+                  isAlertModal={isAlertModal}
+                  setIsAlertModal={setIsAlertModal}
+                  alertStatus={alertStatus}
+                  setAlertStatus={setAlertStatus}
+                  alertMessage={alertMessage}
+                  setAlertMessage={setAlertMessage}
+                  dispatch={dispatch}
+                  router={router}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  No data
+                </td>
+              </tr>
             )}
           </tbody>
         </Table>
@@ -242,7 +300,7 @@ const mentorTable = () => {
       <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
         <Col sm="12" md="11">
           <ReactPaginate
-            pageCount="5"
+            pageCount={tempData.totalPage || 1}
             nextLabel={''}
             breakLabel={'...'}
             activeClassName={'active'}
@@ -250,6 +308,10 @@ const mentorTable = () => {
             previousLabel={''}
             nextLinkClassName={'page-link'}
             nextClassName={'page-item next-item'}
+            forcePage={tempPageNumber - 1}
+            onPageChange={(page) => {
+              setTempPageNumber(page.selected + 1);
+            }}
             previousClassName={'page-item prev-item'}
             previousLinkClassName={'page-link'}
             pageLinkClassName={'page-link'}
@@ -261,6 +323,15 @@ const mentorTable = () => {
           />
         </Col>
       </Row>
+      <ComboAlert
+        router={router}
+        routerPath="/home"
+        isAlertModal={isAlertModal}
+        setIsAlertModal={setIsAlertModal}
+        alertStatus={alertStatus}
+        alertMessage={alertMessage}
+        isDeleteModal={isDeleteModal}
+      />
     </>
   );
 };

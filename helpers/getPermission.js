@@ -1,9 +1,12 @@
+import { useSession } from "next-auth/react";
+
 export const getPermissionComponent = (permittedRole) => {
   const userRole = [];
+  const { data: session, status } = useSession();
 
-  if (typeof window !== "undefined") {
-    const data = JSON.parse(localStorage.getItem("userRoles")) || [];
-    userRole = data.map((data) => data.role.name) || [];
+  if (typeof window !== "undefined" && status === "authenticated") {
+    const data = session.user.role.roleName;
+    data ? userRole.push(data) : [];
   }
 
   const similarRoles =

@@ -32,23 +32,20 @@ const fetchUserRolesFunction = async (dataSession) => {
 
 export const Auth = ({ children, permittedRole }) => {
   const { data: session, status } = useSession();
+  const userRole = []
 
-  // console.log(session);
-  const userRole = [];
   const router = useRouter();
 
   if (permittedRole === null) {
     return <React.Fragment>{children}</React.Fragment>;
   }
 
-  if (typeof window !== "undefined") {
-    const data = JSON.parse(localStorage.getItem("userRoles"));
-    if (_.isEmpty(data) && status === "authenticated") {
-      fetchUserRolesFunction(session);
-    }
-
-    data ? (userRole = data.map((data) => data.role.name)) : [];
+  if (typeof window !== "undefined" && status === "authenticated") {
+    const data = session.user.role.roleName;
+    data ? userRole.push(data) : [];
   }
+
+  console.log(userRole);
 
   const similarRoles =
     userRole.filter((userRole) => permittedRole.includes(userRole)) || [];

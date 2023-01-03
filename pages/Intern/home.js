@@ -1,5 +1,5 @@
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
-import MenteeHomeCard from 'components/Intern/MenteeHomeCard';
+import MenteeHomeCard from 'components/home/MenteeHomeCard';
 
 
 const MenteeHome = () => {

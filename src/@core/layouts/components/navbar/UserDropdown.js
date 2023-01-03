@@ -12,20 +12,14 @@ import {
   DropdownItem,
 } from "reactstrap";
 import {
-  User,
-  Mail,
-  CheckSquare,
-  MessageSquare,
-  Settings,
-  CreditCard,
-  HelpCircle,
   Edit,
   Power,
 } from "react-feather";
 import { signOut, useSession } from "next-auth/react";
 
 const UserDropdown = () => {
-  const session = useSession();
+  const { data: session, status } = useSession();
+
   const logoutFunc = () => {
     if (typeof window !== "undefined") {
       localStorage.clear();
@@ -42,8 +36,8 @@ const UserDropdown = () => {
         size="lg"
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name font-weight-bold">{"session.data.user.userName"}</span>
-          <span className="user-status">{"session.data.user.role.roleName"}</span>
+          <span className="user-name font-weight-bold">{session?.user.userName}</span>
+          <span className="user-status">{session?.user.role.roleName}</span>
         </div>
         <Avatar
           img="/images/portrait/small/avatar-s-11.jpg"
@@ -53,49 +47,7 @@ const UserDropdown = () => {
         />
       </DropdownToggle>
       <DropdownMenu right style={{width:"150%"}}>
-        {/* <DropdownItem tag={Link} href="/pages/profile">
-          <a className="dropdown-item">
-            <User size={14} className="mr-75" />
-            <span className="align-middle">Profile</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem tag={Link} href="/apps/email">
-          <a className="dropdown-item">
-            <Mail size={14} className="mr-75" />
-            <span className="align-middle">Inbox</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem tag={Link} href="/apps/todo">
-          <a className="dropdown-item">
-            <CheckSquare size={14} className="mr-75" />
-            <span className="align-middle">Tasks</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem tag={Link} href="/apps/chat">
-          <a className="dropdown-item">
-            <MessageSquare size={14} className="mr-75" />
-            <span className="align-middle">Chats</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem divider />
-        <DropdownItem tag={Link} href="/pages/account-settings">
-          <a className="dropdown-item">
-            <Settings size={14} className="mr-75" />
-            <span className="align-middle">Settings</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem tag={Link} href="/pages/pricing">
-          <a className="dropdown-item">
-            <CreditCard size={14} className="mr-75" />
-            <span className="align-middle">Pricing</span>
-          </a>
-        </DropdownItem>
-        <DropdownItem tag={Link} href="/pages/faq">
-          <a className="dropdown-item">
-            <HelpCircle size={14} className="mr-75" />
-            <span className="align-middle">FAQ</span>
-          </a>
-        </DropdownItem> */}
+
         <DropdownItem tag={Link} href="/change_password">
           <a className="dropdown-item">
             <Edit size={14} className="mr-75" />

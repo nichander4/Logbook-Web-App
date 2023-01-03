@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search} from 'react-feather';
+import React, { useEffect, useState } from 'react';
+import { Plus, Search } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {
   Table,
@@ -10,57 +10,60 @@ import {
   InputGroup,
   Input,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
+  Button
 } from 'reactstrap';
 
 import styles1 from 'styles/scrollbarTable.module.css';
-import InternTableItem from './internTableItem'
+import InternTableItem from './internTableItem';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { reauthenticate } from 'redux/actions/auth';
+import { getAllIntern } from 'redux/actions/intern_action';
+import ComboAlert from 'components/Alert/ComboAlert';
 
+const internTable = ({ token }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
 
+  const [loadingData, setLoadingData] = useState(false);
 
-const internTable = () => {
-  const DUMMY_MenteeItem = [
-    {
-      name: 'Nicholas Anderson',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Reyhan Nathanael',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Nicholas Anderson',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Reyhan Nathanael',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    },
-    {
-      name: 'Nicholas Anderson',
-      university: 'BINUS',
-      department: 'CIT',
-      position: 'Web Developer',
-      mentor: 'Edwin Simjaya',
-      endDate: '23-2-2023'
-    }
-  ];
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const [tempData, setTempData] = useState('');
+  const [tempPageSize, setTempPageSize] = useState(5);
+  const [tempPageNumber, setTempPageNumber] = useState(1);
+  const [tempSearchQuery, setTempSearchQuery] = useState('');
+
+  useEffect(() => {
+    setLoadingData(true);
+    dispatch(reauthenticate(token));
+
+    dispatch(getAllIntern(tempPageNumber, tempPageSize, tempSearchQuery)).then(
+      (response) => {
+        setTempData({
+          data: response.data.data,
+          currentPage: response.data.currentPage,
+          pageSize: response.data.pageSize,
+          totalPage: response.data.totalPage
+        });
+        setLoadingData(false);
+      }
+    );
+  }, [tempPageSize, tempPageNumber, tempSearchQuery, isDeleteModal]);
+
+  const handlePageSize = (e) => {
+    setTempPageSize(e.target.value);
+    setTempPageNumber(1);
+  };
+
+  const handleSearchQuery = (e) => {
+    setTempSearchQuery(e);
+    setTempPageNumber(1);
+  };
 
   return (
     <>
@@ -75,7 +78,12 @@ const internTable = () => {
           <Label className="mr-1" for="search-input-1">
             Show
           </Label>
-          <CustomInput type="select" className="custominput-table2 border-0">
+          <CustomInput
+            type="select"
+            className="custominput-table2 border-0"
+            defaultValue={tempPageSize}
+            onChange={handlePageSize}
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -96,6 +104,11 @@ const internTable = () => {
               name="search"
               id="search-invoice"
               placeholder="Search"
+              value={tempSearchQuery}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') handleSearchQuery(e.target.value);
+              }}
+              onChange={(e) => setTempSearchQuery(e.target.value)}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText>
@@ -123,8 +136,35 @@ const internTable = () => {
             </tr>
           </thead>
           <tbody>
-            {DUMMY_MenteeItem.map(
-              (item, id) => (id++, (<InternTableItem key={id} item={item} />))
+            {loadingData ? (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  Loading...
+                </td>
+              </tr>
+            ) : tempData && tempData.data.length > 0 ? (
+              tempData.data.map((data) => (
+                <InternTableItem
+                  key={data.id}
+                  data={data}
+                  isDeleteModal = {isDeleteModal}
+                  setIsDeleteModal = {setIsDeleteModal}
+                  isAlertModal = {isAlertModal}
+                  setIsAlertModal = {setIsAlertModal}
+                  alertStatus = {alertStatus}
+                  setAlertStatus = {setAlertStatus}
+                  alertMessage = {alertMessage}
+                  setAlertMessage = {setAlertMessage}
+                  dispatch={dispatch}
+                  router={router}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={15} className="text-center">
+                  No data
+                </td>
+              </tr>
             )}
           </tbody>
         </Table>
@@ -132,7 +172,7 @@ const internTable = () => {
       <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
         <Col sm="12" md="11">
           <ReactPaginate
-            pageCount="5"
+            pageCount={tempData.totalPage || 1}
             nextLabel={''}
             breakLabel={'...'}
             activeClassName={'active'}
@@ -140,6 +180,10 @@ const internTable = () => {
             previousLabel={''}
             nextLinkClassName={'page-link'}
             nextClassName={'page-item next-item'}
+            forcePage={tempPageNumber - 1}
+            onPageChange={(page) => {
+              setTempPageNumber(page.selected + 1);
+            }}
             previousClassName={'page-item prev-item'}
             previousLinkClassName={'page-link'}
             pageLinkClassName={'page-link'}
@@ -151,7 +195,17 @@ const internTable = () => {
           />
         </Col>
       </Row>
+      <ComboAlert
+        router={router}
+        routerPath="/home"
+        isAlertModal={isAlertModal}
+        setIsAlertModal={setIsAlertModal}
+        alertStatus={alertStatus}
+        alertMessage={alertMessage}
+        isDeleteModal={isDeleteModal}
+      />
     </>
   );
 };
+
 export default internTable;

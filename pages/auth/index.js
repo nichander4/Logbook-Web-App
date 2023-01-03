@@ -70,7 +70,7 @@ const LoginPage = ({ csrfToken, authError }) => {
                     Email
                   </Label>
                   <Input
-                    type="text"
+                    type="email"
                     id="email"
                     name="email"
                     placeholder="Input Email"
@@ -133,7 +133,7 @@ export async function getServerSideProps(ctx) {
   if (sessionData) {
     return {
       redirect: {
-        destination: "/form",
+        destination: "/home",
         permanent: false,
       },
     };

@@ -7,9 +7,12 @@ const ComboAlert = ({
   setIsAlertModal,
   alertStatus,
   alertMessage,
+  isDeleteModal,
+  setRefresh,
 }) => {
   return (
     <Modal
+      static
       centered
       isOpen={isAlertModal}
       toggle={() => {
@@ -41,10 +44,17 @@ const ComboAlert = ({
               : alertStatus >= 400 && alertStatus <= 500 && "danger"
           }
           onClick={() => {
-            if (alertStatus >= 200 && alertStatus < 300)
-              router.push(routerPath);
-            else if (alertStatus >= 400 && alertStatus <= 500)
+            if (isDeleteModal == true) {
               setIsAlertModal(false);
+              if(alertStatus >= 200 && alertStatus < 300 && setRefresh){
+                setRefresh((state) => !state);
+              }
+            } else {
+              if (alertStatus >= 200 && alertStatus < 300)
+                router.push(routerPath);
+              else if (alertStatus >= 400 && alertStatus <= 500)
+                setIsAlertModal(false);
+            }
           }}
         >
           OK

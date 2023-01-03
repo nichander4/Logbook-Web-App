@@ -25,8 +25,6 @@ const options = {
           }
         });
 
-        return loginData;
-
         try {
         } catch (error) {
           throw new Error("There was an error on user authentication");

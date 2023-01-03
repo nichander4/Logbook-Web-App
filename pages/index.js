@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <VerticalLayout>
-      <Row>
+      {/* <Row>
         <Col lg="3">
           <WelcomeCard />
         </Col>
@@ -43,7 +43,7 @@ const Home = () => {
         <Col xs="12" lg="8" xl="9">
           <ReviewBPMCard />
         </Col>
-      </Row>
+      </Row> */}
     </VerticalLayout>
   );
 };
@@ -56,7 +56,7 @@ export async function getServerSideProps(ctx) {
   if (sessionData) {
     return {
       redirect: {
-        destination: "/form",
+        destination: "/home",
         permanent: false,
       },
     };
