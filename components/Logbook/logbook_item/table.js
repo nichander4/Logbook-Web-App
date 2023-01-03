@@ -272,7 +272,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
                       item={item}
                       token={token}
                       setRefresh={setRefresh}
-                      status={dataState.statusText}
+                      status={dataState.status}
                     />
                   )
                 )

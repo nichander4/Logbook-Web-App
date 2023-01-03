@@ -35,7 +35,7 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
       className={`modal-dialog-centered modal-md`}
     >
       <ModalHeader
-        className="modalHeaderTextWarningPopUp bg-warning"
+        className="modalHeaderTextWarningPopUp bg-danger"
         toggle={() => setReasonModal(!reasonModal)}
       >
         Reject
@@ -58,11 +58,11 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
         </FormGroup>
       </ModalBody>
       <ModalFooter>
-        <Button color="success" onClick={formik.submitForm}>
+        <Button color="danger" onClick={formik.submitForm}>
           OK
         </Button>
         <Button
-          color="success"
+          color="danger"
           outline
           onClick={() => setReasonModal(!reasonModal)}
         >

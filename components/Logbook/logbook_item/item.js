@@ -96,7 +96,9 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
        
       </td>
       {moment().format() > moment(item.date).format() &&
-      status == 'Draft' &&
+         (dataState.status == 0 || //Draft
+         dataState.status == 4 || //Revised by Mentor
+         dataState.status == 5) &&  // Revised by HR
       getPermissionComponent('Intern') ? (
         <td className="text-center px-2 align-middle text-nowrap">
           <div className="d-flex justify-content-center ">
