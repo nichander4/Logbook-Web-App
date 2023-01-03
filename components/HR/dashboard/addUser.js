@@ -130,7 +130,9 @@ const InternForm = (props) => {
       userName: Yup.string().required('Name Cannot be Empty'),
       university: Yup.string().required('University Cannot be Empty'),
       department: Yup.string().required('Department Cannot be Empty'),
-      email: Yup.string().required('Email Cannot be Empty'),
+      email: Yup.string()
+        .required('Email Cannot be Empty')
+        .email('Please Input Valid Email'),
       password: Yup.string()
         .required('Password Cannot be Empty')
         .min(8, 'Please provide a valid state (min 8 characters)'),
@@ -246,6 +248,7 @@ const InternForm = (props) => {
                 <FormGroup>
                   <Label for="nameVertical">Name</Label>
                   <Input
+                    autoComplete="off"
                     type="text"
                     name="userName"
                     id="userName"
@@ -432,7 +435,7 @@ const InternForm = (props) => {
                 <FormGroup>
                   <Label for="nameVertical">Email</Label>
                   <Input
-                    type="text"
+                    type="email"
                     name="email"
                     id="email"
                     value={formik.values.email}

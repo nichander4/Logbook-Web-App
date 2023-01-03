@@ -187,7 +187,7 @@ const TableLogbook = ({ id, token, user }) => {
           <Input
             type="text"
             id="status"
-            placeholder="Placeholder"
+            placeholder="-"
             value={dataState.statusText}
             disabled
           />
@@ -201,7 +201,7 @@ const TableLogbook = ({ id, token, user }) => {
             type="text"
             id="approveMentor"
             name="approveMentor"
-            placeholder="Placeholder"
+            placeholder="-"
             value={dataState.approve_by_mentor}
             disabled
           />
@@ -213,19 +213,19 @@ const TableLogbook = ({ id, token, user }) => {
             type="text"
             id="approveHR"
             name="approveHR"
-            placeholder="Placeholder"
+            placeholder="-"
             value={dataState.approve_by_hr}
             disabled
           />
         </Col>
 
         <Col>
-          <Label className="form-label font-weight-bold">Cancel Reason</Label>
+          <Label className="form-label font-weight-bold">Reject Reason</Label>
           <Input
             type="text"
             id="approveHR"
             name="approveHR"
-            placeholder="Placeholder"
+            placeholder="-"
             value={dataState.cancelReason}
             disabled
           />
@@ -234,17 +234,17 @@ const TableLogbook = ({ id, token, user }) => {
 
       <div id={styles1.Table}>
         <Table
-          className="table border-1 text-nowrap"
+          className="table border-1"
           style={{ border: "1px solid #d8d6de" }}
         >
           <thead>
             <tr>
-              <th className="text-left align-middle">Date</th>
+              <th className="text-left align-middle text-nowrap">Date</th>
               <th className="text-left align-middle">Activity</th>
-              <th className="text-left align-middle">WFH/WFO</th>
-              <th className="text-left align-middle">Check in</th>
-              <th className="text-left align-middle">check out</th>
-              {getPermissionComponent("Intern") && (<th className="text-center align-middle">ACTION</th>)}
+              <th className="text-left align-middle text-nowrap">WFH/WFO</th>
+              <th className="text-left align-middle text-nowrap">Check in</th>
+              <th className="text-left align-middle text-nowrap">check out</th>
+              {getPermissionComponent("Intern") && (<th className="text-center align-middle text-nowrap">ACTION</th>)}
             </tr>
           </thead>
           <tbody>
@@ -289,7 +289,13 @@ const TableLogbook = ({ id, token, user }) => {
       </div>
       <Row className="mb-2 mt-3 justify-content-center justify-content-md-around align-items-center">
         <Col sm="6" md="6">
-          {dataState.gajiTotal ? (<h3>Total Salary : Rp. {dataState.gajiTotal}</h3>) : null}
+          {dataState.gajiTotal ? (
+            <>
+          <h3>Total Salary : Rp. {dataState.gajiTotal}</h3>
+          <h3>{user.userName}</h3>
+          <h3>{user.rekening}</h3>
+            </>
+          ) : null}
           
         </Col>
 

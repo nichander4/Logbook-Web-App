@@ -1,9 +1,9 @@
-import ComboAlert from "components/Alert/ComboAlert";
-import { getPermissionComponent } from "helpers/getPermission";
-import moment from "moment";
-import React, { useState } from "react";
-import { Edit2, Info, MoreVertical, Trash2 } from "react-feather";
-import { useDispatch } from "react-redux";
+import ComboAlert from 'components/Alert/ComboAlert';
+import { getPermissionComponent } from 'helpers/getPermission';
+import moment from 'moment';
+import React, { useState } from 'react';
+import { Edit2, Info, MoreVertical, Trash2 } from 'react-feather';
+import { useDispatch } from 'react-redux';
 import {
   DropdownItem,
   DropdownMenu,
@@ -19,12 +19,12 @@ import {
   FormGroup,
   Input,
   Row,
-  Col,
-} from "reactstrap";
-import { reauthenticate } from "redux/actions/auth";
-import { entryLogbook } from "redux/actions/intern_action";
-import styles from "styles/scrollbarTable.module.css";
-import LogbookModal from "../Modal/logbookModal";
+  Col
+} from 'reactstrap';
+import { reauthenticate } from 'redux/actions/auth';
+import { entryLogbook } from 'redux/actions/intern_action';
+import styles from 'styles/scrollbarTable.module.css';
+import LogbookModal from '../Modal/logbookModal';
 const logbook_Item = ({ item, token, setRefresh, status }) => {
   const [entryModal, setEntryModal] = useState(false);
   const toggleEntryPopup = () => setEntryModal(!entryModal);
@@ -34,29 +34,29 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
 
   const [isAlertModal, setIsAlertModal] = useState(false);
   const [alertStatus, setAlertStatus] = useState(null);
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState('');
 
   const dispatch = useDispatch();
   const submitHandler = (id, data) => {
     dispatch(reauthenticate(token));
     dispatch(entryLogbook(id, data)).then((data) => {
-      console.log(data, "SUBMIT DATA");
+      console.log(data, 'SUBMIT DATA');
       setAlertStatus(data.status);
       if (data.status === 400) {
         setAlertMessage(data.data);
         setIsAlertModal(true);
       } else if (data.status === 401) {
-        setAlertMessage("You are unauthorized to add this data");
+        setAlertMessage('You are unauthorized to add this data');
         setIsAlertModal(true);
       } else if (data.status >= 200 && data.status < 300) {
         toggleEntryPopup();
-        setAlertMessage("Data added successfully!");
+        setAlertMessage('Data added successfully!');
         setIsAlertModal(true);
       } else if (data.status == 409) {
-        setAlertMessage("Data is already exist!");
+        setAlertMessage('Data is already exist!');
         setIsAlertModal(true);
       } else {
-        setAlertMessage("Error occured, please try again later");
+        setAlertMessage('Error occured, please try again later');
         setIsAlertModal(true);
       }
     });
@@ -64,33 +64,45 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
 
   return (
     <tr>
-      <td style={{ textAlign: "start" }}>
-        {moment(item.date).format("dddd, D MMM YYYY")}
+      <td style={{ textAlign: 'start' }} className="text-nowrap">
+        {moment(item.date).format('dddd, D MMM YYYY')}
       </td>
-      <td style={{ textAlign: "start" }}>{item.activity}</td>
-      <td style={{ textAlign: "start" }}>
-        <Badge color="light-primary" style={{ borderRadius: "18px" }}>
-          {item.isWorkFromOffice ? "WFO" : "WFH"}
+      <td style={{ textAlign: 'start' }} className="text-break">
+        {item.activity}
+      </td>
+      <td style={{ textAlign: 'start' }} className="text-nowrap">
+        <Badge color="light-primary" style={{ borderRadius: '18px' }}>
+          {item.isWorkFromOffice ? 'WFO' : 'WFH'}
         </Badge>
       </td>
-      <td style={{ textAlign: "start" }}>
-        {item.jamMasuk ? moment(item.jamMasuk).format("HH:mm") : ""}
+      <td style={{ textAlign: 'start' }} className="text-nowrap">
+        {item.jamMasuk ? moment(item.jamMasuk).format('HH:mm') : ''}
       </td>
-      <td style={{ textAlign: "start" }}>
-        {item.jamKeluar ? moment(item.jamKeluar).format("HH:mm") : ""}
+      <td style={{ textAlign: 'start' }} className="text-nowrap">
+        {item.jamKeluar ? moment(item.jamKeluar).format('HH:mm') : ''}
       </td>
       {moment().format() > moment(item.date).format() &&
-      status == "Draft" &&
-      getPermissionComponent("Intern") ? (
-        <td className="text-center px-2 align-middle">
+      status == 'Draft' &&
+      getPermissionComponent('Intern') ? (
+        <td className="text-center px-2 align-middle text-nowrap">
           <div className="d-flex justify-content-center ">
-            <Button.Ripple
-              color="primary"
-              className="d-flex align-items-center"
-              onClick={toggleEntryPopup}
-            >
-              Entry
-            </Button.Ripple>
+            {item.jamMasuk == null ? (
+              <Button.Ripple
+                color="primary"
+                className="d-flex align-items-center"
+                onClick={toggleEntryPopup}
+              >
+                Entry
+              </Button.Ripple>
+            ) : (
+              <Button.Ripple
+                color="primary"
+                className="d-flex align-items-center"
+                onClick={toggleEntryPopup}
+              >
+                Edit
+              </Button.Ripple>
+            )}
           </div>
           <LogbookModal
             entryModal={entryModal}

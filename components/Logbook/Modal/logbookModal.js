@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 import {
   Button,
   Col,
@@ -9,54 +9,60 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Row,
-} from "reactstrap";
-import styles from "styles/scrollbarTable.module.css";
-import * as Yup from "yup";
-import Flatpickr from "react-flatpickr";
-import moment from "moment";
-import ReactSelect from "react-select";
-import { useDispatch } from "react-redux";
-import { entryLogbook } from "redux/actions/intern_action";
-import { reauthenticate } from "redux/actions/auth";
+  Row
+} from 'reactstrap';
+import styles from 'styles/scrollbarTable.module.css';
+import * as Yup from 'yup';
+import Flatpickr from 'react-flatpickr';
+import moment from 'moment';
+import ReactSelect from 'react-select';
+import { useDispatch } from 'react-redux';
+import { entryLogbook } from 'redux/actions/intern_action';
+import { reauthenticate } from 'redux/actions/auth';
 
-const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler }) => {
-    const dispatch = useDispatch();
+const logbookModal = ({
+  entryModal,
+  toggleEntryPopup,
+  item,
+  token,
+  submitHandler
+}) => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     // initial values
     initialValues: {
       id: item.id,
       logbookId: item.logbookId,
       date: item.date,
-      activity: item.activity || "",
+      activity: item.activity || '',
       jamMasuk: item.jamMasuk || new Date(),
       jamKeluar: item.jamKeluar || new Date(),
-      isWorkFromOffice: item.isWorkFromOffice || false,
+      isWorkFromOffice: item.isWorkFromOffice || false
     },
     // validation schema
     validationSchema: Yup.object({
-      activity: Yup.string().required("Activity Cannot be Empty"),
-      jamMasuk: Yup.date().required("Check in Cannot be Empty"),
-      jamKeluar: Yup.date().required("Check out Cannot be Empty"),
+      activity: Yup.string().required('Activity Cannot be Empty'),
+      jamMasuk: Yup.date().required('Check in Cannot be Empty'),
+      jamKeluar: Yup.date().required('Check out Cannot be Empty')
     }),
     // handle submission
     onSubmit: (e) => {
-      e.jamMasuk = moment(e.jamMasuk).format("YYYY-MM-DDTHH:mm:ss");
-      e.jamKeluar = moment(e.jamKeluar).format("YYYY-MM-DDTHH:mm:ss");
+      e.jamMasuk = moment(e.jamMasuk).format('YYYY-MM-DDTHH:mm:ss');
+      e.jamKeluar = moment(e.jamKeluar).format('YYYY-MM-DDTHH:mm:ss');
       submitHandler(e.id, e);
-    },
+    }
   });
 
   const options = [
-    { value: true, label: "WFO" },
-    { value: false, label: "WFH" },
+    { value: true, label: 'WFO' },
+    { value: false, label: 'WFH' }
   ];
 
   const OffValue = () => {
-    formik.setFieldValue("activity", "OFF");
-    formik.setFieldValue("jamMasuk", null);
-    formik.setFieldValue("jamKeluar", null);
-    formik.setFieldValue("isWorkFromOffice", false);
+    formik.setFieldValue('activity', 'OFF');
+    formik.setFieldValue('jamMasuk', null);
+    formik.setFieldValue('jamKeluar', null);
+    formik.setFieldValue('isWorkFromOffice', false);
   };
   return (
     <Modal
@@ -68,7 +74,11 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
       toggle={toggleEntryPopup}
     >
       <ModalHeader toggle={toggleEntryPopup} className="bg-primary">
-        <div className="text-white">Entry Log Book</div>
+        {item.jamMasuk == null ? (
+          <div className="text-white">Entry Log Book</div>
+        ) : (
+          <div className="text-white">Edit Log Book</div>
+        )}
       </ModalHeader>
       <ModalBody>
         <Row>
@@ -81,18 +91,18 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
                 className={`form-control datepicker-table2 ${
                   formik.touched.jamMasuk &&
                   formik.errors.jamMasuk &&
-                  " is-invalid"
+                  ' is-invalid'
                 }`}
                 // placeholder="MM/DD/YYYY"
                 value={new Date(formik.values.jamMasuk)}
                 options={{
                   enableTime: true,
                   noCalendar: true,
-                  dateFormat: "H:i",
-                  time_24hr: true,
+                  dateFormat: 'H:i',
+                  time_24hr: true
                 }}
                 onChange={(date) => {
-                  formik.setFieldValue("jamMasuk", date[0]);
+                  formik.setFieldValue('jamMasuk', date[0]);
                 }}
               />
             </FormGroup>
@@ -107,18 +117,18 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
                 className={`form-control datepicker-table2 ${
                   formik.touched.jamKeluar &&
                   formik.errors.jamKeluar &&
-                  " is-invalid"
+                  ' is-invalid'
                 }`}
                 // placeholder="MM/DD/YYYY"
                 value={new Date(formik.values.jamKeluar)}
                 options={{
                   enableTime: true,
                   noCalendar: true,
-                  dateFormat: "H:i",
-                  time_24hr: true,
+                  dateFormat: 'H:i',
+                  time_24hr: true
                 }}
                 onChange={(date) => {
-                  formik.setFieldValue("jamKeluar", date[0]);
+                  formik.setFieldValue('jamKeluar', date[0]);
                 }}
               />
             </FormGroup>
@@ -131,7 +141,7 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
             options={options}
             value={{
               value: formik.values.isWorkFromOffice,
-              label: formik.values.isWorkFromOffice ? "WFO" : "WFH",
+              label: formik.values.isWorkFromOffice ? 'WFO' : 'WFH'
             }}
           />
         </FormGroup>
@@ -140,17 +150,17 @@ const logbookModal = ({ entryModal, toggleEntryPopup, item, token, submitHandler
           <Label for="nameVertical">Activity</Label>
           <Input
             className={`${
-              formik.touched.activity && formik.errors.activity && " is-invalid"
+              formik.touched.activity && formik.errors.activity && ' is-invalid'
             }`}
             id={styles.textarea}
             name="retrunReason"
             type="textarea"
             placeholder="Placeholder"
             rows="6"
-            style={{ resize: "none" }}
+            style={{ resize: 'none' }}
             value={formik.values.activity}
             onChange={(e) => {
-              formik.setFieldValue("activity", e.target.value);
+              formik.setFieldValue('activity', e.target.value);
             }}
           />
         </FormGroup>

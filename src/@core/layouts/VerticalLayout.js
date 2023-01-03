@@ -1,16 +1,16 @@
 // ** React Imports
-import { Fragment, useState, useRef, useEffect } from "react";
+import { Fragment, useState, useRef, useEffect } from 'react';
 
 // ** Third Party Packages
-import ReactResizeDetector from "react-resize-detector";
+import ReactResizeDetector from 'react-resize-detector';
 
 // ** Vertical Menu Components
-import NavbarComponent from "./components/navbar";
-import MenuComponent from "./components/menu";
+import NavbarComponent from './components/navbar';
+import MenuComponent from './components/menu';
 
 // ** Navigation Menu Data
-import { navigationData } from "./navigation";
-import { Navbar } from "reactstrap";
+import { navigationData } from './navigation';
+import { Navbar } from 'reactstrap';
 
 const VerticalLayout = (props) => {
   // ** States
@@ -22,12 +22,12 @@ const VerticalLayout = (props) => {
       {({ width }) => (
         <div
           className={`wrapper vertical-layout navbar-floating footer-hidden ${
-            width >= 1200 ? "vertical-menu-modern" : ""
-          } ${width >= 1200 && menuCollapsed ? "menu-collapsed" : "menu-expanded"} ${
-            width > 1200 && !menuCollapsed ? "menu-expanded" : ""
-          } ${width < 1200 ? "vertical-overlay-menu" : ""} ${
-            width < 1200 && menuVisibility ? "menu-open" : "menu-hide"
-          }`}
+            width >= 1200 ? 'vertical-menu-modern' : ''
+          } ${
+            width >= 1200 && menuCollapsed ? 'menu-collapsed' : 'menu-expanded'
+          } ${width > 1200 && !menuCollapsed ? 'menu-expanded' : ''} ${
+            width < 1200 ? 'vertical-overlay-menu' : ''
+          } ${width < 1200 && menuVisibility ? 'menu-open' : 'menu-hide'}`}
         >
           <MenuComponent
             data={navigationData}
@@ -36,6 +36,7 @@ const VerticalLayout = (props) => {
             menuVisibility={menuVisibility}
             setMenuVisibility={setMenuVisibility}
           />
+
           <Navbar
             expand="lg"
             light
@@ -45,7 +46,11 @@ const VerticalLayout = (props) => {
               <NavbarComponent setMenuVisibility={setMenuVisibility} />
             </div>
           </Navbar>
-          <div className={`app-content content overflow-hidden ${width < 1200 ? "ml-0" : ""}`}>
+          <div
+            className={`app-content content overflow-hidden ${
+              width < 1200 ? 'ml-0' : ''
+            }`}
+          >
             <div className="content-overlay"></div>
             <div className="header-navbar-shadow"></div>
             <div className="content-wrapper animate__animated animate__fadeIn">
@@ -53,7 +58,7 @@ const VerticalLayout = (props) => {
             </div>
           </div>
           <div
-            className={`sidenav-overlay ${menuVisibility ? "show" : ""}`}
+            className={`sidenav-overlay ${menuVisibility ? 'show' : ''}`}
             onClick={() => setMenuVisibility(false)}
           ></div>
         </div>

@@ -6,26 +6,27 @@ import LogbookForMentor from 'components/Logbook/mentor/Intership_Logbook_List';
 // import LogbookForIntern from 'components/Logbook/intern/logbookIntern';
 import { wrapper } from 'redux/store';
 import { useRouter } from 'next/router';
+import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 
 const Logbook = ({ user }) => {
   const router = useRouter();
 
-  useEffect(() => {
-    if (user.role.roleName == 'Intern') {
-      router.push(`/logbook/${user.userName}/${user.id}`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user.role.roleName == 'Intern') {
+  //     router.push(`/Logbook/${user.userName}/${user.id}`);
+  //   }
+  // }, []);
 
   return (
-    <>
+    <VerticalLayout>
       {user.role.roleName == 'Mentor' ? (
-        <LogbookForMentor token={user.token} user={user}/>
+        <LogbookForMentor token={user.token} user={user} />
       ) : user.role.roleName == 'HR' ? (
-        <LogbookForHR token={user.token} user={user}/>
+        <LogbookForHR token={user.token} user={user} />
       ) : (
         ''
       )}
-    </>
+    </VerticalLayout>
   );
 };
 
@@ -38,6 +39,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         redirect: {
           destination: '/auth',
+          permanent: false
+        }
+      };
+    }
+    if (sessionData.user.role.roleName == 'Intern') {
+      return {
+        redirect: {
+          destination: `/Logbook/${sessionData.user.userName}/${sessionData.user.id}`,
           permanent: false
         }
       };

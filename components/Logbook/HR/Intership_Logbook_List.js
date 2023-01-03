@@ -18,7 +18,6 @@ import {
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
 import styles from "styles/scrollbarTable.module.css";
-import VerticalLayout from "src/@core/layouts/VerticalLayout";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { reauthenticate } from "redux/actions/auth";
@@ -29,7 +28,7 @@ const MenteeItem = ({ item }) => {
   return (
     <tr>
       <td style={{ textAlign: "start" }}>
-        <Link href={`/logbook/${item.userName}/${item.id}`} passHref>
+        <Link href={`/Logbook/${item.userName}/${item.id}`} passHref>
           {item.userName}
         </Link>
       </td>
@@ -89,7 +88,7 @@ const Intership_Logbook_List = ({ token, user }) => {
   };
 
   return (
-    <VerticalLayout>
+    <>
       <BreadCrumbs
         breadCrumbParent="Mentor"
         breadCrumbActive="Internship Log book"
@@ -217,7 +216,7 @@ const Intership_Logbook_List = ({ token, user }) => {
           </Row>
         </TabPane>
       </TabContent>
-    </VerticalLayout>
+    </>
   );
 };
 

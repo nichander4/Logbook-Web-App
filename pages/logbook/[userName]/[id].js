@@ -1,13 +1,17 @@
-import VerticalLayout from "src/@core/layouts/VerticalLayout";
-import LogbookTable from "components/Logbook/logbookList";
-import { getSession } from "next-auth/react";
-import { connect } from "react-redux";
-import { wrapper } from "redux/store";
-import { reauthenticate } from "redux/actions/auth";
-import { getInternById } from "redux/actions/intern_action";
+import VerticalLayout from 'src/@core/layouts/VerticalLayout';
+import LogbookTable from 'components/Logbook/logbookList';
+import { getSession } from 'next-auth/react';
+import { connect } from 'react-redux';
+import { wrapper } from 'redux/store';
+import { reauthenticate } from 'redux/actions/auth';
+import { getInternById } from 'redux/actions/intern_action';
 
 const Logbook = ({ user, token, dataIntern }) => {
-  return <LogbookTable user={user} token={token} dataIntern={dataIntern}/>;
+  return (
+    <VerticalLayout>
+      <LogbookTable user={user} token={token} dataIntern={dataIntern} />
+    </VerticalLayout>
+  );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -18,9 +22,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (!sessionData) {
       return {
         redirect: {
-          destination: "/auth",
-          permanent: false,
-        },
+          destination: '/auth',
+          permanent: false
+        }
       };
     }
 
@@ -34,7 +38,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         user: sessionData.user,
         token: sessionData.user.token,
         dataIntern
-      },
+      }
     };
   }
 );

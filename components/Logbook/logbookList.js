@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import BreadCrumbs from "components/custom/BreadcrumbCustom";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
-import VerticalLayout from "src/layouts/VerticalLayout";
 import TableLogbook from "components/Logbook/logbook_item/table";
 import MentorTable from "components/HR/dashboard/mentorTable";
 import { useEffect } from "react";
@@ -17,7 +16,7 @@ const entryLogbook = ({ user, token, dataIntern }) => {
   };
 
   return (
-    <VerticalLayout>
+    <>
       <BreadCrumbs
         breadCrumbParent={dataIntern.role.roleName}
         breadCrumbActive="Log book"
@@ -53,7 +52,7 @@ const entryLogbook = ({ user, token, dataIntern }) => {
           })}
         </TabContent>
       </React.Fragment>
-    </VerticalLayout>
+    </>
   );
 };
 export default entryLogbook;

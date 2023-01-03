@@ -5,10 +5,11 @@ import HomeIntern from 'components/home/Intern/home';
 import HomeMentor from 'components/home/mentor/home';
 import HomeHR from 'components/home/HR/home';
 import { wrapper } from 'redux/store';
+import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 
 const Home = ({ user }) => {
   return (
-    <>
+    <VerticalLayout>
       {user.role.roleName == 'Mentor' ? (
         <HomeMentor />
       ) : user.role.roleName == 'Intern' ? (
@@ -16,7 +17,7 @@ const Home = ({ user }) => {
       ) : (
         <HomeHR token={user.token} />
       )}
-    </>
+    </VerticalLayout>
   );
 };
 

@@ -18,7 +18,7 @@ const HR_Dashboard = ({token}) => {
   };
 
   return (
-    <VerticalLayout>
+    <>
       <BreadCrumbs breadCrumbParent="HR" breadCrumbActive="Dashboard" />
       <Row className="mt-1">
         <Col md="9" sm="9">
@@ -77,7 +77,7 @@ const HR_Dashboard = ({token}) => {
           </TabPane>
         </TabContent>
       </React.Fragment>
-    </VerticalLayout>
+    </>
   );
 };
 export default HR_Dashboard;
