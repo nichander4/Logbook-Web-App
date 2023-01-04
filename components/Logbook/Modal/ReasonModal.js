@@ -19,7 +19,7 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
     },
     // validation schema
     validationSchema: Yup.object({
-      cancelReason: Yup.string().required(),
+      cancelReason: Yup.string().required('Reason Cannot be Empty'),
     }),
     // handle submission
     onSubmit: (e) => {
@@ -55,6 +55,9 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
             value={formik.values.cancelReason}
             {...formik.getFieldProps("cancelReason")}
           />
+            {formik.touched.cancelReason && formik.errors.cancelReason && (
+              <div className="invalid-feedback">{formik.errors.cancelReason}</div>
+            )}
         </FormGroup>
       </ModalBody>
       <ModalFooter>

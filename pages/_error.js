@@ -4,11 +4,12 @@ import Link from "next/link";
 function Error({ statusCode }) {
   return (
     <div className="misc-wrapper">
+      <title>Maintenance</title>
       <div className="misc-inner p-2 p-sm-3">
         <div className="w-100 text-center">
-          <h2 className="mb-1">Page Not Found 🕵🏻‍♀️</h2>
+          <h2 className="mb-1">Under Maintenance 🕵🏻‍♀️</h2>
           <p className="mb-2">
-            Oops! 😖 The requested URL was not found on this server.
+            Oops! 😖 The requested URL under maintenance on this server.
           </p>
           <Link href="/">
             <Button className="btn-sm-block mb-2">Back to home</Button>

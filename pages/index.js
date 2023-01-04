@@ -27,7 +27,9 @@ const Home = () => {
   }, [session]);
 
   return (
-    <></>
+    <>
+     <title>Login</title>
+    </>
   );
 };
 

@@ -36,7 +36,7 @@ const ReviseModal = ({ setReasonModal }) => {
           </ModalHeader>
           <ModalBody>
             <div className="modalBodyTextApprovePopUp">
-              <t>Are you sure want to reject this document?</t>
+              <t>Are you sure want to reject this logbook?</t>
             </div>
           </ModalBody>
           <ModalFooter>

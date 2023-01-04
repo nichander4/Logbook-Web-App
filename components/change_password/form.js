@@ -53,10 +53,10 @@ const ChangePassword = ({ user, token }) => {
         setAlertMessage(data.data);
         setIsAlertModal(true);
       } else if (data.status === 401) {
-        setAlertMessage("You are unauthorized to add this data");
+        setAlertMessage("You are unauthorized to update this data");
         setIsAlertModal(true);
       } else if (data.status >= 200 && data.status < 300) {
-        setAlertMessage("Data updated successfully!");
+        setAlertMessage("Your password has been changed successfully!");
         setIsAlertModal(true);
       } else if (data.status == 409) {
         setAlertMessage("Data is already exist!");

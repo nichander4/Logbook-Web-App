@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import BreadCrumbs from "components/custom/BreadcrumbCustom";
-import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
-import TableLogbook from "components/Logbook/logbook_item/table";
-import MentorTable from "components/HR/dashboard/mentorTable";
-import { useEffect } from "react";
-import moment from "moment";
+import React, { useState } from 'react';
+import BreadCrumbs from 'components/custom/BreadcrumbCustom';
+import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import TableLogbook from 'components/Logbook/logbook_item/table';
+import MentorTable from 'components/HR/dashboard/mentorTable';
+import { useEffect } from 'react';
+import moment from 'moment';
 
 const entryLogbook = ({ user, token, dataIntern }) => {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('');
 
   const toggle = (tab) => {
     if (active !== tab) {
@@ -19,9 +19,17 @@ const entryLogbook = ({ user, token, dataIntern }) => {
     <>
       <BreadCrumbs
         breadCrumbParent={dataIntern.role.roleName}
-        breadCrumbActive="Log book"
+        breadCrumbActive="Logbook"
       />
-      <h2 className="mt-2 mb-1">Entry Log Book Internship - {dataIntern.userName}</h2>
+      {user.role.roleName != 'Intern' ? (
+        <h2 className="mt-2 mb-1">
+          Internship Logbook - {dataIntern.userName}
+        </h2>
+      ) : (
+        <h2 className="mt-2 mb-1">
+          Entry Logbook - {dataIntern.userName}
+        </h2>
+      )}
 
       <React.Fragment>
         <Nav tabs>
@@ -33,7 +41,7 @@ const entryLogbook = ({ user, token, dataIntern }) => {
                   onClick={() => {
                     toggle(x.id);
                   }}
-                  className={`${active === x.id ? "text-dark" : "text-muted"}`}
+                  className={`${active === x.id ? 'text-dark' : 'text-muted'}`}
                   key={x.id}
                 >
                   {x.monthLogbook}
@@ -46,7 +54,13 @@ const entryLogbook = ({ user, token, dataIntern }) => {
           {dataIntern.logbooks.map((x) => {
             return (
               <TabPane tabId={x.id}>
-                <TableLogbook id={x.id} token={token} key={x.id} user={user} dataIntern={dataIntern} />
+                <TableLogbook
+                  id={x.id}
+                  token={token}
+                  key={x.id}
+                  user={user}
+                  dataIntern={dataIntern}
+                />
               </TabPane>
             );
           })}

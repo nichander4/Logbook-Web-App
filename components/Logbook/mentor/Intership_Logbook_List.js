@@ -92,11 +92,11 @@ const Intership_Logbook_List = ({ token, user }) => {
     <>
       <BreadCrumbs
         breadCrumbParent="Mentor"
-        breadCrumbActive="Internship Log book"
+        breadCrumbActive="Internship Logbook"
       />
       <Row className="mt-1">
         <Col md="7" sm="7">
-          <h2 className="mt-1">Internship Log Book</h2>
+          <h2 className="mt-1">Internship Logbook</h2>
         </Col>
       </Row>
 

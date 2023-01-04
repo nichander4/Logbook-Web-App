@@ -74,7 +74,7 @@ const logbookModal = ({
       toggle={toggleEntryPopup}
     >
       <ModalHeader toggle={toggleEntryPopup} className="bg-primary">
-        {item.jamMasuk == null ? (
+        {item.activity == null ? (
           <div className="text-white">Entry Log Book</div>
         ) : (
           <div className="text-white">Edit Log Book</div>
@@ -144,7 +144,6 @@ const logbookModal = ({
               label: formik.values.isWorkFromOffice ? 'WFO' : 'WFH'
             }}
             onChange={(value) => {
-            
               formik.setFieldValue('isWorkFromOffice', value.value);
             }}
           />
@@ -177,14 +176,25 @@ const logbookModal = ({
         >
           OFF
         </Button>
-        <Button
-          className="d-flex ml-1"
-          color="info"
-          type="submit"
-          onClick={formik.submitForm}
-        >
-          Save
-        </Button>
+        {item.activity == null ? (
+          <Button
+            className="d-flex ml-1"
+            color="primary"
+            type="submit"
+            onClick={formik.submitForm}
+          >
+            Submit
+          </Button>
+        ) : (
+          <Button
+            className="d-flex ml-1"
+            color="info"
+            type="submit"
+            onClick={formik.submitForm}
+          >
+            Save
+          </Button>
+        )}
       </ModalFooter>
     </Modal>
   );

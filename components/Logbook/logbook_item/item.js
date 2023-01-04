@@ -46,11 +46,16 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
         setAlertMessage(data.data);
         setIsAlertModal(true);
       } else if (data.status === 401) {
-        setAlertMessage('You are unauthorized to add this data');
+        setAlertMessage('You are unauthorized to add this Logbook');
         setIsAlertModal(true);
       } else if (data.status >= 200 && data.status < 300) {
         toggleEntryPopup();
-        setAlertMessage('Data added successfully!');
+        if(item.activity == null ){
+
+          setAlertMessage('Logbook added successfully!');
+        }else {
+          setAlertMessage('Logbook updated successfully!');
+        }
         setIsAlertModal(true);
       } else if (data.status == 409) {
         setAlertMessage('Data is already exist!');
@@ -102,7 +107,7 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
       getPermissionComponent('Intern') ? (
         <td className="text-center px-2 align-middle text-nowrap">
           <div className="d-flex justify-content-center ">
-            {item.jamMasuk == null ? (
+            {item.activity == null ? (
               <Button.Ripple
                 color="primary"
                 className="d-flex align-items-center"

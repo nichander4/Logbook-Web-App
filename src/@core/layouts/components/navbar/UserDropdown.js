@@ -40,7 +40,7 @@ const UserDropdown = () => {
           <span className="user-status">{session?.user.role.roleName}</span>
         </div>
         <Avatar
-          img="/images/portrait/small/avatar-s-11.jpg"
+          img="/images/avatars/avatar-blank.png"
           imgHeight="40"
           imgWidth="40"
           

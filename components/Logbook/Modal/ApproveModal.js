@@ -57,7 +57,7 @@ const approveModal = ({ approveHandler }) => {
           </ModalHeader>
           <ModalBody>
             <div className="modalBodyTextApprovePopUp">
-              <t>Are you sure want to approve this document?</t>
+              <t>Are you sure want to approve this logbook?</t>
             </div>
           </ModalBody>
           <ModalFooter>
