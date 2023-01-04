@@ -90,7 +90,7 @@ const Intership_Logbook_List = ({ token, user }) => {
   return (
     <>
       <BreadCrumbs
-        breadCrumbParent="Mentor"
+        breadCrumbParent="HR"
         breadCrumbActive="Internship Logbook"
       />
       <Row className="mt-1">
