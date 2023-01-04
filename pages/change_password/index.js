@@ -6,7 +6,7 @@ import { getSession } from "next-auth/react";
 const change_password = ({ user, token }) => {
   return (
     <VerticalLayout>
-      <tittle>Change Password</tittle>
+      <title>Change Password</title>
       <ChangePassword user={user} token={token} />
     </VerticalLayout>
   );
