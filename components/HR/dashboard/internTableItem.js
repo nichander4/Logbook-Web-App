@@ -143,7 +143,7 @@ const InternItem = ({
       <td style={{ textAlign: 'start' }}>{data.position}</td>
       <td style={{ textAlign: 'start' }}>{data.mentor.userName}</td>
       <td style={{ textAlign: 'start' }}>
-        {moment(data.endDate).format('DD-MM-YYYY')}
+        {moment(item.endDate).format("D MMM YYYY")}
       </td>
     </tr>
   );
