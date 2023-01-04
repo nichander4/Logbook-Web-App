@@ -415,11 +415,8 @@ const InternForm = (props) => {
                       name="entryDate"
                       id="entryDate"
                       value={moment(formik.values.entryDate).format(
-                        'd M Y'
+                        'D MMM YYYY'
                       )}
-                      options={{
-                        dateFormat: 'd M Y'
-                      }}
                       placeholder="DD/MM/YYYYY"
                       disabled
                     />
@@ -440,11 +437,8 @@ const InternForm = (props) => {
                       type="text"
                       name="endDate"
                       id="endDate"
-                      value={moment(formik.values.endDate).format('d M Y')}
+                      value={moment(formik.values.endDate).format('D MMM YYYY')}
                       placeholder="DD/MM/YYYYY"
-                      options={{
-                        dateFormat: 'd M Y'
-                      }}
                       disabled
                     />
                     <InputGroupAddon addonType="append">
