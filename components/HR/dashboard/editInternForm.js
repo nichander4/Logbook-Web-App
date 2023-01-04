@@ -415,7 +415,7 @@ const InternForm = (props) => {
                       name="entryDate"
                       id="entryDate"
                       value={moment(formik.values.entryDate).format(
-                        'DD-MM-YYYY'
+                        'd M Y'
                       )}
                       options={{
                         dateFormat: 'd M Y'
@@ -440,7 +440,7 @@ const InternForm = (props) => {
                       type="text"
                       name="endDate"
                       id="endDate"
-                      value={moment(formik.values.endDate).format('DD-MM-YYYY')}
+                      value={moment(formik.values.endDate).format('d M Y')}
                       placeholder="DD/MM/YYYYY"
                       options={{
                         dateFormat: 'd M Y'
