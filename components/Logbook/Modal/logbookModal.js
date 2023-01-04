@@ -166,6 +166,11 @@ const logbookModal = ({
               formik.setFieldValue('activity', e.target.value);
             }}
           />
+            {formik.touched.activity && formik.errors.activity && (
+                    <div className="invalid-feedback">
+                      {formik.errors.activity}
+                    </div>
+                  )}
         </FormGroup>
       </ModalBody>
       <ModalFooter>
