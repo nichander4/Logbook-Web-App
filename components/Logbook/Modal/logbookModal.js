@@ -40,11 +40,21 @@ const logbookModal = ({
       isWorkFromOffice: item.isWorkFromOffice || false
     },
     // validation schema
-    validationSchema: Yup.object({
+    validationSchema: 
+    // Yup.object({
+    //   activity: Yup.string().required('Activity Cannot be Empty'),
+    //   jamMasuk: Yup.date().required('Check in Cannot be Empty'),
+    //   jamKeluar: Yup.date().required('Check out Cannot be Empty')
+    // }),
+    Yup.object().shape({
       activity: Yup.string().required('Activity Cannot be Empty'),
       jamMasuk: Yup.date().required('Check in Cannot be Empty'),
-      jamKeluar: Yup.date().required('Check out Cannot be Empty')
+      jamKeluar: Yup.date().required('Check out Cannot be Empty').min(
+        Yup.ref('jamMasuk'),
+          "Check Out can't be before than Check In"
+        )
     }),
+   
     // handle submission
     onSubmit: (e) => {
       e.jamMasuk = moment(e.jamMasuk).format('YYYY-MM-DDTHH:mm:ss');
@@ -131,9 +141,15 @@ const logbookModal = ({
                   formik.setFieldValue('jamKeluar', date[0]);
                 }}
               />
+               {formik.touched.jamKeluar && formik.errors.jamKeluar && (
+                    <div className="invalid-feedback">
+                      {formik.errors.jamKeluar}
+                    </div>
+                  )}
             </FormGroup>
           </Col>
         </Row>
+       
 
         <FormGroup>
           <Label for="nameVertical">WFO/WFH</Label>
