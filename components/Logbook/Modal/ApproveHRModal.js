@@ -63,7 +63,7 @@ const approveHRModal = ({ approveHandler }) => {
             <div className="modalBodyTextApprovePopUp">
               <t>Are you sure want to approve this logbook?</t>
             </div>
-            <Label for="nameVertical">Gaji WFO</Label>
+            <Label for="nameVertical">Gaji WFO per Hari</Label>
             <NumericFormat
             valueIsNumericString={true}
               thousandSeparator={','}
@@ -94,7 +94,7 @@ const approveHRModal = ({ approveHandler }) => {
               }`}
               {...formik.getFieldProps('gajiWFO')}
             /> */}
-            <Label for="nameVertical">Gaji WFH</Label>
+            <Label for="nameVertical">Gaji WFH per Hari</Label>
             <NumericFormat
               valueIsNumericString={true}
               thousandSeparator={','}
