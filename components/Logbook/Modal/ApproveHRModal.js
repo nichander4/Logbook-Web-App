@@ -25,8 +25,8 @@ const approveHRModal = ({ approveHandler }) => {
     },
     // validation schema
     validationSchema: Yup.object({
-      gajiWFO: Yup.string().required('Gaji WFO Cannot be Empty'),
-      gajiWFH: Yup.string().required('Gaji WFH Cannot be Empty')
+      gajiWFO: Yup.number().required('Gaji WFO Cannot be Empty').min(0,"Gaji Must be Greater than or Equal to 0"),
+      gajiWFH: Yup.number().required('Gaji WFH Cannot be Empty').min(0,"Gaji Must be Greater than or Equal to 0"),
     }),
     // handle submission
     onSubmit: (e) => {
