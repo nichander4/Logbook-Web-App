@@ -31,7 +31,7 @@ import moment from 'moment';
 import { addUser } from 'redux/actions/user_actions';
 import InputPasswordToggle from 'src/@core/components/input-password-toggle';
 
-const InternForm = (props) => {
+const AddUserForm = (props) => {
   const { token } = props;
   const router = useRouter();
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const InternForm = (props) => {
     });
   }, []);
 
-  const doSubmit = (data) => {
+  const btnSubmit_click = (data) => {
     let newData = {};
     if (data.roleId == 3) {
       newData = {
@@ -151,11 +151,12 @@ const InternForm = (props) => {
       endDate: Yup.date().required('End Date Cannot be Empty')
     }),
     // handle submission
-    onSubmit: doSubmit
+    onSubmit: btnSubmit_click
   });
 
-  console.log(formik);
-  console.log(formik.errors, 'errors');
+  const btnBack_click = () => {
+    router.back()
+  }
 
   useEffect(() => {
     const date = new Date();
@@ -185,7 +186,7 @@ const InternForm = (props) => {
           type="submit"
           color="danger"
           className="btn-next"
-          onClick={() => router.back()}
+          onClick={btnBack_click}
         >
           <ArrowLeft size={18} />
           <span className="ml-50 align-middle d-sm-inline-block d-none">
@@ -213,7 +214,7 @@ const InternForm = (props) => {
                     placeholder="Choose Role"
                     name="roleId"
                     type="select"
-                    className={`form-control ${
+                    className={`role form-control ${
                       formik.touched.roleId &&
                       formik.errors.roleId &&
                       'is-invalid'
@@ -253,7 +254,7 @@ const InternForm = (props) => {
                     name="userName"
                     id="userName"
                     value={formik.values.userName}
-                    className={`${
+                    className={`nameField ${
                       formik.touched.userName &&
                       formik.errors.userName &&
                       'is-invalid'
@@ -276,7 +277,7 @@ const InternForm = (props) => {
                       name="university"
                       id="university"
                       value={formik.values.university}
-                      className={`${
+                      className={`universityField ${
                         formik.touched.university &&
                         formik.errors.university &&
                         'is-invalid'
@@ -300,7 +301,7 @@ const InternForm = (props) => {
                     name="department"
                     id="department"
                     value={formik.values.department}
-                    className={`${
+                    className={`departmentField ${
                       formik.touched.department &&
                       formik.errors.department &&
                       'is-invalid'
@@ -348,7 +349,7 @@ const InternForm = (props) => {
                     name="position"
                     id="position"
                     value={formik.values.position}
-                    className={`${
+                    className={`positionField ${
                       formik.touched.position &&
                       formik.errors.position &&
                       'is-invalid'
@@ -395,7 +396,7 @@ const InternForm = (props) => {
                     <CustomInput
                       name="manufacturingSite"
                       type="select"
-                      className={`form-control ${
+                      className={`mentorField form-control ${
                         formik.touched.mentorId &&
                         formik.errors.mentorId &&
                         'is-invalid'
@@ -439,7 +440,7 @@ const InternForm = (props) => {
                     name="email"
                     id="email"
                     value={formik.values.email}
-                    className={`${
+                    className={`emailField ${
                       formik.touched.email &&
                       formik.errors.email &&
                       'is-invalid'
@@ -461,7 +462,7 @@ const InternForm = (props) => {
                     id="password"
                     name="password"
                     value={formik.values.password}
-                    className={`input-group-merge ${
+                    className={`passwordField input-group-merge ${
                       formik.touched.password &&
                       formik.errors.password &&
                       'is-invalid'
@@ -496,7 +497,7 @@ const InternForm = (props) => {
                     name="mobileNumber"
                     id="mobileNumber"
                     value={formik.values.mobileNumber}
-                    className={`${
+                    className={`mobileNumField ${
                       formik.touched.mobileNumber &&
                       formik.errors.mobileNumber &&
                       'is-invalid'
@@ -521,7 +522,7 @@ const InternForm = (props) => {
                         name="rekening"
                         id="rekening"
                         value={formik.values.rekening}
-                        className={`${
+                        className={`rekeningField ${
                           formik.touched.rekening &&
                           formik.errors.rekening &&
                           'is-invalid'
@@ -544,7 +545,7 @@ const InternForm = (props) => {
                         <Flatpickr
                           name="entryDate"
                           id="entryDate"
-                          className={`form-control datepicker-table2 ${
+                          className={`entry_date form-control datepicker-table2 ${
                             formik.touched.entryDate &&
                             formik.errors.entryDate &&
                             ' is-invalid'
@@ -579,7 +580,7 @@ const InternForm = (props) => {
                         <Flatpickr
                           name="endDate"
                           id="endDate"
-                          className={`form-control datepicker-table2 ${
+                          className={`end_date form-control datepicker-table2 ${
                             formik.touched.endDate &&
                             formik.errors.endDate &&
                             'is-invalid'
@@ -633,4 +634,4 @@ const InternForm = (props) => {
 //   role: ['Material Planner Spv', 'RnD/TS Data Support Spv']
 // };
 
-export default InternForm;
+export default AddUserForm;

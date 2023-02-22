@@ -49,12 +49,12 @@ const UserDropdown = () => {
       <DropdownMenu right style={{width:"150%"}}>
 
         <DropdownItem tag={Link} href="/change_password">
-          <a className="dropdown-item">
+          <a className="actionChangePassword dropdown-item">
             <Edit size={14} className="mr-75" />
             <span className="align-middle">Change Password</span>
           </a>
         </DropdownItem>
-        <DropdownItem className="dropdown-item w-100" onClick={logoutFunc}>
+        <DropdownItem className="actionLogout dropdown-item w-100" onClick={logoutFunc}>
             <Power size={14} className="mr-75" />
             <span className="align-middle">Logout</span>
         </DropdownItem> 

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import BreadCrumbs from 'components/custom/BreadcrumbCustom';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Button } from 'reactstrap';
 import VerticalLayout from 'src/layouts/VerticalLayout';
-import InternTable from 'components/HR/dashboard/internTable';
-import MentorTable from 'components/HR/dashboard/mentorTable';
+import TabTable_intern from 'components/HR/dashboard/internTable';
+import TabTable_mentor from 'components/HR/dashboard/mentorTable';
 import { Plus } from 'react-feather';
 import { useRouter } from 'next/router';
 
@@ -66,15 +66,15 @@ const HR_Dashboard = ({token}) => {
             </NavLink>
           </NavItem>
         </Nav>
-        <TabContent className="ml-1 py-50 min-vh-100" activeTab={active}>
+        <TabContent className="openTabTable ml-1 py-50 min-vh-100" activeTab={active}>
 
           <TabPane tabId="1">
-            {active == '1' && <InternTable token={token}/>}
+            {active == '1' && <TabTable_intern token={token}/>}
             
           </TabPane>
 
           <TabPane tabId="2">
-          {active == '2' && <MentorTable token={token}/>}
+          {active == '2' && <TabTable_mentor token={token}/>}
             
           </TabPane>
         </TabContent>

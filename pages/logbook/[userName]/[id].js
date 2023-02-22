@@ -6,7 +6,7 @@ import { wrapper } from 'redux/store';
 import { reauthenticate } from 'redux/actions/auth';
 import { getInternById } from 'redux/actions/intern_action';
 
-const Logbook = ({ user, token, dataIntern }) => {
+const LogbookPage = ({ user, token, dataIntern }) => {
   return (
     <VerticalLayout>
       <title>{dataIntern.userName}'s Logbook </title>
@@ -44,4 +44,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default connect((state) => state)(Logbook);
+export default connect((state) => state)(LogbookPage);

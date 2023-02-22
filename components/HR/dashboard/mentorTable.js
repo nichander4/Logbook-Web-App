@@ -44,9 +44,9 @@ const MentorItem = ({
   setAlertMessage
 }) => {
   const [deleteModal, setDeteleModal] = useState(false);
-  const toggleDeletePopup = () => setDeteleModal(!deleteModal);
+  const btnCancel_click = () => setDeteleModal(!deleteModal);
 
-  const deleteData = (e) => {
+  const btnDelete_click = (e) => {
     e.preventDefault();
 
     dispatch(deleteMentor(data.id)).then((data) => {
@@ -68,7 +68,7 @@ const MentorItem = ({
       <td className="text-center px-2 align-middle">
         <UncontrolledDropdown>
           <DropdownToggle
-            className="icon-btn hide-arrow"
+            className=" icon-btn hide-arrow"
             color="transparent"
             size="sm"
             caret
@@ -76,9 +76,9 @@ const MentorItem = ({
             <MoreVertical size={15} />
           </DropdownToggle>
 
-          <DropdownMenu className="border-0 border-radius-6">
+          <DropdownMenu className="ActionDropDown border-0 border-radius-6">
             <DropdownItem
-              className="action-vuexy-item w-100"
+              className="actionView action-vuexy-item w-100"
               onClick={() =>
                 router.push(`/HR/dashboard/mentor/detail/${data.id}`)
               }
@@ -92,7 +92,7 @@ const MentorItem = ({
               'RnD/TS Data Support Spv'
             ]) && ( */}
             <DropdownItem
-              className="action-vuexy-item w-100"
+              className="actionEdit action-vuexy-item w-100"
               onClick={() =>
                 router.push(`/HR/dashboard/mentor/edit/${data.id}`)
               }
@@ -103,8 +103,8 @@ const MentorItem = ({
             {/* )} */}
 
             <DropdownItem
-              onClick={toggleDeletePopup}
-              className="action-vuexy-item w-100"
+              onClick={btnCancel_click}
+              className="actionDelete action-vuexy-item w-100"
             >
               <Trash2 className="mr-2" size={15} />{' '}
               <span className="align-middle font-weight-bold">Delete</span>
@@ -114,9 +114,9 @@ const MentorItem = ({
                 scrollable
                 size="md"
                 isOpen={deleteModal}
-                toggle={toggleDeletePopup}
+                toggle={btnCancel_click}
               >
-                <ModalHeader toggle={toggleDeletePopup} className="bg-danger">
+                <ModalHeader toggle={btnCancel_click} className="bg-danger">
                   <div className="text-white">Delete</div>
                 </ModalHeader>
                 <ModalBody>
@@ -127,14 +127,14 @@ const MentorItem = ({
                     className="d-flex ml-auto"
                     color="danger"
                     type="submit"
-                    onClick={deleteData}
+                    onClick={btnDelete_click}
                   >
                     Delete
                   </Button>
                   <Button
                     className="d-flex ml-1 text-danger border border-danger"
                     color="white"
-                    onClick={toggleDeletePopup}
+                    onClick={btnCancel_click}
                   >
                     Cancel
                   </Button>
@@ -152,7 +152,7 @@ const MentorItem = ({
   );
 };
 
-const mentorTable = ({ token }) => {
+const tabTable_mentor = ({ token }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -190,7 +190,7 @@ const mentorTable = ({ token }) => {
     setTempPageNumber(1);
   };
 
-  const handleSearchQuery = (e) => {
+  const doSearch = (e) => {
     setTempSearchQuery(e);
     setTempPageNumber(1);
   };
@@ -229,14 +229,14 @@ const mentorTable = ({ token }) => {
         >
           <InputGroup className="input-group-merge">
             <Input
-              className="search-table2 d-flex w-50"
+              className=" searchField search-table2 d-flex w-50"
               type="text"
               name="search"
-              id="search-invoice"
+              id="doSearch"
               placeholder="Search"
               value={tempSearchQuery}
               onKeyPress={(e) => {
-                if (e.key === 'Enter') handleSearchQuery(e.target.value);
+                if (e.key === 'Enter') doSearch(e.target.value);
               }}
               onChange={(e) => setTempSearchQuery(e.target.value)}
             />
@@ -335,4 +335,4 @@ const mentorTable = ({ token }) => {
     </>
   );
 };
-export default mentorTable;
+export default tabTable_mentor;

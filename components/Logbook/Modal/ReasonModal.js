@@ -11,7 +11,7 @@ import {
   ModalHeader,
 } from "reactstrap";
 import * as Yup from "yup";
-const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
+const RejectLogbookForm = ({ reasonModal, setReasonModal, reviseHandler }) => {
   const formik = useFormik({
     // initial values
     initialValues: {
@@ -49,7 +49,7 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
             type="textarea"
             id="comment"
             placeholder="Placeholder"
-            className={`${
+            className={`reasonField ${
               formik.touched.cancelReason && formik.errors.cancelReason && "is-invalid"
             }`}
             value={formik.values.cancelReason}
@@ -76,4 +76,4 @@ const ReasonModal = ({ reasonModal, setReasonModal, reviseHandler }) => {
   );
 };
 
-export default ReasonModal;
+export default RejectLogbookForm;

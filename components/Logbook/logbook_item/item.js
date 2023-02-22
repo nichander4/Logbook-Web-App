@@ -27,7 +27,7 @@ import styles from 'styles/scrollbarTable.module.css';
 import LogbookModal from '../Modal/logbookModal';
 const logbook_Item = ({ item, token, setRefresh, status }) => {
   const [entryModal, setEntryModal] = useState(false);
-  const toggleEntryPopup = () => setEntryModal(!entryModal);
+  const btnEntry_click = () => setEntryModal(!entryModal);
 
   const [rejectModal, setRejectModal] = useState(false);
   const toggleRejectPopup = () => setRejectModal(!rejectModal);
@@ -37,7 +37,7 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const dispatch = useDispatch();
-  const submitHandler = (id, data) => {
+  const btnSave_click = (id, data) => {
     dispatch(reauthenticate(token));
     dispatch(entryLogbook(id, data)).then((data) => {
       console.log(data, 'SUBMIT DATA');
@@ -49,7 +49,7 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
         setAlertMessage('You are unauthorized to add this Logbook');
         setIsAlertModal(true);
       } else if (data.status >= 200 && data.status < 300) {
-        toggleEntryPopup();
+        btnEntry_click();
         if(item.activity == null ){
 
           setAlertMessage('Logbook added successfully!');
@@ -111,7 +111,7 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
               <Button.Ripple
                 color="primary"
                 className="d-flex align-items-center"
-                onClick={toggleEntryPopup}
+                onClick={btnEntry_click}
               >
                 Entry
               </Button.Ripple>
@@ -119,7 +119,7 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
               <Button.Ripple
                 color="info"
                 className="d-flex align-items-center"
-                onClick={toggleEntryPopup}
+                onClick={btnEntry_click}
               >
                 Edit
               </Button.Ripple>
@@ -127,10 +127,10 @@ const logbook_Item = ({ item, token, setRefresh, status }) => {
           </div>
           <LogbookModal
             entryModal={entryModal}
-            toggleEntryPopup={toggleEntryPopup}
+            btnEntry_click={btnEntry_click}
             item={item}
             token={token}
-            submitHandler={submitHandler}
+            btnSave_click={btnSave_click}
           />
           <ComboAlert
             isDeleteModal={true}

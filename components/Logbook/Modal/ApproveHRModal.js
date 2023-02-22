@@ -15,7 +15,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import NumericFormat from 'react-number-format';
 
-const approveHRModal = ({ approveHandler }) => {
+const ApproveCalculateForm = ({ approveHandler }) => {
   const [basicModal, setBasicModal] = useState(false);
   const formik = useFormik({
     // initial values
@@ -73,7 +73,7 @@ const approveHRModal = ({ approveHandler }) => {
               placeholder="Ex : 100"
               //  step="0.1"
               value={formik.values.gajiWFO}
-              className={`form-control ${
+              className={`gaji_wfoField form-control ${
                 formik.touched.gajiWFO && formik.errors.gajiWFO && 'is-invalid'
               }`}
               onValueChange={(values) => {
@@ -104,7 +104,7 @@ const approveHRModal = ({ approveHandler }) => {
               placeholder="Ex : 100"
               //  step="0.1"
               value={formik.values.gajiWFH}
-              className={`form-control ${
+              className={`gaji_wfhField form-control ${
                 formik.touched.gajiWFH && formik.errors.gajiWFH && 'is-invalid'
               }`}
               onValueChange={(values) => {
@@ -143,4 +143,4 @@ const approveHRModal = ({ approveHandler }) => {
     </div>
   );
 };
-export default approveHRModal;
+export default ApproveCalculateForm;

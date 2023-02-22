@@ -20,7 +20,7 @@ import { useDispatch, connect } from 'react-redux';
 import ComboAlert from 'components/Alert/ComboAlert';
 
 
-const MentorForm = (props) => {
+const EditMentorForm = (props) => {
   const { dataMentor, token } = props;
   const router = useRouter();
   const dispatch = useDispatch();
@@ -83,7 +83,9 @@ const MentorForm = (props) => {
     onSubmit: doSubmit
   });
 
-  console.log(formik)
+  const btnBack_click = () => {
+    router.back()
+  }
 
   return (
     <>
@@ -94,7 +96,7 @@ const MentorForm = (props) => {
           type="submit"
           color="danger"
           className="btn-next"
-          onClick={() => router.back()}
+          onClick={btnBack_click}
         >
           <ArrowLeft size={18} />
           <span className="ml-50 align-middle d-sm-inline-block d-none">
@@ -121,7 +123,7 @@ const MentorForm = (props) => {
                     name="userName"
                     id="userName"
                     value={formik.values.userName}
-                    className={`${
+                    className={`nameField ${
                       formik.touched.userName &&
                       formik.errors.userName &&
                       'is-invalid'
@@ -144,7 +146,7 @@ const MentorForm = (props) => {
                     name="position"
                     id="position"
                     value={formik.values.position}
-                    className={`${
+                    className={`positionField ${
                       formik.touched.position &&
                       formik.errors.position &&
                       'is-invalid'
@@ -193,7 +195,7 @@ const MentorForm = (props) => {
                     name="department"
                     id="department"
                     value={formik.values.department}
-                    className={`${
+                    className={`departmentField ${
                       formik.touched.department &&
                       formik.errors.department &&
                       'is-invalid'
@@ -248,7 +250,7 @@ const MentorForm = (props) => {
                     name="email"
                     id="email"
                     value={formik.values.email}
-                    className={`${
+                    className={`emailField ${
                       formik.touched.email &&
                       formik.errors.email &&
                       'is-invalid'
@@ -272,7 +274,7 @@ const MentorForm = (props) => {
                     name="mobileNumber"
                     id="mobileNumber"
                     value={formik.values.mobileNumber}
-                    className={`${
+                    className={`mobileNumField ${
                       formik.touched.mobileNumber &&
                       formik.errors.mobileNumber &&
                       'is-invalid'
@@ -317,4 +319,4 @@ const MentorForm = (props) => {
 //   role: ['Material Planner Spv', 'RnD/TS Data Support Spv']
 // };
 
-export default MentorForm;
+export default EditMentorForm;

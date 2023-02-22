@@ -7,7 +7,7 @@ import HomeHR from 'components/home/HR/home';
 import { wrapper } from 'redux/store';
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 
-const Home = ({ user }) => {
+const HomeDashboardPage = ({ user }) => {
   return (
     <VerticalLayout>
       <title>Home</title>
@@ -44,4 +44,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     };
   }
 );
-export default connect((state) => state)(Home);
+export default connect((state) => state)(HomeDashboardPage);

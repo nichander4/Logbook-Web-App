@@ -6,7 +6,7 @@ import MentorTable from 'components/HR/dashboard/mentorTable';
 import { useEffect } from 'react';
 import moment from 'moment';
 
-const entryLogbook = ({ user, token, dataIntern }) => {
+const LogbookPage = ({ user, token, dataIntern }) => {
   const [active, setActive] = useState('');
 
   const toggle = (tab) => {
@@ -69,4 +69,4 @@ const entryLogbook = ({ user, token, dataIntern }) => {
     </>
   );
 };
-export default entryLogbook;
+export default LogbookPage;

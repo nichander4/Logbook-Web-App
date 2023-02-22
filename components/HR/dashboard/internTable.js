@@ -22,7 +22,7 @@ import { reauthenticate } from 'redux/actions/auth';
 import { getAllIntern } from 'redux/actions/intern_action';
 import ComboAlert from 'components/Alert/ComboAlert';
 
-const internTable = ({ token }) => {
+const tabTable_intern = ({ token }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -60,7 +60,7 @@ const internTable = ({ token }) => {
     setTempPageNumber(1);
   };
 
-  const handleSearchQuery = (e) => {
+  const doSearch = (e) => {
     setTempSearchQuery(e);
     setTempPageNumber(1);
   };
@@ -100,14 +100,14 @@ const internTable = ({ token }) => {
         >
           <InputGroup className="input-group-merge">
             <Input
-              className="search-table2 d-flex w-50"
+              className="searchField search-table2 d-flex w-50"
               type="text"
               name="search"
-              id="search-invoice"
+              id="doSearch"
               placeholder="Search"
               value={tempSearchQuery}
               onKeyPress={(e) => {
-                if (e.key === 'Enter') handleSearchQuery(e.target.value);
+                if (e.key === 'Enter') doSearch(e.target.value);
               }}
               onChange={(e) => setTempSearchQuery(e.target.value)}
             />
@@ -210,4 +210,4 @@ const internTable = ({ token }) => {
   );
 };
 
-export default internTable;
+export default tabTable_intern;

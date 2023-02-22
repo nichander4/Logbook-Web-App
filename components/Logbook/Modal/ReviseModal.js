@@ -10,7 +10,7 @@ import {
 import { Container, Row, Col } from "reactstrap";
 import { Edit } from "react-feather";
 
-const ReviseModal = ({ setReasonModal }) => {
+const RejectLogbookForm = ({ setReasonModal }) => {
   const [basicModal, setBasicModal] = useState(false);
 
   return (
@@ -62,4 +62,4 @@ const ReviseModal = ({ setReasonModal }) => {
     </div>
   );
 };
-export default ReviseModal;
+export default RejectLogbookForm;

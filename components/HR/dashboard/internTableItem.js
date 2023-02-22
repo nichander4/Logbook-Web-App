@@ -27,14 +27,12 @@ const InternItem = ({
   alertStatus,
   setAlertStatus,
   alertMessage,
-  setAlertMessage,
+  setAlertMessage
 }) => {
   const [deleteModal, setDeteleModal] = useState(false);
-  const toggleDeletePopup = () => setDeteleModal(!deleteModal);
+  const btnCancel_click = () => setDeteleModal(!deleteModal);
 
-
-
-  const deleteData = (e) => {
+  const btnDelete_click = (e) => {
     e.preventDefault();
 
     dispatch(deleteIntern(data.id)).then((data) => {
@@ -44,12 +42,10 @@ const InternItem = ({
         setAlertMessage('Sorry, you are unauthorized to delete this data!');
       } else if (data.status === 204) {
         setAlertMessage('Data deleted successfully!');
-       
       } else {
         setAlertMessage('Error occured, please try again later');
       }
       setIsAlertModal(true);
-
     });
   };
 
@@ -58,7 +54,7 @@ const InternItem = ({
       <td className="text-center px-2 align-middle">
         <UncontrolledDropdown>
           <DropdownToggle
-            className="icon-btn hide-arrow"
+            className="openActionDropdown icon-btn hide-arrow"
             color="transparent"
             size="sm"
             caret
@@ -66,9 +62,9 @@ const InternItem = ({
             <MoreVertical size={15} />
           </DropdownToggle>
 
-          <DropdownMenu className="border-0 border-radius-6">
+          <DropdownMenu className="ActionDropDown border-0 border-radius-6">
             <DropdownItem
-              className="action-vuexy-item w-100"
+              className="actionView action-vuexy-item w-100"
               onClick={() =>
                 router.push(`/HR/dashboard/intern/detail/${data.id}`)
               }
@@ -82,7 +78,7 @@ const InternItem = ({
                 'RnD/TS Data Support Spv'
               ]) && ( */}
             <DropdownItem
-              className="action-vuexy-item w-100"
+              className="actionEdit action-vuexy-item w-100"
               onClick={() =>
                 router.push(`/HR/dashboard/intern/edit/${data.id}`)
               }
@@ -93,20 +89,21 @@ const InternItem = ({
             {/* )} */}
 
             <DropdownItem
-              onClick={toggleDeletePopup}
-              className="action-vuexy-item w-100"
+              onClick={btnCancel_click}
+              className="actionDelete action-vuexy-item w-100"
             >
               <Trash2 className="mr-2" size={15} />{' '}
               <span className="align-middle font-weight-bold">Delete</span>
               <Modal
+                className="DeleteConfirmModal"
                 centered
                 fullscreen="md"
                 scrollable
                 size="md"
                 isOpen={deleteModal}
-                toggle={toggleDeletePopup}
+                toggle={btnCancel_click}
               >
-                <ModalHeader toggle={toggleDeletePopup} className="bg-danger">
+                <ModalHeader toggle={btnCancel_click} className="bg-danger">
                   <div className="text-white">Delete</div>
                 </ModalHeader>
                 <ModalBody>
@@ -117,14 +114,14 @@ const InternItem = ({
                     className="d-flex ml-auto"
                     color="danger"
                     type="submit"
-                    onClick={deleteData}
+                    onClick={btnDelete_click}
                   >
                     Delete
                   </Button>
                   <Button
                     className="d-flex ml-1 text-danger border border-danger"
                     color="white"
-                    onClick={toggleDeletePopup}
+                    onClick={btnCancel_click}
                   >
                     Cancel
                   </Button>
@@ -133,9 +130,6 @@ const InternItem = ({
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
-        
-        
-       
       </td>
       <td style={{ textAlign: 'start' }}>{data.userName}</td>
       <td style={{ textAlign: 'start' }}>{data.university}</td>
@@ -143,7 +137,7 @@ const InternItem = ({
       <td style={{ textAlign: 'start' }}>{data.position}</td>
       <td style={{ textAlign: 'start' }}>{data.mentor.userName}</td>
       <td style={{ textAlign: 'start' }}>
-        {moment(data.endDate).format("D MMM YYYY")}
+        {moment(data.endDate).format('D MMM YYYY')}
       </td>
     </tr>
   );

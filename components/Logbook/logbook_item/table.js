@@ -32,7 +32,7 @@ import ReviseModal from '../Modal/ReviseModal';
 import ReasonModal from '../Modal/ReasonModal';
 import { getPermissionComponent } from 'helpers/getPermission';
 
-const TableLogbook = ({ id, token, user, dataIntern }) => {
+const tableLogbook = ({ id, token, user, dataIntern }) => {
   const dispatch = useDispatch();
   const [dataState, setDataState] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
     };
   }, [refresh]);
 
-  const approveHandler = (data) => {
+  const btnApprove_click = (data) => {
     dispatch(reauthenticate(token));
     dispatch(approveLogbook(dataState.id, data)).then((data) => {
       setAlertStatus(data.status);
@@ -82,7 +82,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
     });
   };
 
-  const reviseHandler = (data) => {
+  const btnReject_click = (data) => {
     dispatch(reauthenticate(token));
     dispatch(reviseLogbook(dataState.id, data)).then((data) => {
       setAlertStatus(data.status);
@@ -105,7 +105,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
     });
   };
 
-  const submit = () => {
+  const btnSubmit_click = () => {
     setSubmitLoading(true);
     dispatch(reauthenticate(token));
     dispatch(submitLogbook(dataState.id)).then((data) => {
@@ -147,7 +147,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
               <Button.Ripple
                 color="primary"
                 className="d-flex align-items-center"
-                onClick={submit}
+                onClick={btnSubmit_click}
                 disabled={SubmitLoading}
               >
                 {SubmitLoading ? 'Submitting...' : 'Submit Logbook'}
@@ -159,24 +159,24 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
 
         {user.role.roleName == 'Mentor' && dataState.status == 1 ? ( // Submitted
           <Row className="d-flex justify-content-center">
-            <ApproveModal approveHandler={approveHandler} />
+            <ApproveModal approveHandler={btnApprove_click} />
             <ReviseModal setReasonModal={setReasonModal} />
             <ReasonModal
               reasonModal={reasonModal}
               setReasonModal={setReasonModal}
-              reviseHandler={reviseHandler}
+              reviseHandler={btnReject_click}
             />
           </Row>
         ) : null}
 
         {user.role.roleName == 'HR' && dataState.status == 2 ? ( // Approved By Mentor
           <Row className="d-flex justify-content-center">
-            <ApproveHRModal approveHandler={approveHandler} />
+            <ApproveHRModal approveHandler={btnApprove_click} />
             <ReviseModal setReasonModal={setReasonModal} />
             <ReasonModal
               reasonModal={reasonModal}
               setReasonModal={setReasonModal}
-              reviseHandler={reviseHandler}
+              reviseHandler={btnReject_click}
             />
           </Row>
         ) : null}
@@ -185,6 +185,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
         <Col>
           <Label className="form-label font-weight-bold">Status</Label>
           <Input
+            className="statusField"
             type="text"
             id="status"
             placeholder="-"
@@ -198,6 +199,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
             Approved By Mentor
           </Label>
           <Input
+            className="mentorApproveField"
             type="text"
             id="approveMentor"
             name="approveMentor"
@@ -210,6 +212,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
         <Col>
           <Label className="form-label font-weight-bold">Approved By HR</Label>
           <Input
+            className="hrApproveField"
             type="text"
             id="approveHR"
             name="approveHR"
@@ -222,6 +225,7 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
         <Col>
           <Label className="form-label font-weight-bold">Reject Reason</Label>
           <Input
+            className="rejectReasonField"
             type="text"
             id="approveHR"
             name="approveHR"
@@ -298,17 +302,13 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
         <Col sm="6" md="6">
           {dataState.gajiTotal ? (
             <>
-              <h3>
-                Intern Name : {dataIntern.userName}
-              </h3>
-              <h3>
-                No Rek : {dataIntern.rekening}
-              </h3>
+              <h3>Intern Name : {dataIntern.userName}</h3>
+              <h3>No Rek : {dataIntern.rekening}</h3>
 
               <h2 className="mt-1 d-flex">
-                Total Salary : Rp. 
+                Total Salary : Rp.
                 <NumericFormat
-                className='ml-1'
+                  className="ml-1"
                   thousandsGroupStyle="thousand"
                   value={dataState.gajiTotal}
                   decimalSeparator="."
@@ -355,4 +355,4 @@ const TableLogbook = ({ id, token, user, dataIntern }) => {
   );
 };
 
-export default TableLogbook;
+export default tableLogbook;

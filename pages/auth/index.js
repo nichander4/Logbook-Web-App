@@ -71,6 +71,7 @@ const LoginPage = ({ csrfToken, authError }) => {
                     Email
                   </Label>
                   <Input
+                  className="emailField"
                     type="email"
                     id="email"
                     name="email"
@@ -92,7 +93,7 @@ const LoginPage = ({ csrfToken, authError }) => {
                       </a>
                     </Link> */}
                   <InputPasswordToggle
-                    className="input-group-merge"
+                    className="passwordField input-group-merge"
                     id="password"
                     name="password"
                     onChange={(e) => {

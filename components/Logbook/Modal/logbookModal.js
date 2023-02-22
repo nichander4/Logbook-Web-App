@@ -22,10 +22,10 @@ import { reauthenticate } from 'redux/actions/auth';
 
 const logbookModal = ({
   entryModal,
-  toggleEntryPopup,
+  btnEntry_click,
   item,
   token,
-  submitHandler
+  btnSave_click
 }) => {
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -58,7 +58,7 @@ const logbookModal = ({
     onSubmit: (e) => {
       e.jamMasuk = moment(e.jamMasuk).format('YYYY-MM-DDTHH:mm:ss');
       e.jamKeluar = moment(e.jamKeluar).format('YYYY-MM-DDTHH:mm:ss');
-      submitHandler(e.id, e);
+      btnSave_click(e.id, e);
     }
   });
 
@@ -80,9 +80,9 @@ const logbookModal = ({
       scrollable
       size="md"
       isOpen={entryModal}
-      toggle={toggleEntryPopup}
+      toggle={btnEntry_click}
     >
-      <ModalHeader toggle={toggleEntryPopup} className="bg-primary">
+      <ModalHeader toggle={btnEntry_click} className="bg-primary">
         {item.activity == null ? (
           <div className="text-white">Entry Log Book</div>
         ) : (
@@ -97,7 +97,7 @@ const logbookModal = ({
               <Flatpickr
                 name="jamMasuk"
                 id="jamMasuk"
-                className={`form-control datepicker-table2 ${
+                className={`check_inField form-control datepicker-table2 ${
                   formik.touched.jamMasuk &&
                   formik.errors.jamMasuk &&
                   ' is-invalid'
@@ -123,7 +123,7 @@ const logbookModal = ({
               <Flatpickr
                 name="jamKeluar"
                 id="jamKeluar"
-                className={`form-control datepicker-table2 ${
+                className={`check_outField form-control datepicker-table2 ${
                   formik.touched.jamKeluar &&
                   formik.errors.jamKeluar &&
                   ' is-invalid'
@@ -141,20 +141,18 @@ const logbookModal = ({
                 }}
               />
               {formik.touched.jamKeluar && formik.errors.jamKeluar && (
-                    <div className="invalid-feedback text-nowrap">
-                      {formik.errors.jamKeluar}
-                    </div>
-                  )}
+                <div className="invalid-feedback text-nowrap">
+                  {formik.errors.jamKeluar}
+                </div>
+              )}
             </FormGroup>
           </Col>
         </Row>
 
-        
-        
-
         <FormGroup>
           <Label for="nameVertical">WFO/WFH</Label>
           <ReactSelect
+            className="WfoWfhField"
             options={options}
             value={{
               value: formik.values.isWorkFromOffice,
@@ -169,7 +167,7 @@ const logbookModal = ({
         <FormGroup>
           <Label for="nameVertical">Activity</Label>
           <Input
-            className={`${
+            className={`activityField ${
               formik.touched.activity && formik.errors.activity && ' is-invalid'
             }`}
             id={styles.textarea}

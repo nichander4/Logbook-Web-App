@@ -8,7 +8,7 @@ import { wrapper } from 'redux/store';
 import { useRouter } from 'next/router';
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 
-const Logbook = ({ user }) => {
+const LogbookPage = ({ user }) => {
   const router = useRouter();
 
   // useEffect(() => {
@@ -60,4 +60,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     };
   }
 );
-export default connect((state) => state)(Logbook);
+export default connect((state) => state)(LogbookPage);

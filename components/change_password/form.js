@@ -26,7 +26,7 @@ import ComboAlert from "components/Alert/ComboAlert";
 import InputPasswordToggle from "src/@core/components/input-password-toggle";
 import { updateIntern } from "redux/actions/intern_action";
 
-const ChangePassword = ({ user, token }) => {
+const ChangePasswordForm = ({ user, token }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   console.log(user);
@@ -38,7 +38,7 @@ const ChangePassword = ({ user, token }) => {
   //     dispatch(reauthenticate(token));
   //   }, [dispatch]);
 
-  const doSubmit = (data) => {
+  const btnSave_click = (data) => {
     const editedData = {
       ...user,
       password: data.password,
@@ -83,7 +83,7 @@ const ChangePassword = ({ user, token }) => {
         .required("Password Confirmation is required"),
     }),
     // handle submission
-    onSubmit: doSubmit,
+    onSubmit: btnSave_click,
   });
 
   return (
@@ -120,7 +120,7 @@ const ChangePassword = ({ user, token }) => {
                 <FormGroup>
                   <Label for="nameVertical">New Password</Label>
                   <InputPasswordToggle
-                    className={`input-group-merge ${
+                    className={`newPasswordField input-group-merge ${
                       formik.touched.password &&
                       formik.errors.password &&
                       "is-invalid"
@@ -140,7 +140,7 @@ const ChangePassword = ({ user, token }) => {
                 <FormGroup>
                   <Label for="nameVertical">Re-Enter Your New Password</Label>
                   <InputPasswordToggle
-                    className={`input-group-merge ${
+                    className={`confirmPasswordField input-group-merge ${
                       formik.touched.passwordConfirmation &&
                       formik.errors.passwordConfirmation &&
                       "is-invalid"
@@ -178,4 +178,4 @@ const ChangePassword = ({ user, token }) => {
   );
 };
 
-export default ChangePassword;
+export default ChangePasswordForm;

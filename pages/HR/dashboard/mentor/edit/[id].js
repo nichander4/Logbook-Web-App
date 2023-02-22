@@ -6,7 +6,7 @@ import { getMentorById } from 'redux/actions/mentor_action';
 import { connect } from 'react-redux';
 import { getSession } from 'next-auth/react';
 
-const editMentorForm = ({dataMentor, token}) => {
+const EditMentorForm = ({dataMentor, token}) => {
   return (
     <VerticalLayout>
        <title>{dataMentor.userName}'s Edit Form </title>
@@ -15,7 +15,7 @@ const editMentorForm = ({dataMentor, token}) => {
   );
 };
 
-editMentorForm.auth = {
+EditMentorForm.auth = {
   role: ["HR"],
 };
 
@@ -47,4 +47,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default connect((state) => state)(editMentorForm);
+export default connect((state) => state)(EditMentorForm);

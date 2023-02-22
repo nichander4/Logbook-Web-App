@@ -3,7 +3,7 @@ import ChangePassword from "components/change_password/form";
 import { wrapper } from "redux/store";
 import { getSession } from "next-auth/react";
 
-const change_password = ({ user, token }) => {
+const ChangePasswordForm = ({ user, token }) => {
   return (
     <VerticalLayout>
       <title>Change Password</title>
@@ -12,7 +12,7 @@ const change_password = ({ user, token }) => {
   );
 };
 
-export default change_password;
+export default ChangePasswordForm;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {

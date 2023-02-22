@@ -24,7 +24,7 @@ import { reauthenticate } from "redux/actions/auth";
 import { getAllIntern } from "redux/actions/intern_action";
 import moment from "moment";
 
-const MenteeItem = ({ item }) => {
+const Intern_table = ({ item }) => {
   return (
     <tr>
       <td style={{ textAlign: "start" }}>
@@ -41,7 +41,7 @@ const MenteeItem = ({ item }) => {
   );
 };
 
-const Intership_Logbook_List = ({ token, user }) => {
+const ListIntern_LogbookPage = ({ token, user }) => {
   const [active, setActive] = useState("1");
   const toggle = (tab) => {
     if (active !== tab) {
@@ -153,7 +153,7 @@ const Intership_Logbook_List = ({ token, user }) => {
           </Row>
           <div id={styles.Table}>
             <Table
-              className="table border-1 text-nowrap"
+              className="intern_table table border-1 text-nowrap"
               style={{ border: "1px solid #d8d6de" }}
             >
               <thead>
@@ -175,7 +175,7 @@ const Intership_Logbook_List = ({ token, user }) => {
                   </tr>
                 ) : dataState && dataState.data.length > 0 ? (
                   dataState.data.map(
-                    (item, id) => (id++, (<MenteeItem key={item.id} item={item} />))
+                    (item, id) => (id++, (<Intern_table key={item.id} item={item} />))
                   )
                   // <></>
                 ) : (
@@ -220,4 +220,4 @@ const Intership_Logbook_List = ({ token, user }) => {
   );
 };
 
-export default Intership_Logbook_List;
+export default ListIntern_LogbookPage;

@@ -30,7 +30,7 @@ import ComboAlert from 'components/Alert/ComboAlert';
 import moment from 'moment';
 import { updateIntern } from 'redux/actions/intern_action';
 
-const InternForm = (props) => {
+const EditInternForm = (props) => {
   const { dataIntern, token } = props;
   const router = useRouter();
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const InternForm = (props) => {
     });
   }, []);
 
-  const doSubmit = (data) => {
+  const btnSave_click = (data) => {
     const editedData = {
       ...dataIntern,
       userName: data.userName,
@@ -120,10 +120,12 @@ const InternForm = (props) => {
       endDate: Yup.string().required('End Date Cannot be Empty')
     }),
     // handle submission
-    onSubmit: doSubmit
+    onSubmit: btnSave_click
   });
 
-  console.log(formik)
+  const btnBack_click = () => {
+    router.back()
+  }
 
   return (
     <>
@@ -134,7 +136,7 @@ const InternForm = (props) => {
           type="submit"
           color="danger"
           className="btn-next"
-          onClick={() => router.back()}
+          onClick={btnBack_click}
         >
           <ArrowLeft size={18} />
           <span className="ml-50 align-middle d-sm-inline-block d-none">
@@ -161,7 +163,7 @@ const InternForm = (props) => {
                     name="userName"
                     id="userName"
                     value={formik.values.userName}
-                    className={`${
+                    className={`nameField ${
                       formik.touched.userName &&
                       formik.errors.userName &&
                       'is-invalid'
@@ -183,7 +185,7 @@ const InternForm = (props) => {
                     name="university"
                     id="university"
                     value={formik.values.university}
-                    className={`${
+                    className={`universityField ${
                       formik.touched.university &&
                       formik.errors.university &&
                       'is-invalid'
@@ -207,7 +209,7 @@ const InternForm = (props) => {
                     name="department"
                     id="department"
                     value={formik.values.department}
-                    className={`${
+                    className={`departmentField ${
                       formik.touched.department &&
                       formik.errors.department &&
                       'is-invalid'
@@ -255,7 +257,7 @@ const InternForm = (props) => {
                     name="position"
                     id="position"
                     value={formik.values.position}
-                    className={`${
+                    className={`positionField ${
                       formik.touched.position &&
                       formik.errors.position &&
                       'is-invalid'
@@ -302,7 +304,7 @@ const InternForm = (props) => {
                   <CustomInput
                     name="manufacturingSite"
                     type="select"
-                    className={`form-control ${
+                    className={`mentorField form-control ${
                       formik.touched.mentorId &&
                       formik.errors.mentorId &&
                       'is-invalid'
@@ -343,7 +345,7 @@ const InternForm = (props) => {
                     name="email"
                     id="email"
                     value={formik.values.email}
-                    className={`${
+                    className={`emailField ${
                       formik.touched.email &&
                       formik.errors.email &&
                       'is-invalid'
@@ -367,7 +369,7 @@ const InternForm = (props) => {
                     name="mobileNumber"
                     id="mobileNumber"
                     value={formik.values.mobileNumber}
-                    className={`${
+                    className={`mobileNumField ${
                       formik.touched.mobileNumber &&
                       formik.errors.mobileNumber &&
                       'is-invalid'
@@ -390,7 +392,7 @@ const InternForm = (props) => {
                     name="rekening"
                     id="rekening"
                     value={formik.values.rekening}
-                    className={`${
+                    className={`rekeningField ${
                       formik.touched.rekening &&
                       formik.errors.rekening &&
                       'is-invalid'
@@ -410,7 +412,7 @@ const InternForm = (props) => {
                   <Label className="form-label">Entry Date</Label>
                   <InputGroup className="input-group-merge">
                     <Input
-                      className="search-table2 d-flex w-50"
+                      className="entry_date search-table2 d-flex w-50"
                       type="text"
                       name="entryDate"
                       id="entryDate"
@@ -433,7 +435,7 @@ const InternForm = (props) => {
                   <Label className="form-label">End Date</Label>
                   <InputGroup className="input-group-merge">
                     <Input
-                      className="search-table2 d-flex w-50"
+                      className="end_date search-table2 d-flex w-50"
                       type="text"
                       name="endDate"
                       id="endDate"
@@ -474,4 +476,4 @@ const InternForm = (props) => {
 //   role: ['Material Planner Spv', 'RnD/TS Data Support Spv']
 // };
 
-export default InternForm;
+export default EditInternForm;

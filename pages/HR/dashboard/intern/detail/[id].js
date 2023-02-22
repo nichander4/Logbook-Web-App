@@ -6,7 +6,7 @@ import { getInternById } from 'redux/actions/intern_action';
 import { connect } from 'react-redux';
 import { getSession } from 'next-auth/react';
 
-const detailInternForm = ({ dataIntern, token }) => {
+const ViewInternForm = ({ dataIntern, token }) => {
   return (
     <VerticalLayout>
        <title>{dataIntern.userName}'s View Form </title>
@@ -15,7 +15,7 @@ const detailInternForm = ({ dataIntern, token }) => {
   );
 };
 
-detailInternForm.auth = {
+ViewInternForm.auth = {
   role: ["HR"],
 };
 
@@ -47,4 +47,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default connect((state) => state)(detailInternForm);
+export default connect((state) => state)(ViewInternForm);
